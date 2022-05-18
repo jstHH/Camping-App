@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -15,7 +15,7 @@ public abstract class Item {
     private String title;
     private String description;
     private String owner;
-    private ArrayList<String> involved;
+    private List<String> involved;
     private String spending;
 
 }
