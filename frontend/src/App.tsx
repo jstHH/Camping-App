@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
+import {Route, Routes} from "react-router-dom";
+import EquipmentPage from "./pages/EquipmentPage";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Testheader Neu</h1>
-      </header>
+        <Routes>
+            <Route path="/" element={<EquipmentPage/>}/>
+        </Routes>
     </div>
   );
 }

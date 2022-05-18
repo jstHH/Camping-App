@@ -1,7 +1,7 @@
 import AppHeader from "../components/AppHeader";
 
 
-export default function equipmentPage() {
+export default function EquipmentPage() {
     return <div>
         <AppHeader/>
     </div>

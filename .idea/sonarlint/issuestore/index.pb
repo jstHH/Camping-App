@@ -210,12 +210,8 @@ K
 .github/workflows/maven.yml,c/7/c709f6995f23dae0da365bff70068f8288fa89e0
 T
 $.github/workflows/deployToHeroku.yml,f/9/f9ecbc52adc3e21e155acfcc66b834e5448c83cc
-F
-frontend/src/index.tsx,d/9/d910832662c636742fd4ec7481640b032fa4a2d4
 J
 frontend/public/index.html,5/3/53b461857fde9b76a1c6e79a500050ceffbd7f33
-D
-frontend/src/App.tsx,b/9/b9c5384815ed26f7912bd4d34cab45985cb9a0cd
 q
 Abackend/src/main/java/com/example/backend/BackendApplication.java,d/0/d0af3e93bea1a7096e0fc6c449d05545a034a093
 B
