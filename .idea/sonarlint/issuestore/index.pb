@@ -191,14 +191,8 @@ I
 frontend/src/App.test.tsx,1/c/1cf4cc410867d548574b19000f7eb419b6363ee0
 E
 frontend/src/logo.svg,6/1/611470f7439a2ba36e003ec738e01fc4d55bb610
-O
-frontend/src/react-app-env.d.ts,8/3/83e9ffd41ec56d497397fdb853a506b18d0d3c7e
 B
 frontend/README.md,6/a/6a3a36e34dda2b89c027f00ac950371695b13c75
-O
-frontend/src/reportWebVitals.ts,a/2/a2c8ef2df01f5d68d42e8e4e9a241cd4cea0d496
-J
-frontend/src/setupTests.ts,4/f/4f2f11ec199da054fcf301ce3a42583980b40477
 :
 
 Dockerfile,6/6/6651ddff6eb82c840ced7c1dddee15c6e1913dd4
@@ -210,8 +204,6 @@ K
 .github/workflows/maven.yml,c/7/c709f6995f23dae0da365bff70068f8288fa89e0
 T
 $.github/workflows/deployToHeroku.yml,f/9/f9ecbc52adc3e21e155acfcc66b834e5448c83cc
-J
-frontend/public/index.html,5/3/53b461857fde9b76a1c6e79a500050ceffbd7f33
 q
 Abackend/src/main/java/com/example/backend/BackendApplication.java,d/0/d0af3e93bea1a7096e0fc6c449d05545a034a093
 B
