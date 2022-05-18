@@ -146,11 +146,7 @@ F
 F
 frontend/tsconfig.json,1/8/18471fb0707c190401cd5328ddb4664160a53d26
 E
-frontend/package.json,3/7/37083060967a471c011a16651e22bdc2ade41759
-E
 frontend/frontend.iml,a/c/ac5516d5eda57a53074f7c3650e9cc4bad76742e
-J
-frontend/package-lock.json,7/5/75b3b81cff849b08343553e269c3327a04ab22e0
 p
 @.idea/libraries/Maven__org_springframework_spring_web_5_3_19.xml,0/c/0cf5f973238ae003590a3e1fff3de8578c6d5e51
 t
@@ -214,12 +210,8 @@ K
 .github/workflows/maven.yml,c/7/c709f6995f23dae0da365bff70068f8288fa89e0
 T
 $.github/workflows/deployToHeroku.yml,f/9/f9ecbc52adc3e21e155acfcc66b834e5448c83cc
-F
-frontend/src/index.tsx,d/9/d910832662c636742fd4ec7481640b032fa4a2d4
 J
 frontend/public/index.html,5/3/53b461857fde9b76a1c6e79a500050ceffbd7f33
-D
-frontend/src/App.tsx,b/9/b9c5384815ed26f7912bd4d34cab45985cb9a0cd
 q
 Abackend/src/main/java/com/example/backend/BackendApplication.java,d/0/d0af3e93bea1a7096e0fc6c449d05545a034a093
 B
@@ -229,13 +221,3 @@ C
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-S
-#.github/workflows/sonar-backend.yml,6/d/6da5a3f76934916b670a730d02c25e0b3bb44410
-?
-backend/pom.xml,f/9/f9590cd73598b6f2427c8b1327d922c50d1dc504
-T
-$.github/workflows/sonar-frontend.yml,9/c/9c51df10072e3ef6ef5b5789444db6cb38bef828
-H
-sonar-project.properties,2/5/2538046035efb77ecc44e1fd2eec1e2641594d4c
-=
-lombok.config,8/2/823fe80d2650ec87c2614800da17ca3a55af96a9
