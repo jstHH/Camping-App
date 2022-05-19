@@ -9,6 +9,6 @@ export type EquipmentItemCardViewProps = {
 export default function EquipmentItemCardView({equipmentItems}: EquipmentItemCardViewProps) {
     return 
     <div className={"container"}>
-        {equipmentItems.map(item => <EquipmentItemCard equipmentItem={item}/>)}
+        {equipmentItems.map(item => <EquipmentItemCard key={equipmentItem.id} equipmentItem={item}/>)}
     </div>
 }
