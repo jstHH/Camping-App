@@ -2,12 +2,15 @@ import React from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
 import EquipmentPage from "./pages/EquipmentPage";
+import useEquipmentItems from "./hooks/useEquipmentItems";
 
 function App() {
-  return (
+    const equipmentItems = useEquipmentItems();
+
+    return (
     <div className="App">
         <Routes>
-            <Route path="/" element={<EquipmentPage/>}/>
+            <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems}/>}/>
         </Routes>
     </div>
   );

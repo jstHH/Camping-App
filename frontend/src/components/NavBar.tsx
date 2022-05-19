@@ -1,5 +1,7 @@
 import {Button} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 export default function NavBar() {
