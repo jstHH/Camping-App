@@ -11,7 +11,7 @@ export default function useEquipmentItems() {
         getAllEquipmentItems()
             .then(response => setEquipmentItems(response) )
             .catch(console.log)
-    })
+    },[])
 
     return equipmentItems;
 }
