@@ -7,8 +7,7 @@ export type EquipmentItemCardProps = {
 }
 
 export default function EquipmentItemCard({equipmentItem}: EquipmentItemCardProps) {
-    return 
-    <div>
+    return <div>
         <Card style={{ width: '18rem' }}>
             <Card.Body>
                 <Card.Title>{equipmentItem.title}</Card.Title>
