@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class Item {
-    private String id;
+
     private String title;
     private String description;
     private String owner;
