@@ -32,7 +32,6 @@ export default function LoginPage() {
                               placeholder="Passwort"
                               onChange={(event) => setPassword(event.target.value)}/>
             </Form.Group>
-
             <Button variant="primary" type="submit">
                 Login
             </Button>
