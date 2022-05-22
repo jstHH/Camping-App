@@ -2,10 +2,15 @@ package com.example.backend.controller;
 
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
+import com.example.backend.security.model.AppUser;
+import com.example.backend.security.model.AppUserDTO;
+import com.example.backend.security.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.ArrayList;
@@ -17,15 +22,48 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EquipmentControllerTest {
 
+    private String jwtToken;
+
+    @Autowired
+    private AppUserRepository appUserRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Autowired
     private WebTestClient webTestClient;
 
     @Autowired
     private EquipmentItemRepository equipmentItemRepository;
 
+    @LocalServerPort
+    private int port;
+
     @BeforeEach
     public void cleanUp() {
         equipmentItemRepository.deleteAll();
+        appUserRepository.deleteAll();
+        jwtToken = generateJWTToken();
+    }
+
+    private String generateJWTToken() {
+        String hashedPassword = passwordEncoder.encode("password");
+        AppUser testUser = AppUser.builder()
+                .login("testlogin")
+                .password(hashedPassword)
+                .build();
+        appUserRepository.save(testUser);
+
+        return webTestClient.post()
+                .uri("/auth/login")
+                .bodyValue(AppUserDTO.builder()
+                        .login("testlogin")
+                        .password("password")
+                        .build())
+                .exchange()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
     }
 
     @Test
@@ -58,7 +96,8 @@ class EquipmentControllerTest {
 
         //when
         List<EquipmentItem> actual = webTestClient.get()
-                .uri("/project/equipment")
+                .uri("http://localhost:" + port + "/project/equipment")
+                .headers(http -> http.setBearerAuth(jwtToken))
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBodyList(EquipmentItem.class)

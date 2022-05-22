@@ -7,8 +7,7 @@ export type EquipmentItemCardViewProps = {
 }
 
 export default function EquipmentItemCardView({equipmentItems}: EquipmentItemCardViewProps) {
-    return 
-    <div className={"container"}>
-        {equipmentItems.map(item => <EquipmentItemCard key={equipmentItem.id} equipmentItem={item}/>)}
+    return <div className={"container"}>
+        {equipmentItems.length > 0  ? (equipmentItems.map(item => <EquipmentItemCard key={item.id} equipmentItem={item}/>)): <p>Nichts da</p>}
     </div>
 }
