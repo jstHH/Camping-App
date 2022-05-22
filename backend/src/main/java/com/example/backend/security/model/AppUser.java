@@ -13,9 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 public class AppUser {
     @Id
-    String id;
-    String login;
-    String password;
-    String name;
-    double balance;
+    private String id;
+    private String login;
+    private String password;
+    private String name;
+    private double balance;
 }

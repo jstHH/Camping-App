@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class JWTUtilService {
 
     @Value("${camping-app.jwt.secret}")
-    private String JWT_SECRET;
+    private String jwtSecret;
 
     public String createToken(String login) {
         return Jwts.builder()
@@ -22,11 +22,11 @@ public class JWTUtilService {
                 .setSubject(login)
                 .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plus(Duration.ofHours(2))))
-                .signWith(SignatureAlgorithm.HS256, JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 
     public String extractLogin(String token) {
-        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 }

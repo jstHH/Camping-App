@@ -1,6 +1,5 @@
 package com.example.backend.security.controller;
 
-import com.example.backend.security.model.AppUser;
 import com.example.backend.security.model.AppUserDTO;
 import com.example.backend.security.service.JWTUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
