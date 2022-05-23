@@ -3,7 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import com.example.backend.security.model.AppUser;
-import com.example.backend.security.model.AppUserDTO;
+import com.example.backend.security.model.AppUserLoginDTO;
 import com.example.backend.security.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ class EquipmentControllerTest {
 
         return webTestClient.post()
                 .uri("/auth/login")
-                .bodyValue(AppUserDTO.builder()
+                .bodyValue(AppUserLoginDTO.builder()
                         .login("testlogin")
                         .password("password")
                         .build())
