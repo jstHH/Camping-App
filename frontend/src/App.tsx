@@ -6,9 +6,11 @@ import useEquipmentItems from "./hooks/useEquipmentItems";
 import RequireAuth from "./routing/RequireAuth";
 import {ToastContainer} from "react-toastify";
 import LoginPage from "./pages/LoginPage";
+import useAppUser from "./hooks/useAppUser";
 
 function App() {
     const equipmentItems = useEquipmentItems();
+    const appUser = useAppUser();
 
     return (
     <div className="App">

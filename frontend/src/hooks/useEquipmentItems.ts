@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {EquipmentItem} from "../model/EquipmentItem";
-import {getAllEquipmentItems} from "../service/equipment-api-service";
+import {getAllEquipmentItems} from "../service/EquipmenItemApiService";
 import {AuthContext} from "../context/AuthProvider";
 
 

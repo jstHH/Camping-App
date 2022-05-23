@@ -1,8 +1,7 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.EquipmentItem;
-import com.example.backend.repository.EquipmentItemRepository;
 import com.example.backend.security.model.AppUser;
+import com.example.backend.security.model.AppUserDataDTO;
 import com.example.backend.security.model.AppUserLoginDTO;
 import com.example.backend.security.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,14 +12,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EquipmentControllerTest {
+class AppUserDataControllerTest {
 
     private String jwtToken;
 
@@ -28,37 +25,44 @@ class EquipmentControllerTest {
     private AppUserRepository appUserRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private WebTestClient webTestClient;
 
-    @Autowired
-    private EquipmentItemRepository equipmentItemRepository;
+    private final AppUser user = AppUser.builder()
+            .id("123")
+            .login("test@test.de")
+            .password("test123")
+            .name("Max Musteruser")
+            .balance(new BigDecimal("2.5"))
+            .build();
 
     @LocalServerPort
     private int port;
 
     @BeforeEach
     public void cleanUp() {
-        equipmentItemRepository.deleteAll();
         appUserRepository.deleteAll();
         jwtToken = generateJWTToken();
     }
 
     private String generateJWTToken() {
-        String hashedPassword = passwordEncoder.encode("password");
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
         AppUser testUser = AppUser.builder()
-                .login("testlogin")
+                .id(user.getId())
+                .login(user.getLogin())
                 .password(hashedPassword)
+                .name(user.getName())
+                .balance(user.getBalance())
                 .build();
         appUserRepository.save(testUser);
 
         return webTestClient.post()
                 .uri("/auth/login")
                 .bodyValue(AppUserLoginDTO.builder()
-                        .login("testlogin")
-                        .password("password")
+                        .login(user.getLogin())
+                        .password(user.getPassword())
                         .build())
                 .exchange()
                 .expectBody(String.class)
@@ -67,45 +71,27 @@ class EquipmentControllerTest {
     }
 
     @Test
-    void getEquipmentItems() {
+    void getAppUserData() {
         //given
-        EquipmentItem item1 = EquipmentItem.builder()
-                .id("1")
-                .title("Testtitel1")
-                .description("Beschreibung1")
-                .owner("owner1")
-                .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2")))
-                .spending("spendingID1")
-                .isImportant(false)
-                .isDone(false)
-                .build();
-
-        EquipmentItem item2 = EquipmentItem.builder()
-                .id("2")
-                .title("Testtitel2")
-                .description("Beschreibung2")
-                .owner("owner2")
-                .involved(new ArrayList<>(Arrays.asList("Involved3", "Involved4")))
-                .spending("spendingID2")
-                .isImportant(false)
-                .isDone(false)
-                .build();
-
-        equipmentItemRepository.insert(item1);
-        equipmentItemRepository.insert(item2);
 
         //when
-        List<EquipmentItem> actual = webTestClient.get()
-                .uri("http://localhost:" + port + "/project/equipment")
+        AppUserDataDTO actual = webTestClient.get()
+                .uri("http://localhost:" + port + "/user/current")
                 .headers(http -> http.setBearerAuth(jwtToken))
                 .exchange()
                 .expectStatus().is2xxSuccessful()
-                .expectBodyList(EquipmentItem.class)
+                .expectBody(AppUserDataDTO.class)
                 .returnResult()
                 .getResponseBody();
 
         //then
-        List<EquipmentItem> expected = List.of(item1, item2);
+        AppUserDataDTO expected = AppUserDataDTO.builder()
+                .id("123")
+                .login("test@test.de")
+                .name("Max Musteruser")
+                .balance(new BigDecimal("2.5"))
+                .build();
+
         assertEquals(expected, actual);
     }
 }
