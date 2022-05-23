@@ -12,6 +12,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,7 +35,7 @@ class AppUserDataControllerTest {
             .login("test@test.de")
             .password("test123")
             .name("Max Musteruser")
-            .balance(2.5)
+            .balance(new BigDecimal("2.5"))
             .build();
 
     @LocalServerPort
@@ -87,7 +89,7 @@ class AppUserDataControllerTest {
                 .id("123")
                 .login("test@test.de")
                 .name("Max Musteruser")
-                .balance(2.5)
+                .balance(new BigDecimal("2.5"))
                 .build();
 
         assertEquals(expected, actual);

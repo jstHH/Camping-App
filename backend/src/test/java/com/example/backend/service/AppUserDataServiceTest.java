@@ -5,6 +5,7 @@ import com.example.backend.security.model.AppUserDataDTO;
 import com.example.backend.security.repository.AppUserRepository;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +24,7 @@ class AppUserDataServiceTest {
                 .login("test@test.de")
                 .password("test123")
                 .name("Max Musteruser")
-                .balance(2.5)
+                .balance(new BigDecimal("2.5"))
                 .build();
 
         when(appUserRepository.findByLogin("test@test.de")).thenReturn(Optional.of(testUser));
@@ -36,7 +37,7 @@ class AppUserDataServiceTest {
                 .id("123")
                 .login("test@test.de")
                 .name("Max Musteruser")
-                .balance(2.5)
+                .balance(new BigDecimal("2.5"))
                 .build();
 
         verify(appUserRepository).findByLogin("test@test.de");
