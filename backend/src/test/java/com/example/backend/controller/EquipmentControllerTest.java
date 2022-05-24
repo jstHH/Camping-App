@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.EquipmentItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import com.example.backend.security.model.AppUser;
@@ -106,6 +107,39 @@ class EquipmentControllerTest {
 
         //then
         List<EquipmentItem> expected = List.of(item1, item2);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addEquipmentItem() {
+        //given
+        EquipmentItemDTO testItemDTO = EquipmentItemDTO.builder()
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .build();
+
+        //when
+        EquipmentItem actual = webTestClient.post()
+                .uri("http://localhost:" + port + "/project/equipment")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(testItemDTO)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(EquipmentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        EquipmentItem expected = EquipmentItem.builder()
+                .id(actual.getId())
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .isDone(false)
+                .isImportant(false)
+                .build();
+
         assertEquals(expected, actual);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.EquipmentItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,43 @@ class EquipmentItemServiceTest {
         //then
         List<EquipmentItem> expected = List.of(item1, item2);
         verify(equipmentItemRepository).findAll();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addEquipmentItem() {
+        //given
+        EquipmentItemDTO testItemDTO = EquipmentItemDTO.builder()
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .build();
+
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id("TestID")
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .isDone(false)
+                .isImportant(false)
+                .build();
+
+        when(equipmentItemRepository.save(EquipmentItem.builder()
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .build())).thenReturn(testItem);
+
+        //when
+        EquipmentItem actual = equipmentItemService.addEquipmentItem(testItemDTO);
+
+        //then
+        EquipmentItem expected = testItem;
+        verify(equipmentItemRepository).save(EquipmentItem.builder()
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .build());
         assertEquals(expected, actual);
     }
 }
