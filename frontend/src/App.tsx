@@ -6,10 +6,13 @@ import useEquipmentItems from "./hooks/useEquipmentItems";
 import RequireAuth from "./routing/RequireAuth";
 import {ToastContainer} from "react-toastify";
 import LoginPage from "./pages/LoginPage";
+import useAppUser from "./hooks/useAppUser";
+import AddEquipmentItemPage from "./pages/AddEquipmentItemPage";
 
 
 function App() {
-    const equipmentItems = useEquipmentItems();
+    const {equipmentItems, addEquipmentItem} = useEquipmentItems();
+    const currentUser = useAppUser()
 
 
     return (
@@ -18,6 +21,7 @@ function App() {
         <Routes>
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems}/>}/>
+                <Route path={"equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
         </Routes>

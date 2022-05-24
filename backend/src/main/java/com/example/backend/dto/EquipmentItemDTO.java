@@ -12,7 +12,6 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Builder
 public class EquipmentItemDTO {
-    private String id;
     private String title;
     private String description;
     private String owner;

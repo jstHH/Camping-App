@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.EquipmentItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,14 @@ public class EquipmentItemService {
 
     public List<EquipmentItem> getEquipmentItems() {
         return equipmentItemRepository.findAll();
+    }
+
+    public EquipmentItem addEquipmentItem(EquipmentItemDTO equipmentItemDTO) {
+        return equipmentItemRepository.insert(EquipmentItem.builder()
+                .title(equipmentItemDTO.getTitle())
+                .description(equipmentItemDTO.getDescription())
+                .owner(equipmentItemDTO.getOwner())
+                .build());
+
     }
 }
