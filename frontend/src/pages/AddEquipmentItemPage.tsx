@@ -64,7 +64,7 @@ export default function AddEquipmentItemPage({addEquipmentItem, currentUser}: Ad
                 />
             </Form.Group>
             <Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" disabled={(title === "" || description === "" ? true:false)}>
                     Hinzufügen
                 </Button>
                 <Button variant="secondary" type="button" onClick={() => navigate("/")}>
