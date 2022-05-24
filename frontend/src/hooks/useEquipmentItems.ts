@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {EquipmentItem} from "../model/EquipmentItem";
-import {getAllEquipmentItems} from "../service/EquipmenItemApiService";
+import {getAllEquipmentItems, postEquipmentItem} from "../service/EquipmenItemApiService";
 import {AuthContext} from "../context/AuthProvider";
 
 
@@ -15,5 +15,13 @@ export default function useEquipmentItems() {
             .catch(console.log)
     },[token])
 
-    return equipmentItems;
+    const addEquipmentItem = (newEquipmentItem: Omit<EquipmentItem, "id">) => {
+        postEquipmentItem(newEquipmentItem, token)
+            .then(response => setEquipmentItems([...equipmentItems, response]))
+            .catch(console.error)
+    }
+
+
+
+    return {equipmentItems, addEquipmentItem};
 }
