@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -92,6 +94,48 @@ class AppUserDataControllerTest {
                 .balance(new BigDecimal("2.5"))
                 .build();
 
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllAppUsersData() {
+        //given
+        AppUser user2 = AppUser.builder()
+                .id("456")
+                .login("test2@test.de")
+                .password("test123")
+                .name("Miriam Musteruser")
+                .balance(new BigDecimal("5.2"))
+                .build();
+
+        appUserRepository.insert(user2);
+
+        //when
+        List<AppUserDataDTO> actual = webTestClient.get()
+                .uri("http://localhost:" + port + "/user")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(AppUserDataDTO.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        AppUserDataDTO userDTO = AppUserDataDTO.builder()
+                .id("123")
+                .login("test@test.de")
+                .name("Max Musteruser")
+                .balance(new BigDecimal("2.5"))
+                .build();
+
+        AppUserDataDTO user2DTO = AppUserDataDTO.builder()
+                .id("456")
+                .login("test2@test.de")
+                .name("Miriam Musteruser")
+                .balance(new BigDecimal("5.2"))
+                .build();
+
+        List<AppUserDataDTO> expected = List.of(userDTO, user2DTO);
         assertEquals(expected, actual);
     }
 }
