@@ -22,7 +22,7 @@ public class EquipmentItemService {
     }
 
     public EquipmentItem addEquipmentItem(EquipmentItemDTO equipmentItemDTO) {
-        return equipmentItemRepository.save(EquipmentItem.builder()
+        return equipmentItemRepository.insert(EquipmentItem.builder()
                 .title(equipmentItemDTO.getTitle())
                 .description(equipmentItemDTO.getDescription())
                 .owner(equipmentItemDTO.getOwner())
