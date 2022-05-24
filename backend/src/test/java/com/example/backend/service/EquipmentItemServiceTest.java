@@ -72,7 +72,7 @@ class EquipmentItemServiceTest {
                 .isImportant(false)
                 .build();
 
-        when(equipmentItemRepository.save(EquipmentItem.builder()
+        when(equipmentItemRepository.insert(EquipmentItem.builder()
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
@@ -83,7 +83,7 @@ class EquipmentItemServiceTest {
 
         //then
         EquipmentItem expected = testItem;
-        verify(equipmentItemRepository).save(EquipmentItem.builder()
+        verify(equipmentItemRepository).insert(EquipmentItem.builder()
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
