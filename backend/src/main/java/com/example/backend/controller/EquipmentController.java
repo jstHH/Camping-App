@@ -18,10 +18,14 @@ public class EquipmentController {
         this.equipmentItemsService = equipmentItemsService;
     }
 
-
     @GetMapping
     public List<EquipmentItem> getEquipmentItems() {
         return equipmentItemsService.getEquipmentItems();
+    }
+
+    @GetMapping("{id}")
+    public EquipmentItem getEquipmentItemByID(@PathVariable String id) {
+        return equipmentItemsService.getEquipmentItemByID(id);
     }
 
     @PostMapping

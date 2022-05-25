@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -88,6 +89,29 @@ class EquipmentItemServiceTest {
                 .description("testdescription")
                 .owner("testownerID")
                 .build());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getEquipmentItemByID() {
+        //given
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id("TestID")
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .isDone(false)
+                .isImportant(false)
+                .build();
+
+        when(equipmentItemRepository.findById(testItem.getId())).thenReturn(Optional.of(testItem));
+
+        //when
+        EquipmentItem actual = equipmentItemService.getEquipmentItemByID(testItem.getId());
+
+        //then
+        EquipmentItem expected = testItem;
+        verify(equipmentItemRepository).findById(testItem.getId());
         assertEquals(expected, actual);
     }
 }

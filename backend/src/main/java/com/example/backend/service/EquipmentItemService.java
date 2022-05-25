@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class EquipmentItemService {
@@ -19,6 +20,10 @@ public class EquipmentItemService {
 
     public List<EquipmentItem> getEquipmentItems() {
         return equipmentItemRepository.findAll();
+    }
+
+    public EquipmentItem getEquipmentItemByID(String id) {
+        return equipmentItemRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public EquipmentItem addEquipmentItem(EquipmentItemDTO equipmentItemDTO) {
