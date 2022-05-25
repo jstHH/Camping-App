@@ -14,5 +14,5 @@ export default function useSingleEquipmentItem() {
             .catch(console.error)
     }
 
-    return {equipmentItem, getSingleEquipmentItemByID}
+    return {equipmentItem, getSingleEquipmentItemByID, setEquipmentItem}
 }

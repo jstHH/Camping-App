@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import useAppUser from "./hooks/useAppUser";
 import AddEquipmentItemPage from "./pages/AddEquipmentItemPage";
 import useAllAppUsers from "./hooks/useAllAppUsers";
+import EquipmentDetailsPage from "./pages/EquipmentDetailsPage";
 
 function App() {
     const {equipmentItems, addEquipmentItem} = useEquipmentItems();
@@ -20,7 +21,8 @@ function App() {
         <Routes>
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
-                <Route path={"equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
+                <Route path={"/equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
+                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
         </Routes>
