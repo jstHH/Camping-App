@@ -15,8 +15,6 @@ function App() {
     const {equipmentItems, addEquipmentItem} = useEquipmentItems();
     const currentUser = useAppUser()
     const appUsers = useAllAppUsers()
-
-
     return (
     <div className="App">
         <ToastContainer/>
