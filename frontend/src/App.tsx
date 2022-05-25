@@ -8,11 +8,13 @@ import {ToastContainer} from "react-toastify";
 import LoginPage from "./pages/LoginPage";
 import useAppUser from "./hooks/useAppUser";
 import AddEquipmentItemPage from "./pages/AddEquipmentItemPage";
+import useAllAppUsers from "./hooks/useAllAppUsers";
 
 
 function App() {
     const {equipmentItems, addEquipmentItem} = useEquipmentItems();
     const currentUser = useAppUser()
+    const appUsers = useAllAppUsers()
 
 
     return (
@@ -20,7 +22,7 @@ function App() {
         <ToastContainer/>
         <Routes>
             <Route element={<RequireAuth />}>
-                <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems}/>}/>
+                <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
                 <Route path={"equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
