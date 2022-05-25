@@ -10,7 +10,6 @@ import useAppUser from "./hooks/useAppUser";
 import AddEquipmentItemPage from "./pages/AddEquipmentItemPage";
 import useAllAppUsers from "./hooks/useAllAppUsers";
 
-
 function App() {
     const {equipmentItems, addEquipmentItem} = useEquipmentItems();
     const currentUser = useAppUser()
