@@ -22,7 +22,7 @@ function App() {
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
                 <Route path={"/equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
-                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers}/>}/>
+                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
         </Routes>

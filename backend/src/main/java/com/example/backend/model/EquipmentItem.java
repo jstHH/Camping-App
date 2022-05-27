@@ -15,14 +15,14 @@ public class EquipmentItem extends Item{
 
     @Id
     private String id;
-    boolean isImportant;
-    boolean isDone;
+    boolean important;
+    boolean done;
 
     @Builder
     public EquipmentItem(String title, String description, String owner, List<String> involved, String spending, String id, boolean isImportant, boolean isDone) {
         super(title, description, owner, involved, spending);
         this.id = id;
-        this.isImportant = isImportant;
-        this.isDone = isDone;
+        this.important = isImportant;
+        this.done = isDone;
     }
 }
