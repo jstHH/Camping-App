@@ -1,5 +1,6 @@
 import {EquipmentItem} from "../model/EquipmentItem";
 import {Card} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 
 
 export type EquipmentItemCardProps = {
@@ -8,8 +9,10 @@ export type EquipmentItemCardProps = {
 }
 
 export default function EquipmentItemCard({equipmentItem, ownerName}: EquipmentItemCardProps) {
+    const navigate = useNavigate();
+
     return <div>
-        <Card style={{ width: '18rem' }}>
+        <Card style={{ width: '18rem' }} onDoubleClick={() => navigate(`/equipment/${equipmentItem.id}`)}>
             <Card.Body>
                 <Card.Title>{equipmentItem.title}</Card.Title>
                 <Card.Text>

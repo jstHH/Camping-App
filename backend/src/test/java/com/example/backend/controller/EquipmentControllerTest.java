@@ -142,4 +142,35 @@ class EquipmentControllerTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    void getEquipmentItemByID() {
+        //given
+        EquipmentItem item2 = EquipmentItem.builder()
+                .id("2")
+                .title("Testtitel2")
+                .description("Beschreibung2")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList("Involved3", "Involved4")))
+                .spending("spendingID2")
+                .isImportant(false)
+                .isDone(false)
+                .build();
+
+        equipmentItemRepository.insert(item2);
+
+        //when
+        EquipmentItem actual = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/equipment/" + item2.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(EquipmentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        EquipmentItem expected = item2;
+        assertEquals(expected, actual);
+    }
 }

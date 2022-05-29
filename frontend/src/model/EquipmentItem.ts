@@ -3,8 +3,8 @@ export type EquipmentItem = {
     title: string
     description: string
     owner: string
-    involved ?: string[]
+    involved : string[]
     spending ?: string
-    isImportant: boolean
-    isDone:boolean
+    important: boolean
+    done:boolean
 }

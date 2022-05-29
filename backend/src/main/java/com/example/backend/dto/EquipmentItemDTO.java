@@ -17,6 +17,7 @@ public class EquipmentItemDTO {
     private String owner;
     private ArrayList<String> involved;
     private String spending;
-    boolean isImportant;
-    boolean isDone;
+    boolean important;
+    boolean done;
+
 }

@@ -5,7 +5,7 @@ import {getCurrentAppUser} from "../service/AppUserApiService";
 
 
 export default function useAppUser() {
-    const [appUser, setAppUser] = useState<AppUser>()
+    const [appUser, setAppUser] = useState<AppUser>({balance: 0, id: "", login: "", name: ""})
     const {token} = useContext(AuthContext)
 
     useEffect(() => {
