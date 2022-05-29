@@ -25,10 +25,11 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (id) {
-            getSingleEquipmentItemByID(id)
+            if (id) {
+                getSingleEquipmentItemByID(id)
             }
-    },[id])
+        // eslint-disable-next-line
+        }, [id])
 
     useEffect(() => {
         if (equipmentItem) {
@@ -75,8 +76,16 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                     />
                 </Form.Group>
                 <Form.Group className={"checkboxen"}>
-                    <FormCheck type={"checkbox"} label={"Wichtig?"} checked={isImportant} onClick={() =>setIsImportant(!isImportant)}/>
-                    <FormCheck type={"checkbox"} label={"Erledigt?"} checked={isDone} onClick={() =>setIsDone(!isDone)} />
+                    <FormCheck type={"checkbox"}
+                               label={"Wichtig?"}
+                               checked={isImportant}
+                               disabled={!editMode}
+                               onClick={() =>setIsImportant(!isImportant)}/>
+                    <FormCheck type={"checkbox"}
+                               label={"Erledigt?"}
+                               checked={isDone}
+                               disabled={!editMode}
+                               onClick={() =>setIsDone(!isDone)} />
                 </Form.Group>
             </Form>
         <div>
