@@ -34,4 +34,17 @@ public class EquipmentItemService {
                 .build());
 
     }
+
+    public EquipmentItem updateEquipmentItem(EquipmentItemDTO equipmentItemDTO, String id) {
+        return equipmentItemRepository.save(EquipmentItem.builder()
+                .title(equipmentItemDTO.getTitle())
+                .description(equipmentItemDTO.getDescription())
+                .owner(equipmentItemDTO.getOwner())
+                .involved(equipmentItemDTO.getInvolved())
+                .spending(equipmentItemDTO.getSpending())
+                .id(id)
+                .important(equipmentItemDTO.isImportant())
+                .done(equipmentItemDTO.isDone())
+                .build());
+    }
 }

@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {EquipmentItem} from "../model/EquipmentItem";
-import {getAllEquipmentItems, postEquipmentItem} from "../service/EquipmenItemApiService";
+import {getAllEquipmentItems, postEquipmentItem, putEquipmentItem} from "../service/EquipmenItemApiService";
 import {AuthContext} from "../context/AuthProvider";
 
 
@@ -21,7 +21,13 @@ export default function useEquipmentItems() {
             .catch(console.error)
     }
 
+    const updateEquipmentItem = (changedEquipmentItem: EquipmentItem) => {
+        putEquipmentItem(changedEquipmentItem, token)
+            .then(response => setEquipmentItems(equipmentItems.map(item => item.id === response.id? response:item)))
+            .catch(console.error)
+    }
 
 
-    return {equipmentItems, addEquipmentItem};
+
+    return {equipmentItems, addEquipmentItem, updateEquipmentItem};
 }

@@ -77,8 +77,8 @@ class EquipmentControllerTest {
                 .owner("owner1")
                 .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2")))
                 .spending("spendingID1")
-                .isImportant(false)
-                .isDone(false)
+                .important(false)
+                .done(false)
                 .build();
 
         EquipmentItem item2 = EquipmentItem.builder()
@@ -88,8 +88,8 @@ class EquipmentControllerTest {
                 .owner("owner2")
                 .involved(new ArrayList<>(Arrays.asList("Involved3", "Involved4")))
                 .spending("spendingID2")
-                .isImportant(false)
-                .isDone(false)
+                .important(false)
+                .done(false)
                 .build();
 
         equipmentItemRepository.insert(item1);
@@ -136,8 +136,8 @@ class EquipmentControllerTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
-                .isDone(false)
-                .isImportant(false)
+                .done(false)
+                .important(false)
                 .build();
 
         assertEquals(expected, actual);
@@ -153,8 +153,8 @@ class EquipmentControllerTest {
                 .owner("owner2")
                 .involved(new ArrayList<>(Arrays.asList("Involved3", "Involved4")))
                 .spending("spendingID2")
-                .isImportant(false)
-                .isDone(false)
+                .important(false)
+                .done(false)
                 .build();
 
         equipmentItemRepository.insert(item2);
@@ -172,5 +172,68 @@ class EquipmentControllerTest {
         //then
         EquipmentItem expected = item2;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateEquipmentItem_ifItemExistUpdateItem() {
+        //given
+        EquipmentItem item1 = EquipmentItem.builder()
+                .id("1")
+                .title("Testtitel1")
+                .description("Beschreibung1")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2")))
+                .spending("spendingID1")
+                .important(false)
+                .done(false)
+                .build();
+        equipmentItemRepository.insert(item1);
+
+        //when
+        EquipmentItemDTO changedItem1 = EquipmentItemDTO.builder()
+                .title("geänderter Titel")
+                .description("neue Beschreibung")
+                .owner("neuer Owner")
+                .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2", "Involved3")))
+                .spending("")
+                .important(true)
+                .done(false)
+                .build();
+
+        EquipmentItem actualItem = webTestClient.put()
+                .uri("http://localhost:" + port + "/project/equipment/" + item1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(changedItem1)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(EquipmentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<EquipmentItem> actualItemList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/equipment")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(EquipmentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        EquipmentItem expectedItem = EquipmentItem.builder()
+                .id("1")
+                .title("geänderter Titel")
+                .description("neue Beschreibung")
+                .owner("neuer Owner")
+                .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2", "Involved3")))
+                .spending("")
+                .important(true)
+                .done(false)
+                .build();
+
+        List<EquipmentItem> expectedItemList = List.of(expectedItem);
+
+        assertEquals(expectedItem, actualItem);
+        assertEquals(expectedItemList, actualItemList);
     }
 }

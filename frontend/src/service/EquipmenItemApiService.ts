@@ -19,3 +19,9 @@ export const postEquipmentItem: (newEquipmentItem: Omit<EquipmentItem, "id">, to
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const putEquipmentItem: (changedEquipmentItem: EquipmentItem, token?: string) => Promise<EquipmentItem> = (changedEquipmentItem, token) => {
+    return axios.put("/project/equipment/" + changedEquipmentItem.id, changedEquipmentItem, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}

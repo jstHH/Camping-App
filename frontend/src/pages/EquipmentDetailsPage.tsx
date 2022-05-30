@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 import {Button, Form, FormCheck, Stack} from "react-bootstrap";
 import {AppUser} from "../model/AppUser";
 import "./EquipmentDetailsPage.css"
+import useEquipmentItems from "../hooks/useEquipmentItems";
+import {EquipmentItem} from "../model/EquipmentItem";
 
 export type EquipmentDetailsPageProps = {
     appUsers: AppUser[]
@@ -12,7 +14,9 @@ export type EquipmentDetailsPageProps = {
 
 export default function EquipmentDetailsPage({appUsers, currentUser} : EquipmentDetailsPageProps) {
     const {equipmentItem, getSingleEquipmentItemByID} = useSingleEquipmentItem()
+    const {updateEquipmentItem} = useEquipmentItems()
     const {id} = useParams()
+    const [itemID, setItemID] = useState<string>("")
     const [title, setTitle] = useState<string>("")
     const [description, setDescription] = useState<string>("")
     const [ownerID, setOwnerID] = useState<string>("")
@@ -33,6 +37,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
 
     useEffect(() => {
         if (equipmentItem) {
+            setItemID(equipmentItem.id)
             setTitle(equipmentItem.title)
             setDescription(equipmentItem.description)
             setOwnerID(equipmentItem.owner)
@@ -54,8 +59,22 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
         return "Keiner"
     }
 
+    const onSubmit = () => {
+        const changedItem: EquipmentItem = {
+            id: itemID,
+            title: title,
+            description: description,
+            owner: ownerID,
+            involved: involved,
+            important: isImportant,
+            done: isDone
+        }
+        updateEquipmentItem(changedItem)
+        navigate("/")
+    }
+
     return<div className={"edit_container"}>
-                <Form>
+                <Form onSubmit={onSubmit}>
                 <Form.Group className={"titel"}>
                     <Form.Label>Titel</Form.Label>
                     <Form.Control
@@ -93,8 +112,9 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                 <Stack direction="horizontal" gap={5}>
                     <Form.Label>Wer kümmert sich?</Form.Label>
                     {(ownerID ?
-                        <Button variant={"outline-dark"}>{findUserNameByID(ownerID)}</Button> :
-                        <Button variant={"primary"}>Übernehmen</Button>)}
+                        <Button variant={"outline-dark"} onClick={() => setOwnerID("")}>{findUserNameByID(ownerID)}</Button> :
+                        !involved.includes(currentUser.id) &&
+                        <Button variant={"primary"} onClick={() => setOwnerID(currentUser.id)}>Übernehmen</Button>)}
                 </Stack>
             </div>
             <div className={"involved"}>
@@ -103,8 +123,8 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                     {appUsers.filter(user => involved.includes(user.id))
                         .map(involvedUser => <Button variant={"outline-dark"}>{findUserNameByID(involvedUser.id)}</Button>)}
                     {(currentUser && (!involved.includes(currentUser.id) && ownerID !== currentUser.id) ?
-                        <Button variant="primary"> Eintragen</Button> : currentUser.id
-                        !== ownerID && <Button variant="secondary"> Austragen</Button>)}
+                        <Button variant="primary" onClick={() => setInvolved([...involved, currentUser.id])}> Eintragen</Button> : currentUser.id
+                        !== ownerID && <Button variant="secondary" onClick={() => setInvolved(involved.filter(user => user !== currentUser.id))}> Austragen</Button>)}
                 </Stack>
             </div>
             <div className={"controll_buttons"}>
@@ -112,7 +132,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                     <Button>Ausgabe Hinzufügen</Button>
                     <div>
                         <Button>Bearbeiten</Button>
-                        <Button onClick={() => navigate("/")}>Fertig</Button>
+                        <Button type={"submit"} onClick={() => onSubmit()}>Fertig</Button>
                     </div>
                 </Stack>
             </div>

@@ -34,4 +34,9 @@ public class EquipmentController {
 
     }
 
+    @PutMapping("{id}")
+    public EquipmentItem updateEquipmentItem (@RequestBody EquipmentItemDTO equipmentItemDTO, @PathVariable String id) {
+        return equipmentItemsService.updateEquipmentItem(equipmentItemDTO, id);
+    }
+
 }

@@ -19,10 +19,10 @@ public class EquipmentItem extends Item{
     boolean done;
 
     @Builder
-    public EquipmentItem(String title, String description, String owner, List<String> involved, String spending, String id, boolean isImportant, boolean isDone) {
+    public EquipmentItem(String title, String description, String owner, List<String> involved, String spending, String id, boolean important, boolean done) {
         super(title, description, owner, involved, spending);
         this.id = id;
-        this.important = isImportant;
-        this.done = isDone;
+        this.important = important;
+        this.done = done;
     }
 }
