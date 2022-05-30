@@ -14,7 +14,7 @@ export type EquipmentDetailsPageProps = {
 
 export default function EquipmentDetailsPage({appUsers, currentUser} : EquipmentDetailsPageProps) {
     const {equipmentItem, getSingleEquipmentItemByID} = useSingleEquipmentItem()
-    const {updateEquipmentItem} = useEquipmentItems()
+    const {updateEquipmentItem, removeEquipmentItem} = useEquipmentItems()
     const {id} = useParams()
     const [itemID, setItemID] = useState<string>("")
     const [title, setTitle] = useState<string>("")
@@ -71,6 +71,11 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
             done: isDone
         }
         updateEquipmentItem(changedItem)
+        navigate("/")
+    }
+
+    const onDelete = () => {
+        removeEquipmentItem(itemID)
         navigate("/")
     }
 
@@ -144,7 +149,8 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                     <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
                     <div>
                         {editMode? <Button variant="danger"
-                                           type={"button"}>Löschen</Button> :
+                                           type={"button"}
+                                           onClick={onDelete}>Löschen</Button> :
                             <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
                             <Button type={"submit"} onClick={() => onSubmit()}>Fertig</Button>}
