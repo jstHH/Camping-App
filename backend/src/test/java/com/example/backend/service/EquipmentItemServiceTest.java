@@ -29,8 +29,8 @@ class EquipmentItemServiceTest {
                 .owner("owner1")
                 .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2")))
                 .spending("spendingID1")
-                .isImportant(false)
-                .isDone(false)
+                .important(false)
+                .done(false)
                 .build();
 
         EquipmentItem item2 = EquipmentItem.builder()
@@ -40,8 +40,8 @@ class EquipmentItemServiceTest {
                 .owner("owner2")
                 .involved(new ArrayList<>(Arrays.asList("Involved3", "Involved4")))
                 .spending("spendingID2")
-                .isImportant(false)
-                .isDone(false)
+                .important(false)
+                .done(false)
                 .build();
 
         when(equipmentItemRepository.findAll()).thenReturn(List.of(item1, item2));
@@ -69,8 +69,8 @@ class EquipmentItemServiceTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
-                .isDone(false)
-                .isImportant(false)
+                .done(false)
+                .important(false)
                 .build();
 
         when(equipmentItemRepository.insert(EquipmentItem.builder()
@@ -100,8 +100,8 @@ class EquipmentItemServiceTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
-                .isDone(false)
-                .isImportant(false)
+                .done(false)
+                .important(false)
                 .build();
 
         when(equipmentItemRepository.findById(testItem.getId())).thenReturn(Optional.of(testItem));
@@ -112,6 +112,39 @@ class EquipmentItemServiceTest {
         //then
         EquipmentItem expected = testItem;
         verify(equipmentItemRepository).findById(testItem.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateEquipmentItem() {
+        //given
+        String testID = "123xyz";
+        EquipmentItemDTO testItemDTO = EquipmentItemDTO.builder()
+                .title("testtitle")
+                .description("testdescription")
+                .involved(new ArrayList<>(Arrays.asList("User1")))
+                .owner("testownerID")
+                .done(false)
+                .important(false)
+                .build();
+
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id(testID)
+                .title("testtitle")
+                .description("testdescription")
+                .involved(new ArrayList<>(Arrays.asList("User1")))
+                .owner("testownerID")
+                .done(false)
+                .important(false)
+                .build();
+
+        when(equipmentItemRepository.save(testItem)).thenReturn(testItem);
+
+        //when
+        EquipmentItem actual = equipmentItemService.updateEquipmentItem(testItemDTO, testID);
+
+        //then
+        EquipmentItem expected = testItem;
         assertEquals(expected, actual);
     }
 }
