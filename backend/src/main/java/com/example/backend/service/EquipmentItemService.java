@@ -47,4 +47,16 @@ public class EquipmentItemService {
                 .done(equipmentItemDTO.isDone())
                 .build());
     }
+
+    public String deleteEquipmentItem(String id) {
+        if (equipmentItemRepository.findById(id).isPresent()) {
+            equipmentItemRepository.deleteById(id);
+            if (equipmentItemRepository.findById(id).isEmpty()) {
+                return id;
+            } else {
+                return "Deletion failed";
+            }
+        }
+        return "Item with Id " + id + " not found";
+    }
 }

@@ -236,4 +236,103 @@ class EquipmentControllerTest {
         assertEquals(expectedItem, actualItem);
         assertEquals(expectedItemList, actualItemList);
     }
+
+    @Test
+    void deleteEquipmentItem_whenIDValid_thenReturnDeletedID() {
+        //given
+        EquipmentItem item1 = EquipmentItem.builder()
+                .id("1")
+                .title("Testtitel1")
+                .description("Beschreibung1")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2")))
+                .spending("spendingID1")
+                .important(false)
+                .done(false)
+                .build();
+
+        EquipmentItem item2 = EquipmentItem.builder()
+                .id("2")
+                .title("Testtitel2")
+                .description("Beschreibung2")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList("Involved3", "Involved4")))
+                .spending("spendingID2")
+                .important(false)
+                .done(false)
+                .build();
+
+        equipmentItemRepository.insert(item1);
+        equipmentItemRepository.insert(item2);
+
+        //when
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/equipment/" + item1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<EquipmentItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/equipment")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(EquipmentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = item1.getId();
+        List<EquipmentItem> expectedList = List.of(item2);
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void deleteEquipmentItem_whenIDInvalid_thenReturnMessageString() {
+        //given
+        EquipmentItem item1 = EquipmentItem.builder()
+                .id("1")
+                .title("Testtitel1")
+                .description("Beschreibung1")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("Involved1", "Involved2")))
+                .spending("spendingID1")
+                .important(false)
+                .done(false)
+                .build();
+
+        equipmentItemRepository.insert(item1);
+
+
+        //when
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/equipment/xxx999")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<EquipmentItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/equipment")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(EquipmentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = "Item with Id xxx999 not found";
+        List<EquipmentItem> expectedList = List.of(item1);
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+    }
 }

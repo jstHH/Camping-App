@@ -4,6 +4,7 @@ import com.example.backend.dto.EquipmentItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.verification.VerificationMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -145,6 +146,76 @@ class EquipmentItemServiceTest {
 
         //then
         EquipmentItem expected = testItem;
+        verify(equipmentItemRepository).save(testItem);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteEquipmentItem_whenValid_thenReturnItemID() {
+        //given
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id("TestID")
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .done(false)
+                .important(false)
+                .build();
+
+        when(equipmentItemRepository.findById(testItem.getId())).thenReturn(Optional.of(testItem), Optional.empty());
+
+        //when
+        String actual = equipmentItemService.deleteEquipmentItem(testItem.getId());
+
+        //then
+        String expected = testItem.getId();
+        verify(equipmentItemRepository, times(2)).findById(testItem.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteEquipmentItem_whenIDInValid_thenReturnMessageString() {
+        //given
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id("TestID")
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .done(false)
+                .important(false)
+                .build();
+
+        when(equipmentItemRepository.findById(testItem.getId())).thenReturn(Optional.empty());
+
+        //when
+        String actual = equipmentItemService.deleteEquipmentItem(testItem.getId());
+
+        //then
+        String expected = "Item with Id " + testItem.getId() + " not found";
+        verify(equipmentItemRepository).findById(testItem.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteEquipmentItem_whenDeletionFailed_thenReturnMessageString() {
+        //given
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id("TestID")
+                .title("testtitle")
+                .description("testdescription")
+                .owner("testownerID")
+                .done(false)
+                .important(false)
+                .build();
+
+        when(equipmentItemRepository.findById(testItem.getId())).thenReturn(Optional.of(testItem));
+
+        //when
+        String actual = equipmentItemService.deleteEquipmentItem(testItem.getId());
+
+        //then
+        String expected = "Deletion failed";
+        verify(equipmentItemRepository, times(2)).findById(testItem.getId());
         assertEquals(expected, actual);
     }
 }

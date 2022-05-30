@@ -39,4 +39,9 @@ public class EquipmentController {
         return equipmentItemsService.updateEquipmentItem(equipmentItemDTO, id);
     }
 
+    @DeleteMapping("{id}")
+    public String deleteEquipmentItem (@PathVariable String id) {
+        return equipmentItemsService.deleteEquipmentItem(id);
+    }
+
 }
