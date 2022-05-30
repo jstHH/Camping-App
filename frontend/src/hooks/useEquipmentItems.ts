@@ -23,7 +23,7 @@ export default function useEquipmentItems() {
 
     const updateEquipmentItem = (changedEquipmentItem: EquipmentItem) => {
         putEquipmentItem(changedEquipmentItem, token)
-            .then(response => setEquipmentItems(equipmentItems.map(item => item.id === response.id? response:item)))
+            .then(response => setEquipmentItems(equipmentItems.map(item => item.id === response.id ? response:item)))
             .catch(console.error)
     }
 
