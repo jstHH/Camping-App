@@ -24,7 +24,8 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
     const [isImportant, setIsImportant] = useState<boolean>(false)
     const [isDone, setIsDone] = useState<boolean>(false)
 
-    const [editMode] = useState<boolean>(false)
+
+    const [editMode, setEditMode] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
@@ -73,6 +74,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
         navigate("/")
     }
 
+
     return<div className={"edit_container"}>
                 <Form onSubmit={onSubmit}>
                 <Form.Group className={"titel"}>
@@ -112,9 +114,13 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                 <Stack direction="horizontal" gap={5}>
                     <Form.Label>Wer kümmert sich?</Form.Label>
                     {(ownerID ?
-                        <Button variant={"outline-dark"} onClick={() => setOwnerID("")}>{findUserNameByID(ownerID)}</Button> :
+                        <Button variant={"outline-dark"}
+                                disabled={editMode}
+                                onClick={() => setOwnerID("")}>{findUserNameByID(ownerID)}</Button> :
                         !involved.includes(currentUser.id) &&
-                        <Button variant={"primary"} onClick={() => setOwnerID(currentUser.id)}>Übernehmen</Button>)}
+                        <Button variant={"primary"}
+                                disabled={editMode}
+                                onClick={() => setOwnerID(currentUser.id)}>Übernehmen</Button>)}
                 </Stack>
             </div>
             <div className={"involved"}>
@@ -123,16 +129,25 @@ export default function EquipmentDetailsPage({appUsers, currentUser} : Equipment
                     {appUsers.filter(user => involved.includes(user.id))
                         .map(involvedUser => <Button variant={"outline-dark"}>{findUserNameByID(involvedUser.id)}</Button>)}
                     {(currentUser && (!involved.includes(currentUser.id) && ownerID !== currentUser.id) ?
-                        <Button variant="primary" onClick={() => setInvolved([...involved, currentUser.id])}> Eintragen</Button> : currentUser.id
-                        !== ownerID && <Button variant="secondary" onClick={() => setInvolved(involved.filter(user => user !== currentUser.id))}> Austragen</Button>)}
+                        <Button variant="primary"
+                                type={"button"}
+                                disabled={editMode}
+                                onClick={() => setInvolved([...involved, currentUser.id])}> Eintragen</Button> : currentUser.id
+                        !== ownerID && <Button variant="secondary"
+                                               type={"button"}
+                                               disabled={editMode}
+                                               onClick={() => setInvolved(involved.filter(user => user !== currentUser.id))}> Austragen</Button>)}
                 </Stack>
             </div>
             <div className={"controll_buttons"}>
                 <Stack>
-                    <Button>Ausgabe Hinzufügen</Button>
+                    <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
                     <div>
-                        <Button>Bearbeiten</Button>
-                        <Button type={"submit"} onClick={() => onSubmit()}>Fertig</Button>
+                        {editMode? <Button variant="danger"
+                                           type={"button"}>Löschen</Button> :
+                            <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
+                        {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
+                            <Button type={"submit"} onClick={() => onSubmit()}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>
