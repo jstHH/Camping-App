@@ -12,7 +12,6 @@ import {AuthContext} from "../context/AuthProvider";
 export default function useEquipmentItems() {
     const [equipmentItems, setEquipmentItems] = useState<EquipmentItem[]>([])
     const {token} = useContext(AuthContext)
-    console.log(equipmentItems)
 
     useEffect(() => {
         getAllEquipmentItems(token)
