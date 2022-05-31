@@ -25,3 +25,9 @@ export const putEquipmentItem: (changedEquipmentItem: EquipmentItem, token?: str
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const deleteEquipmentItem: (equipmentItemID: string, token?: string) => Promise<string> = (equipmentItemID, token) => {
+    return axios.delete("/project/equipment/" + equipmentItemID, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}

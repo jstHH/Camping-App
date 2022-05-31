@@ -1,6 +1,11 @@
 import {useContext, useEffect, useState} from "react";
 import {EquipmentItem} from "../model/EquipmentItem";
-import {getAllEquipmentItems, postEquipmentItem, putEquipmentItem} from "../service/EquipmenItemApiService";
+import {
+    deleteEquipmentItem,
+    getAllEquipmentItems,
+    postEquipmentItem,
+    putEquipmentItem
+} from "../service/EquipmenItemApiService";
 import {AuthContext} from "../context/AuthProvider";
 
 
@@ -27,7 +32,13 @@ export default function useEquipmentItems() {
             .catch(console.error)
     }
 
+    const removeEquipmentItem = (equipmentItemID: string) => {
+        deleteEquipmentItem(equipmentItemID, token)
+            .then(response => response === equipmentItemID && setEquipmentItems(equipmentItems.filter(item => item.id !== equipmentItemID)))
+            .catch(console.error)
+    }
 
 
-    return {equipmentItems, addEquipmentItem, updateEquipmentItem};
+
+    return {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem};
 }
