@@ -9,8 +9,6 @@ export type EquipmentItemImportantCardViewProps = {
     appUsers: AppUser[]
 }
 
-
-
     export default function EquipmentItemImportantCardView({equipmentItems, appUsers}: EquipmentItemImportantCardViewProps) {
 
         const getOwnerName: (item: EquipmentItem) => string = (item) => {

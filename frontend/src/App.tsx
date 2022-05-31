@@ -12,7 +12,7 @@ import useAllAppUsers from "./hooks/useAllAppUsers";
 import EquipmentDetailsPage from "./pages/EquipmentDetailsPage";
 
 function App() {
-    const {equipmentItems, addEquipmentItem} = useEquipmentItems();
+    const {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem} = useEquipmentItems();
     const currentUser = useAppUser()
     const appUsers = useAllAppUsers()
     return (
@@ -22,7 +22,7 @@ function App() {
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
                 <Route path={"/equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
-                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser}/>}/>
+                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser} removeEquipmentItem={removeEquipmentItem} updateEquipmentItem={updateEquipmentItem}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
         </Routes>

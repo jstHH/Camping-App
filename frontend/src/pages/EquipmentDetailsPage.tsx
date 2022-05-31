@@ -4,17 +4,17 @@ import {useEffect, useState} from "react";
 import {Button, Form, FormCheck, Stack} from "react-bootstrap";
 import {AppUser} from "../model/AppUser";
 import "./EquipmentDetailsPage.css"
-import useEquipmentItems from "../hooks/useEquipmentItems";
 import {EquipmentItem} from "../model/EquipmentItem";
 
 export type EquipmentDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
+    updateEquipmentItem: (changedEquipmentItem: EquipmentItem) => void
+    removeEquipmentItem: (equipmentItemID: string) => void
 }
 
-export default function EquipmentDetailsPage({appUsers, currentUser} : EquipmentDetailsPageProps) {
+export default function EquipmentDetailsPage({appUsers, currentUser, updateEquipmentItem, removeEquipmentItem} : EquipmentDetailsPageProps) {
     const {equipmentItem, getSingleEquipmentItemByID} = useSingleEquipmentItem()
-    const {updateEquipmentItem, removeEquipmentItem} = useEquipmentItems()
     const {id} = useParams()
     const [itemID, setItemID] = useState<string>("")
     const [title, setTitle] = useState<string>("")
