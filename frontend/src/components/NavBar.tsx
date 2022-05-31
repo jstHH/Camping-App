@@ -9,5 +9,6 @@ export default function NavBar() {
 
     return <div>
         <Button variant="light" className="mr-1" onClick={() => navigate("/")}>Ausrüstung</Button>
+        <Button variant="light" className="mr-2" onClick={() => navigate("/campsite")}>Zeltplatz</Button>
     </div>
 }
