@@ -12,7 +12,7 @@ import {AuthContext} from "../context/AuthProvider";
 export default function useEquipmentItems() {
     const [equipmentItems, setEquipmentItems] = useState<EquipmentItem[]>([])
     const {token} = useContext(AuthContext)
-
+    console.log(equipmentItems)
 
     useEffect(() => {
         getAllEquipmentItems(token)
@@ -27,14 +27,14 @@ export default function useEquipmentItems() {
     }
 
     const updateEquipmentItem = (changedEquipmentItem: EquipmentItem) => {
-        putEquipmentItem(changedEquipmentItem, token)
+         putEquipmentItem(changedEquipmentItem, token)
             .then(response => setEquipmentItems(equipmentItems.map(item => item.id === response.id ? response:item)))
             .catch(console.error)
     }
 
     const removeEquipmentItem = (equipmentItemID: string) => {
         deleteEquipmentItem(equipmentItemID, token)
-            .then(response => response === equipmentItemID && setEquipmentItems(equipmentItems.filter(item => item.id !== equipmentItemID)))
+            .then(response => response === equipmentItemID && setEquipmentItems(equipmentItems.filter(item => item.id !== response)))
             .catch(console.error)
     }
 
