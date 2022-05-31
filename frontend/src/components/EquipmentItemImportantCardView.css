@@ -1,0 +1,9 @@
+.important_container {
+    border: 2px solid red;
+    border-radius: 5px;
+}
+
+.card_container {
+    display: grid;
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+}
