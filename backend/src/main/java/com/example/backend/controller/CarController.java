@@ -1,11 +1,10 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.CarItemDTO;
 import com.example.backend.model.CarItem;
 import com.example.backend.service.CarItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +21,10 @@ public class CarController {
     @GetMapping
     public List<CarItem> getCarItems () {
         return carItemService.getCarItems();
+    }
+
+    @PostMapping
+    public CarItem addCarItem (@RequestBody CarItemDTO carItemDTO) {
+        return carItemService.addCarItem(carItemDTO);
     }
 }
