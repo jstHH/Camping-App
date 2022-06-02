@@ -21,6 +21,6 @@ export default function useCarItems() {
             .catch(console.error)
     }
 
-    return {carItems}
+    return {carItems, addCarItem}
 
 }

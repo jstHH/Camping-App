@@ -1,7 +1,10 @@
 import {Button, Card, Nav, Stack} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 
 
 export default function CarTopView() {
+
+    const navigate = useNavigate()
 
     return <div>
         <Card>
@@ -10,7 +13,7 @@ export default function CarTopView() {
                     <Nav.Item>
                         <Nav.Link>Autos</Nav.Link>
                     </Nav.Item>
-                    <Button variant="primary">Neues Auto</Button>
+                    <Button variant="primary" onClick={() => navigate("/campsite/addcar")}>Neues Auto</Button>
                 </Nav>
             </Card.Header>
             <Card.Body>
