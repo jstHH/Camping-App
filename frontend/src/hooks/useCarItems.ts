@@ -1,7 +1,8 @@
 import {useContext, useEffect, useState} from "react";
 import {CarItem} from "../model/CarItem";
 import {AuthContext} from "../context/AuthProvider";
-import {getAllCarItems} from "../service/CarItemApiService";
+import {getAllCarItems, postCarItem} from "../service/CarItemApiService";
+import {Omit} from "react-bootstrap/helpers";
 
 
 export default function useCarItems() {
@@ -13,6 +14,12 @@ export default function useCarItems() {
             .then(response => setCarItems(response))
             .catch(console.error)
     }, [token])
+
+    const addCarItem = (newCarItem: Omit<CarItem, "id">) => {
+        postCarItem(newCarItem, token)
+            .then(response => setCarItems([...carItems, response]))
+            .catch(console.error)
+    }
 
     return {carItems}
 
