@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.CarItemDTO;
 import com.example.backend.model.CarItem;
 import com.example.backend.repository.CarItemRepository;
 import org.junit.jupiter.api.Test;
@@ -51,5 +52,55 @@ class CarItemServiceTest {
         List<CarItem> expected = List.of(testCar1, testCar2);
         verify(carItemRepository).findAll();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void addCarItem() {
+        //given
+        CarItemDTO testCarDTO = CarItemDTO.builder()
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        CarItem testCar0 = CarItem.builder()
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        when(carItemRepository.insert(testCar0)).thenReturn(testCar1);
+
+        //when
+        CarItem actual = carItemService.addCarItem(testCarDTO);
+
+        //then
+        CarItem expected = testCar1;
+        verify(carItemRepository).insert(testCar0);
+        assertEquals(actual, expected);
+
+
     }
 }

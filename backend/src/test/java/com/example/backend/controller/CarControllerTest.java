@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.CarItemDTO;
 import com.example.backend.model.CarItem;
 import com.example.backend.repository.CarItemRepository;
 import com.example.backend.security.model.AppUser;
@@ -110,5 +111,46 @@ class CarControllerTest {
         //then
         List<CarItem> expected = List.of(testCar1, testCar2);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void addCarItem() {
+        //given
+        CarItemDTO testCarDTO = CarItemDTO.builder()
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        //when
+        CarItem actual = webTestClient.post()
+                .uri("/project/cars")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(testCarDTO)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(CarItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        CarItem expected = CarItem.builder()
+                .id(actual.getId())
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        assertEquals(expected,actual);
     }
 }

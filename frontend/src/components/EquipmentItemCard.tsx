@@ -12,7 +12,7 @@ export default function EquipmentItemCard({equipmentItem, ownerName}: EquipmentI
     const navigate = useNavigate();
 
     return <div>
-        <Card style={{ width: '18rem' }} onDoubleClick={() => navigate(`/equipment/${equipmentItem.id}`)}>
+        <Card  onDoubleClick={() => navigate(`/equipment/${equipmentItem.id}`)}>
             <Card.Body>
                 <Card.Title>{equipmentItem.title}</Card.Title>
                 <Card.Text>

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.CarItemDTO;
 import com.example.backend.model.CarItem;
 import com.example.backend.repository.CarItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,21 @@ public class CarItemService {
 
     public List<CarItem> getCarItems () {
         return carItemRepository.findAll();
+    }
+
+    public CarItem addCarItem (CarItemDTO carItemDTO) {
+        CarItem newCarItem = CarItem.builder()
+                .title(carItemDTO.getTitle())
+                .description(carItemDTO.getDescription())
+                .owner(carItemDTO.getOwner())
+                .involved(carItemDTO.getInvolved())
+                .spending(carItemDTO.getSpending())
+                .capacity(carItemDTO.getCapacity())
+                .trailer(carItemDTO.isTrailer())
+                .startLocation(carItemDTO.getStartLocation())
+                .build();
+
+        return carItemRepository.insert(newCarItem);
     }
 
 }
