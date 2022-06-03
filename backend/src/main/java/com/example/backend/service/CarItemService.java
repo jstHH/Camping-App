@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CarItemService {
@@ -34,6 +35,10 @@ public class CarItemService {
                 .build();
 
         return carItemRepository.insert(newCarItem);
+    }
+
+    public CarItem getCarItemByID (String id) {
+        return carItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Car with id " + id + " not found"));
     }
 
 }

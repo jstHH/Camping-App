@@ -27,4 +27,9 @@ public class CarController {
     public CarItem addCarItem (@RequestBody CarItemDTO carItemDTO) {
         return carItemService.addCarItem(carItemDTO);
     }
+
+    @GetMapping("{id}")
+    public CarItem getCarItemByID (@PathVariable String id) {
+        return carItemService.getCarItemByID(id);
+    }
 }

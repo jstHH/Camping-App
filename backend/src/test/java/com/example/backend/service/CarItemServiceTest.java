@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -102,5 +103,31 @@ class CarItemServiceTest {
         assertEquals(actual, expected);
 
 
+    }
+
+    @Test
+    void getCarItemByID() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        when(carItemRepository.findById(testCar1.getId())).thenReturn(Optional.of(testCar1));
+
+        //when
+        CarItem actual = carItemService.getCarItemByID(testCar1.getId());
+
+        //then
+        CarItem expected = testCar1;
+        verify(carItemRepository).findById(testCar1.getId());
+        assertEquals(expected, actual);
     }
 }
