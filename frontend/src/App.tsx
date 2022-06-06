@@ -13,6 +13,7 @@ import EquipmentDetailsPage from "./pages/EquipmentDetailsPage";
 import CampsitePage from "./pages/CampsitePage";
 import useCarItems from "./hooks/useCarItems";
 import AddCarItemPage from "./pages/AddCarItemPage";
+import CarDetailsPage from "./pages/CarDetailsPage";
 
 function App() {
     const {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem} = useEquipmentItems();
@@ -30,6 +31,7 @@ function App() {
                 <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser} removeEquipmentItem={removeEquipmentItem} updateEquipmentItem={updateEquipmentItem}/>}/>
                 <Route path={"/campsite"} element={<CampsitePage   appUsers={appUsers} carItems={carItems}/>}/>
                 <Route path={"/campsite/addcar"} element={<AddCarItemPage addCarItem={addCarItem} currentUser={currentUser}/>}/>
+                <Route path={`/campsite/car/:id`} element={<CarDetailsPage appUsers={appUsers} currentUser={currentUser}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
         </Routes>

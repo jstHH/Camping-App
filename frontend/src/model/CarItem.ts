@@ -1,5 +1,5 @@
 export type CarItem = {
-    id?: string
+    id: string
     title: string
     description: string
     owner: string

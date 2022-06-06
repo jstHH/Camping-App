@@ -8,6 +8,12 @@ export const getAllCarItems: (token?: string) => Promise<CarItem[]> = (token) =>
         .then(response => response.data)
 }
 
+export const getCarItembyID: (id: string, token?: string) => Promise<CarItem> = (id, token) => {
+    return axios.get(`/project/cars/${id}`, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}
+
 export const postCarItem: (newCarItem: CarItem, token?: string) => Promise<CarItem> = (newCarItem, token) => {
     return axios.post("/project/cars", newCarItem, token
         ? {headers: {"Authorization": token}}: {})
