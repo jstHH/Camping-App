@@ -41,4 +41,18 @@ public class CarItemService {
         return carItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Car with id " + id + " not found"));
     }
 
+    public CarItem updateCarItem (String id, CarItemDTO carItemDTO) {
+        return carItemRepository.save(CarItem.builder()
+                .id(id)
+                .title(carItemDTO.getTitle())
+                .description(carItemDTO.getDescription())
+                .owner(carItemDTO.getOwner())
+                .involved(carItemDTO.getInvolved())
+                .spending(carItemDTO.getSpending())
+                .capacity(carItemDTO.getCapacity())
+                .trailer(carItemDTO.isTrailer())
+                .startLocation(carItemDTO.getStartLocation())
+                .build());
+    }
+
 }

@@ -185,4 +185,49 @@ class CarControllerTest {
         CarItem expected = testCar1;
         assertEquals(expected, actual);
     }
+
+    @Test
+    void updateCarItem() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        carItemRepository.insert(testCar1);
+
+        //when
+        CarItem actualCar = webTestClient.put()
+                .uri("/project/cars/" + testCar1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(testCar1)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(CarItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<CarItem> actualList = webTestClient.get()
+                .uri("/project/cars/")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(CarItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        CarItem expectedCar = testCar1;
+        List<CarItem> expectedList = List.of(testCar1);
+
+        assertEquals(expectedCar, actualCar);
+        assertEquals(expectedList, actualList);
+    }
 }

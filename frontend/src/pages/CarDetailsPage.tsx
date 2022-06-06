@@ -7,17 +7,19 @@ import DetailsPageOwnerField from "../components/DetailsPageOwnerField";
 import DetailsPageInvolvedField from "../components/DetailsPageInvolvedField";
 import {Button, Stack} from "react-bootstrap";
 import "./CarDetailsPage.css"
+import {CarItem} from "../model/CarItem";
 
 
 type CarDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
+    updateCarItem: (changedCarItem: CarItem) => void
 }
 
-export default function CarDetailsPage({appUsers, currentUser}: CarDetailsPageProps) {
+export default function CarDetailsPage({appUsers, currentUser, updateCarItem}: CarDetailsPageProps) {
     const {carItem, getSingleCarItemByID} = useSingleCarItem()
     const {id} = useParams()
-    //carID, setCarID
+    const [carID, setCarID] = useState<string>("")
     const [title, setTitle] = useState<string>("")
     const [description, setDescription] = useState<string>("")
     const [owner, setOwner] = useState<string>("")
@@ -39,7 +41,7 @@ export default function CarDetailsPage({appUsers, currentUser}: CarDetailsPagePr
 
     useEffect(() => {
         if (carItem) {
-            //setCarID hinzufügen
+            setCarID(carItem.id)
             setTitle(carItem.title)
             setDescription(carItem.description)
             setOwner(carItem.owner)
@@ -61,20 +63,48 @@ export default function CarDetailsPage({appUsers, currentUser}: CarDetailsPagePr
         return "Keiner"
     }
 
+    const onSave = () => {
+        const changedCarItem: CarItem = {
+            id: carID,
+            title: title,
+            description: description,
+            owner: owner,
+            involved: involved,
+            capacity: capacity,
+            trailer: trailer,
+            startLocation: startLocation
+        }
+        updateCarItem(changedCarItem)
+        navigate("/campsite")
+    }
+
     return <div className={"car_details_container"}>
-        <DetailsPageTextForm title={title} setTitle={setTitle} description={description} setDescription={setDescription} forCar={true} startlocation={startLocation} setStartLocation={setStartLocation} trailer={trailer}/>
+        <DetailsPageTextForm title={title}
+                             setTitle={setTitle}
+                             description={description}
+                             setDescription={setDescription}
+                             forCar={true} startlocation={startLocation}
+                             setStartLocation={setStartLocation}
+                             trailer={trailer}
+                             editMode={editMode}/>
         <Stack>
             <DetailsPageOwnerField ownerName={findUserNameByID(owner)}/>
-            <DetailsPageInvolvedField owner={owner} capacity={capacity} involved={involved} setInvolved={setInvolved} appUsers={appUsers} currentUser={currentUser} findUserNameByID={findUserNameByID}/>
+            {!trailer && <DetailsPageInvolvedField owner={owner}
+                                                   capacity={capacity}
+                                                   involved={involved}
+                                                   setInvolved={setInvolved}
+                                                   appUsers={appUsers}
+                                                   currentUser={currentUser}
+                                                   findUserNameByID={findUserNameByID}/>}
             <div className={"controll_buttons"}>
                 <Stack>
                     <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}>Löschen</Button> :
-                            <Button type={"button"}>Bearbeiten</Button>}
+                            <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => navigate("/campsite")}>Fertig</Button>}
+                            <Button type={"submit"} onClick={() => onSave()}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>

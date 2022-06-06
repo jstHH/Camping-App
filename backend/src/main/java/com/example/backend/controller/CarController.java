@@ -32,4 +32,9 @@ public class CarController {
     public CarItem getCarItemByID (@PathVariable String id) {
         return carItemService.getCarItemByID(id);
     }
+
+    @PutMapping("{id}")
+    public CarItem updateCarItem (@PathVariable String id, @RequestBody CarItemDTO carItemDTO) {
+        return carItemService.updateCarItem(id, carItemDTO);
+    }
 }
