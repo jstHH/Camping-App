@@ -10,20 +10,25 @@ type DetailsPageInvolvedFieldProps = {
     appUsers: AppUser[]
     currentUser: AppUser
     findUserNameByID: (id:string) => string
+    editMode: boolean
 }
 
-export default function DetailsPageInvolvedField({owner, capacity, involved, setInvolved, currentUser, findUserNameByID}: DetailsPageInvolvedFieldProps) {
+export default function DetailsPageInvolvedField({owner, capacity, involved, setInvolved, currentUser, findUserNameByID, editMode}: DetailsPageInvolvedFieldProps) {
     return <div>
         <Stack>
-            <Form.Label>Wer fährt mit?</Form.Label>
-            <Form.Label>{capacity - involved.length} Plätze frei</Form.Label>
+            <Stack direction={"horizontal"} gap={3}>
+                <Form.Label>Wer fährt mit?</Form.Label>
+                <Form.Label>{capacity - involved.length} Plätze frei</Form.Label>
+            </Stack>
             {involved.map(user => <Button variant={"outline-dark"}>{findUserNameByID(user)}</Button>)}
             {owner !== currentUser.id && !involved.includes(currentUser.id)? <Button variant={"primary"}
                                                                                      type={"button"}
-                                                                                     onClick={() => setInvolved([...involved, currentUser.id])}>Eintragen</Button>:
+                                                                                     disabled={editMode}
+                                                                                     onClick={() => setInvolved([...involved, currentUser.id])}>Einsteigen</Button>:
             involved.includes(currentUser.id) && <Button variant={"secondary"}
                                                          type={"button"}
-                                                         onClick={() => setInvolved(involved.filter(user => user !== currentUser.id))}>Austragen</Button> }
+                                                         disabled={editMode}
+                                                         onClick={() => setInvolved(involved.filter(user => user !== currentUser.id))}>Aussteigen</Button> }
         </Stack>
     </div>
 

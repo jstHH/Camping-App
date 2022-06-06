@@ -95,7 +95,8 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem}: C
                                                    setInvolved={setInvolved}
                                                    appUsers={appUsers}
                                                    currentUser={currentUser}
-                                                   findUserNameByID={findUserNameByID}/>}
+                                                   findUserNameByID={findUserNameByID}
+                                                   editMode={editMode}/>}
             <div className={"controll_buttons"}>
                 <Stack>
                     <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
