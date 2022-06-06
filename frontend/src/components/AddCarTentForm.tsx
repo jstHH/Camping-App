@@ -25,6 +25,7 @@ export default function AddCarTentForm({addCarItem, currentUser, forCar}: AddCar
         event.preventDefault()
 
         const newCarItem: Omit<CarItem, "id"> = {
+            id: "",
             title: title,
             description: "",
             owner: (currentUser? currentUser.id : ""),

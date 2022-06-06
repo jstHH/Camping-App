@@ -1,5 +1,6 @@
 import { Card } from "react-bootstrap";
 import {CarItem} from "../model/CarItem";
+import {useNavigate} from "react-router-dom";
 
 
 export type CarItemCardProps = {
@@ -8,9 +9,10 @@ export type CarItemCardProps = {
 }
 
 export default function CarItemCard({carItem, ownerName} : CarItemCardProps) {
+    const navigate = useNavigate()
 
     return <div>
-        <Card style={{ width: '18rem' }}>
+        <Card onDoubleClick={() => navigate(`/campsite/car/${carItem.id}`)}>
             <Card.Body>
                 <Card.Title>{carItem.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{ownerName} fährt</Card.Subtitle>

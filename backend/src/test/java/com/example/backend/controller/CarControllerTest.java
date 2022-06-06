@@ -153,4 +153,36 @@ class CarControllerTest {
 
         assertEquals(expected,actual);
     }
+
+    @Test
+    void getCarItemByID() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        carItemRepository.insert(testCar1);
+
+        //when
+        CarItem actual = webTestClient.get()
+                .uri("/project/cars/" + testCar1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(CarItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        CarItem expected = testCar1;
+        assertEquals(expected, actual);
+    }
 }
