@@ -130,4 +130,56 @@ class CarItemServiceTest {
         verify(carItemRepository).findById(testCar1.getId());
         assertEquals(expected, actual);
     }
+
+    @Test
+    void deleteCarItem_whenDeletionFailed_thenReturnMessageString() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        when(carItemRepository.existsById(testCar1.getId())).thenReturn(true);
+
+        //when
+        String actual = carItemService.deleteCarItem(testCar1.getId());
+
+        //then
+        String expected = "Deletion failed";
+        verify(carItemRepository, times(2)).existsById(testCar1.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteCarItem_whenIDInValid_thenReturnMessageString() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        when(carItemRepository.existsById(testCar1.getId())).thenReturn(false);
+
+        //when
+        String actual = carItemService.deleteCarItem(testCar1.getId());
+
+        //then
+        String expected = "Item with Id " + testCar1.getId() + " not found";
+        verify(carItemRepository).existsById(testCar1.getId());
+        assertEquals(expected, actual);
+    }
 }
