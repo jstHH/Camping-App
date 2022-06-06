@@ -14,9 +14,10 @@ type CarDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
     updateCarItem: (changedCarItem: CarItem) => void
+    removeCarItem: (carID: string) => void
 }
 
-export default function CarDetailsPage({appUsers, currentUser, updateCarItem}: CarDetailsPageProps) {
+export default function CarDetailsPage({appUsers, currentUser, updateCarItem, removeCarItem}: CarDetailsPageProps) {
     const {carItem, getSingleCarItemByID} = useSingleCarItem()
     const {id} = useParams()
     const [carID, setCarID] = useState<string>("")
@@ -78,6 +79,11 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem}: C
         navigate("/campsite")
     }
 
+    const onDelete = () => {
+        removeCarItem(carID)
+        navigate("/campsite")
+    }
+
     return <div className={"car_details_container"}>
         <DetailsPageTextForm title={title}
                              setTitle={setTitle}
@@ -102,10 +108,14 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem}: C
                     <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
                     <div>
                         {editMode? <Button variant="danger"
-                                           type={"button"}>Löschen</Button> :
-                            <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
-                        {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => onSave()}>Fertig</Button>}
+                                           type={"button"}
+                                           onClick={() => onDelete()}>Löschen</Button> :
+                            <Button type={"button"}
+                                    onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
+                        {editMode? <Button type={"button"}
+                                           onClick={() => setEditMode(!editMode)}>Speichern</Button> :
+                            <Button type={"submit"}
+                                    onClick={() => onSave()}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>
