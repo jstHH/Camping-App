@@ -19,3 +19,9 @@ export const postCarItem: (newCarItem: CarItem, token?: string) => Promise<CarIt
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const putCarItem: (changedCarItem: CarItem, token?: string) => Promise<CarItem> = (changedCarItem, token) => {
+    return axios.put("/project/cars/" + changedCarItem.id, changedCarItem, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}
