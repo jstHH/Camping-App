@@ -4,15 +4,17 @@ import {AppUser} from "../model/AppUser";
 import {FormEvent, useState} from "react";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {TentItem} from "../model/TentItem";
 
 
 export type AddCarTentFormProps = {
     addCarItem?: (newCarItem: Omit<CarItem, "id">) => void
+    addTentItem?: (newCarItem: Omit<TentItem, "id">) => void
     currentUser: AppUser | undefined
     forCar: boolean
 }
 
-export default function AddCarTentForm({addCarItem, currentUser, forCar}: AddCarTentFormProps) {
+export default function AddCarTentForm({addCarItem, addTentItem, currentUser, forCar}: AddCarTentFormProps) {
     const [title, setTitle] = useState<string>("")
     const [capacity, setCapacity] = useState<number>(0)
     const [trailer, setTrailer] = useState<boolean>(false)
@@ -43,6 +45,20 @@ export default function AddCarTentForm({addCarItem, currentUser, forCar}: AddCar
 
     const onAddTent = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+
+        const newTentItem: Omit<TentItem, "id"> = {
+            id: "",
+            title: title,
+            description: "",
+            owner: (currentUser? currentUser.id : ""),
+            involved: [],
+            capacity: capacity,
+            shelter: pavillion,
+            spending: ""
+        }
+        if (addTentItem) {
+            addTentItem(newTentItem)
+        }
         navigate("/campsite")
     }
 

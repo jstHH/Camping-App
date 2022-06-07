@@ -1,7 +1,10 @@
 import {Button, Card, Nav, Stack} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 
 
 export default function TentTopView() {
+    const navigate = useNavigate()
+
     return <div>
         <Card>
             <Card.Header>
@@ -9,7 +12,7 @@ export default function TentTopView() {
                     <Nav.Item>
                         <Nav.Link>Zelte</Nav.Link>
                     </Nav.Item>
-                    <Button variant="primary">Neues Zelt</Button>
+                    <Button variant="primary" onClick={() => navigate("/campsite/addtent")}>Neues Zelt</Button>
                 </Nav>
             </Card.Header>
             <Card.Body>
