@@ -9,17 +9,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/project/tents")
-public class TentItemController {
+public class TentController {
 
     private final TentItemService tentItemService;
 
-    public TentItemController(TentItemService tentItemService) {
+    public TentController(TentItemService tentItemService) {
         this.tentItemService = tentItemService;
     }
 
     @GetMapping
     public List<TentItem> getTentItems () {
         return tentItemService.getTentItems();
+    }
+
+    @GetMapping("{id}")
+    public TentItem getTentItemByID (@PathVariable String id) {
+        return tentItemService.getTentItemByID(id);
     }
 
     @PostMapping

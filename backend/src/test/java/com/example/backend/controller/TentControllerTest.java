@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class TentItemControllerTest {
+class TentControllerTest {
 
     private String jwtToken;
 
@@ -156,5 +156,35 @@ class TentItemControllerTest {
 
         assertEquals(expectedItem, actualItem);
         assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void getTentItemByID() {
+        //given
+        TentItem testTent = TentItem.builder()
+                .id("1")
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        tentItemRepository.insert(testTent);
+
+        //when
+        TentItem actual = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/tents/" + testTent.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBody(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        TentItem expected = testTent;
+        assertEquals(expected, actual);
     }
 }
