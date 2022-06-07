@@ -1,6 +1,7 @@
 import {CarItem} from "../model/CarItem";
 import {AppUser} from "../model/AppUser";
 import CarItemCard from "./CarItemCard";
+import "./CarItemCardView.css"
 
 
 export type CarItemCardViewProps = {
@@ -15,7 +16,7 @@ export default function CarItemCardView({carItems, appUsers}: CarItemCardViewPro
         return (carOwner !== undefined ? carOwner.name : "Keiner")
     }
 
-    return <div>
+    return <div className={"card_container"}>
         {carItems.length > 0 ? (carItems.map(car => <CarItemCard carItem={car} ownerName={getOwnerName(car)}/>)) : <p>Nichts da</p>}
     </div>
 }

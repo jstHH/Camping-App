@@ -14,12 +14,14 @@ import CampsitePage from "./pages/CampsitePage";
 import useCarItems from "./hooks/useCarItems";
 import AddCarItemPage from "./pages/AddCarItemPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
+import useTentItems from "./hooks/useTentItems";
 
 function App() {
     const {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem} = useEquipmentItems();
     const currentUser = useAppUser()
     const appUsers = useAllAppUsers()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems()
+    const {tentItems} = useTentItems()
 
     return (
     <div className="App">
@@ -29,7 +31,7 @@ function App() {
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
                 <Route path={"/equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
                 <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser} removeEquipmentItem={removeEquipmentItem} updateEquipmentItem={updateEquipmentItem}/>}/>
-                <Route path={"/campsite"} element={<CampsitePage   appUsers={appUsers} carItems={carItems}/>}/>
+                <Route path={"/campsite"} element={<CampsitePage   appUsers={appUsers} carItems={carItems} tentItems={tentItems}/>}/>
                 <Route path={"/campsite/addcar"} element={<AddCarItemPage addCarItem={addCarItem} currentUser={currentUser}/>}/>
                 <Route path={`/campsite/car/:id`} element={<CarDetailsPage appUsers={appUsers} currentUser={currentUser} updateCarItem={updateCarItem} removeCarItem={removeCarItem}/>}/>
             </Route>
