@@ -9,7 +9,8 @@ type DetailsPageTextFormProps = {
     startlocation?: string
     setStartLocation?: (text:string) => void
     forCar: boolean
-    trailer: boolean
+    trailer?: boolean
+    shelter?: boolean
     editMode: boolean
 }
 

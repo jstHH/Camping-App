@@ -1,5 +1,6 @@
 import {TentItem} from "../model/TentItem";
 import {Card} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 
 
 export type TentItemCardProps = {
@@ -8,10 +9,11 @@ export type TentItemCardProps = {
 }
 
 export default function TentItemCard({tentItem, ownerName}: TentItemCardProps) {
+    const navigate = useNavigate()
 
 
     return <div>
-        <Card>
+        <Card onDoubleClick={() => navigate(`/campsite/tent/${tentItem.id}`)}>
             <Card.Body>
                 <Card.Title>{tentItem.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">von {ownerName}</Card.Subtitle>

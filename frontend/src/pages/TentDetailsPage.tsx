@@ -1,58 +1,51 @@
 import {AppUser} from "../model/AppUser";
+import useSingleTentItem from "../hooks/useSingleTentItem";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import useSingleCarItem from "../hooks/useSingleCarItem";
 import DetailsPageTextForm from "../components/DetailsPageTextForm";
 import DetailsPageOwnerField from "../components/DetailsPageOwnerField";
 import DetailsPageInvolvedField from "../components/DetailsPageInvolvedField";
 import {Button, Stack} from "react-bootstrap";
-import "./CarDetailsPage.css"
-import {CarItem} from "../model/CarItem";
+import "./TentDetailsPage.css"
 
 
-type CarDetailsPageProps = {
+type TentDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
-    updateCarItem: (changedCarItem: CarItem) => void
-    removeCarItem: (carID: string) => void
 }
 
-export default function CarDetailsPage({appUsers, currentUser, updateCarItem, removeCarItem}: CarDetailsPageProps) {
-    const {carItem, getSingleCarItemByID} = useSingleCarItem()
+export default function TentDetailsPage({appUsers, currentUser}: TentDetailsPageProps) {
+    const {tentItem, getSingleTentItemByID} = useSingleTentItem()
     const {id} = useParams()
-    const [carID, setCarID] = useState<string>("")
+
     const [title, setTitle] = useState<string>("")
     const [description, setDescription] = useState<string>("")
     const [owner, setOwner] = useState<string>("")
     const [involved, setInvolved] = useState<string[]>([])
     const [capacity, setCapacity] = useState<number>(0)
-    const [trailer, setTrailer] = useState<boolean>(false)
-    const [startLocation, setStartLocation] = useState<string>("")
+    const [shelter, setShelter] = useState<boolean>(false)
 
     const [editMode, setEditMode] = useState<boolean>(false)
-
     const navigate = useNavigate()
 
     useEffect(() => {
         if (id) {
-            getSingleCarItemByID(id)
+            getSingleTentItemByID(id)
         }
         // eslint-disable-next-line
-    }, [id])
+    },[id])
 
     useEffect(() => {
-        if (carItem) {
-            setCarID(carItem.id)
-            setTitle(carItem.title)
-            setDescription(carItem.description)
-            setOwner(carItem.owner)
-            setInvolved(carItem.involved)
-            setCapacity(carItem.capacity)
-            setTrailer(carItem.trailer)
-            setStartLocation(carItem.startLocation)
+        if (tentItem) {
+            setTitle(tentItem.title)
+            setDescription(tentItem.description)
+            setOwner(tentItem.owner)
+            setInvolved(tentItem.involved)
+            setCapacity(tentItem.capacity)
+            setShelter(tentItem.shelter)
         }
         // eslint-disable-next-line
-    }, [carItem])
+    }, [tentItem])
 
     const findUserNameByID = (id: string) => {
         if (appUsers.find(user => user.id === id)) {
@@ -64,38 +57,18 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
         return "Keiner"
     }
 
-    const onSave = () => {
-        const changedCarItem: CarItem = {
-            id: carID,
-            title: title,
-            description: description,
-            owner: owner,
-            involved: involved,
-            capacity: capacity,
-            trailer: trailer,
-            startLocation: startLocation
-        }
-        updateCarItem(changedCarItem)
-        navigate("/campsite")
-    }
 
-    const onDelete = () => {
-        removeCarItem(carID)
-        navigate("/campsite")
-    }
-
-    return <div className={"car_details_container"}>
+    return <div className={"tent_details_container"}>
         <DetailsPageTextForm title={title}
                              setTitle={setTitle}
                              description={description}
                              setDescription={setDescription}
-                             forCar={true} startlocation={startLocation}
-                             setStartLocation={setStartLocation}
-                             trailer={trailer}
+                             forCar={false}
+                             shelter={shelter}
                              editMode={editMode}/>
         <Stack>
-            <DetailsPageOwnerField ownerName={findUserNameByID(owner)} forCar={true}/>
-            {!trailer && <DetailsPageInvolvedField owner={owner}
+            <DetailsPageOwnerField ownerName={findUserNameByID(owner)} forCar={false}/>
+            {!shelter && <DetailsPageInvolvedField owner={owner}
                                                    capacity={capacity}
                                                    involved={involved}
                                                    setInvolved={setInvolved}
@@ -103,20 +76,19 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
                                                    currentUser={currentUser}
                                                    findUserNameByID={findUserNameByID}
                                                    editMode={editMode}
-                                                   forCar={true}/>}
+                                                   forCar={false}/>}
             <div className={"controll_buttons"}>
                 <Stack>
                     <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}
-                                           onClick={() => onDelete()}>Löschen</Button> :
+                                           >Löschen</Button> :
                             <Button type={"button"}
                                     onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"}
                                            onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"}
-                                    onClick={() => onSave()}>Fertig</Button>}
+                            <Button type={"submit"} onClick={() => navigate("/campsite")}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>
