@@ -55,4 +55,16 @@ public class CarItemService {
                 .build());
     }
 
+    public String deleteCarItem(String id) {
+        if (carItemRepository.existsById(id)) {
+            carItemRepository.deleteById(id);
+            if (!carItemRepository.existsById(id)) {
+                return id;
+            } else {
+                return "Deletion failed";
+            }
+        }
+        return "Item with Id " + id + " not found";
+    }
+
 }

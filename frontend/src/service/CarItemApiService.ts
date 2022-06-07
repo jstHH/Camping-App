@@ -25,3 +25,9 @@ export const putCarItem: (changedCarItem: CarItem, token?: string) => Promise<Ca
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const deleteCarItem: (carItemID: string, token?: string) => Promise<string> = (carItemID, token ) => {
+    return axios.delete("/project/cars/" + carItemID, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}

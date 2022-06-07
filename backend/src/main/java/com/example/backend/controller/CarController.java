@@ -37,4 +37,9 @@ public class CarController {
     public CarItem updateCarItem (@PathVariable String id, @RequestBody CarItemDTO carItemDTO) {
         return carItemService.updateCarItem(id, carItemDTO);
     }
+
+    @DeleteMapping("{id}")
+    public String deleteCarItem (@PathVariable String id) {
+        return carItemService.deleteCarItem(id);
+    }
 }

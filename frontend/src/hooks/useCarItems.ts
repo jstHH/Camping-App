@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {CarItem} from "../model/CarItem";
 import {AuthContext} from "../context/AuthProvider";
-import {getAllCarItems, postCarItem, putCarItem} from "../service/CarItemApiService";
+import {deleteCarItem, getAllCarItems, postCarItem, putCarItem} from "../service/CarItemApiService";
 import {Omit} from "react-bootstrap/helpers";
 
 
@@ -27,6 +27,12 @@ export default function useCarItems() {
             .catch(console.error)
     }
 
-    return {carItems, addCarItem, updateCarItem}
+    const removeCarItem = (carItemID: string) => {
+        deleteCarItem(carItemID, token)
+            .then(response => setCarItems(carItems.filter(car => car.id !== response)))
+            .catch(console.error)
+    }
+
+    return {carItems, addCarItem, updateCarItem, removeCarItem}
 
 }

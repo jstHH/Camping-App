@@ -230,4 +230,105 @@ class CarControllerTest {
         assertEquals(expectedCar, actualCar);
         assertEquals(expectedList, actualList);
     }
+
+    @Test
+    void deleteCarItem_whenIDValid_thenReturnDeletedID() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        CarItem testCar2 = CarItem.builder()
+                .id("2")
+                .title("VW Testa")
+                .description("schnell")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList("involved3", "involved4")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Parkplatz")
+                .build();
+
+        carItemRepository.insert(testCar1);
+        carItemRepository.insert(testCar2);
+
+        //when
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/cars/" + testCar1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<CarItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/cars")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(CarItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = testCar1.getId();
+        List<CarItem> expectedList = List.of(testCar2);
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void deleteCarItem_whenIDInvalid_thenReturnMessageString() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        carItemRepository.insert(testCar1);
+
+        //when
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/cars/xxx999")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<CarItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/cars")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(CarItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = "Item with Id " + "xxx999" + " not found";
+        List<CarItem> expectedList = List.of(testCar1);
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+    }
 }
