@@ -23,7 +23,7 @@ function App() {
     const currentUser = useAppUser()
     const appUsers = useAllAppUsers()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems()
-    const {tentItems, addTentItem, updateTentItem} = useTentItems()
+    const {tentItems, addTentItem, updateTentItem, removeTentItem} = useTentItems()
 
     return (
     <div className="App">
@@ -37,7 +37,7 @@ function App() {
                 <Route path={"/campsite/addcar"} element={<AddCarItemPage addCarItem={addCarItem} currentUser={currentUser}/>}/>
                 <Route path={"/campsite/addtent"} element={<AddTentItemPage  addTentItem={addTentItem} currentUser={currentUser}/>}/>
                 <Route path={`/campsite/car/:id`} element={<CarDetailsPage appUsers={appUsers} currentUser={currentUser} updateCarItem={updateCarItem} removeCarItem={removeCarItem}/>}/>
-                <Route path={`/campsite/tent/:id`} element={<TentDetailsPage appUsers={appUsers} currentUser={currentUser} updateTentItem={updateTentItem}/>} />
+                <Route path={`/campsite/tent/:id`} element={<TentDetailsPage appUsers={appUsers} currentUser={currentUser} updateTentItem={updateTentItem} removeTentItem={removeTentItem}/>} />
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>
         </Routes>
