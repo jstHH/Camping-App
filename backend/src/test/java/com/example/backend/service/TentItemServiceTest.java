@@ -5,9 +5,7 @@ import com.example.backend.model.TentItem;
 import com.example.backend.repository.TentItemRepository;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -96,4 +94,29 @@ class TentItemServiceTest {
         verify(tentItemRepository).insert(testTent1withoutID);
         assertEquals(expected, actual);
     }
+
+    @Test
+    void getTentItemByID_whenIDvalid_returnItem() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.findById(testTent1.getId())).thenReturn(Optional.of(testTent1));
+
+        //when
+        TentItem actual =  tentItemService.getTentItemByID(testTent1.getId());
+
+        //then
+        TentItem expected = testTent1;
+        assertEquals(expected, actual);
+    }
+
 }

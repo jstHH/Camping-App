@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class TentItemService {
@@ -21,6 +22,10 @@ public class TentItemService {
 
     public List<TentItem> getTentItems () {
         return tentItemRepository.findAll();
+    }
+
+    public TentItem getTentItemByID (String id) {
+        return tentItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Item not found"));
     }
 
     public TentItem addTentItem (TentItemDTO newTentItem) {

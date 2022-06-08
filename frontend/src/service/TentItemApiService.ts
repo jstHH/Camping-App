@@ -13,3 +13,9 @@ export const postTentItem: (newTentItem: TentItem, token?: string) => Promise<Te
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const getSingleTentItem: (tentID: string, token?: string) => Promise<TentItem> = (tentID, token ) => {
+    return axios.get("/project/tents/" + tentID, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}
