@@ -23,7 +23,7 @@ function App() {
     const currentUser = useAppUser()
     const appUsers = useAllAppUsers()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems()
-    const {tentItems, addTentItem} = useTentItems()
+    const {tentItems, addTentItem, updateTentItem} = useTentItems()
 
     return (
     <div className="App">
