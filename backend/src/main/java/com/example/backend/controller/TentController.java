@@ -31,4 +31,9 @@ public class TentController {
     public TentItem addTentItem (@RequestBody TentItemDTO newTentItem) {
         return tentItemService.addTentItem(newTentItem);
     }
+
+    @PutMapping("{id}")
+    public TentItem updateTentItem (@PathVariable String id, @RequestBody TentItemDTO changedTentItem) {
+        return tentItemService.updateTentItem(id, changedTentItem);
+    }
 }

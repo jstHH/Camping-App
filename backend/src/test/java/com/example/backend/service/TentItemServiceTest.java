@@ -119,4 +119,39 @@ class TentItemServiceTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    void updateTentItem() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+
+        TentItemDTO testTentDTO1 = TentItemDTO.builder()
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.save(testTent1)).thenReturn(testTent1);
+
+        //when
+        TentItem actual = tentItemService.updateTentItem("1", testTentDTO1);
+
+        //then
+        TentItem expected = testTent1;
+        verify(tentItemRepository).save(testTent1);
+        assertEquals(expected, actual);
+    }
 }
