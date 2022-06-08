@@ -25,3 +25,9 @@ export const putTentItem: (changedTentItem: TentItem, token?: string) => Promise
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const deleteTentItem: (id: string, token?: string) => Promise<string> = (id, token) => {
+    return axios.delete("/project/tents/" + id, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}
