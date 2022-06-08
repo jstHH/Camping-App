@@ -53,4 +53,16 @@ public class TentItemService {
                 .build());
     }
 
+    public String deleteTentItem(String id) {
+        if (tentItemRepository.existsById(id)) {
+            tentItemRepository.deleteById(id);
+            if (tentItemRepository.existsById(id)) {
+                return "Deletion failed";
+            } else {
+                return id;
+            }
+        }
+        return "Item with ID " + id + " not found.";
+    }
+
 }

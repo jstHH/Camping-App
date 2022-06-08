@@ -154,4 +154,79 @@ class TentItemServiceTest {
         verify(tentItemRepository).save(testTent1);
         assertEquals(expected, actual);
     }
+
+    @Test
+    void deleteTentItem_whenIDValid_thenReturnID() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.existsById(testTent1.getId())).thenReturn(true, false);
+
+        //when
+        String actual = tentItemService.deleteTentItem(testTent1.getId());
+
+        //then
+        String expected = testTent1.getId();
+        verify(tentItemRepository, times(2)).existsById(testTent1.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteTentItem_whenIDInvalid_thenReturnMessage() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.existsById(testTent1.getId())).thenReturn(false);
+
+        //when
+        String actual = tentItemService.deleteTentItem(testTent1.getId());
+
+        //then
+        String expected = "Item with ID " + testTent1.getId() + " not found.";
+        verify(tentItemRepository).existsById(testTent1.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteTentItem_whenDeletionFailed_thenReturnMessage() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.existsById(testTent1.getId())).thenReturn(true);
+
+        //when
+        String actual = tentItemService.deleteTentItem(testTent1.getId());
+
+        //then
+        String expected = "Deletion failed";
+        verify(tentItemRepository, times(2)).existsById(testTent1.getId());
+        assertEquals(expected, actual);
+    }
 }
