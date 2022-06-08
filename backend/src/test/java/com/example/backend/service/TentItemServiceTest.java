@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.TentItemDTO;
 import com.example.backend.model.TentItem;
 import com.example.backend.repository.TentItemRepository;
 import org.junit.jupiter.api.Test;
@@ -48,6 +49,51 @@ class TentItemServiceTest {
         //Then
         List<TentItem> expected = List.of(testTent1, testTent2);
         verify(tentItemRepository).findAll();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addTentItem() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItem testTent1withoutID = TentItem.builder()
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItemDTO testTentDTO1 = TentItemDTO.builder()
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.insert(testTent1withoutID)).thenReturn(testTent1);
+
+        //when
+        TentItem actual = tentItemService.addTentItem(testTentDTO1);
+
+        //then
+        TentItem expected = testTent1;
+        verify(tentItemRepository).insert(testTent1withoutID);
         assertEquals(expected, actual);
     }
 }

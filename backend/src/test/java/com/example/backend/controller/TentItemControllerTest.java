@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.TentItemDTO;
 import com.example.backend.model.TentItem;
 import com.example.backend.repository.TentItemRepository;
 import com.example.backend.security.model.AppUser;
@@ -94,5 +95,66 @@ class TentItemControllerTest {
         //then
         List<TentItem> expected = List.of(testTent);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void addTentItem() {
+        //given
+        TentItem testTent = TentItem.builder()
+                .id("1")
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItemDTO testTentDTO = TentItemDTO.builder()
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        //when
+        TentItem actualItem = webTestClient.post()
+                .uri("http://localhost:" + port + "/project/tents")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(testTent)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<TentItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/tents")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBodyList(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        TentItem expectedItem = TentItem.builder()
+                .id(actualItem.getId())
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        List<TentItem> expectedList = List.of(expectedItem);
+
+        assertEquals(expectedItem, actualItem);
+        assertEquals(expectedList, actualList);
     }
 }
