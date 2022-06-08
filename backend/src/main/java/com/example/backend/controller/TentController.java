@@ -36,4 +36,9 @@ public class TentController {
     public TentItem updateTentItem(@PathVariable String id, @RequestBody TentItemDTO changedTentItem) {
         return tentItemService.updateTentItem(id, changedTentItem);
     }
+
+    @DeleteMapping("{id}")
+    public String deleteTentItem(@PathVariable String id) {
+        return tentItemService.deleteTentItem(id);
+    }
 }

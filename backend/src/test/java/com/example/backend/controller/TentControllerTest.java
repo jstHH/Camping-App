@@ -239,4 +239,112 @@ class TentControllerTest {
         assertEquals(expectedItem, actualItem);
         assertEquals(expectedList, actualList);
     }
+
+    @Test
+    void deleteTentItem_whenIDExists_returnID() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItem testTent2 = TentItem.builder()
+                .id("2")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList()))
+                .spending("")
+                .capacity(2)
+                .shelter(false)
+                .build();
+
+        tentItemRepository.insert(testTent1);
+        tentItemRepository.insert(testTent2);
+
+        //when
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/tents/" + testTent1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<TentItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/tents")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBodyList(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = testTent1.getId();
+        List<TentItem> expectedList = List.of(testTent2);
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void deleteTentItem_whenIDDoesntExist_returnMessage() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItem testTent2 = TentItem.builder()
+                .id("2")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList()))
+                .spending("")
+                .capacity(2)
+                .shelter(false)
+                .build();
+
+        tentItemRepository.insert(testTent1);
+        tentItemRepository.insert(testTent2);
+
+        //when
+        String testID = "xxx999";
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/tents/" + testID)
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<TentItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/tents")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBodyList(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = "Item with ID " + testID + " not found.";
+        List<TentItem> expectedList = List.of(testTent1, testTent2);
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+    }
+
 }

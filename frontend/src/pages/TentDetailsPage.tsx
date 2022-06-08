@@ -14,9 +14,10 @@ type TentDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
     updateTentItem: (changedTentItem: TentItem) => void
+    removeTentItem: (id: string) => void
 }
 
-export default function TentDetailsPage({appUsers, currentUser, updateTentItem}: TentDetailsPageProps) {
+export default function TentDetailsPage({appUsers, currentUser, updateTentItem, removeTentItem}: TentDetailsPageProps) {
     const {tentItem, getSingleTentItemByID} = useSingleTentItem()
     const {id} = useParams()
     const [tentID, setTentID] = useState<string>("")
@@ -74,6 +75,11 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem}:
         navigate("/campsite")
     }
 
+    const onDelete = () => {
+        removeTentItem(tentID)
+        navigate("/campsite")
+    }
+
 
     return <div className={"tent_details_container"}>
         <DetailsPageTextForm title={title}
@@ -100,6 +106,7 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem}:
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}
+                                           onClick={() => onDelete()}
                                            >Löschen</Button> :
                             <Button type={"button"}
                                     onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
