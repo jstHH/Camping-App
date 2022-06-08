@@ -7,17 +7,19 @@ import DetailsPageOwnerField from "../components/DetailsPageOwnerField";
 import DetailsPageInvolvedField from "../components/DetailsPageInvolvedField";
 import {Button, Stack} from "react-bootstrap";
 import "./TentDetailsPage.css"
+import {TentItem} from "../model/TentItem";
 
 
 type TentDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
+    updateTentItem: (changedTentItem: TentItem) => void
 }
 
-export default function TentDetailsPage({appUsers, currentUser}: TentDetailsPageProps) {
+export default function TentDetailsPage({appUsers, currentUser, updateTentItem}: TentDetailsPageProps) {
     const {tentItem, getSingleTentItemByID} = useSingleTentItem()
     const {id} = useParams()
-
+    const [tentID, setTentID] = useState<string>("")
     const [title, setTitle] = useState<string>("")
     const [description, setDescription] = useState<string>("")
     const [owner, setOwner] = useState<string>("")
@@ -37,6 +39,7 @@ export default function TentDetailsPage({appUsers, currentUser}: TentDetailsPage
 
     useEffect(() => {
         if (tentItem) {
+            setTentID(tentItem.id)
             setTitle(tentItem.title)
             setDescription(tentItem.description)
             setOwner(tentItem.owner)
@@ -55,6 +58,20 @@ export default function TentDetailsPage({appUsers, currentUser}: TentDetailsPage
             }
         }
         return "Keiner"
+    }
+
+    const onSave = () => {
+        const changedTentItem = {
+            id: tentID,
+            title: title,
+            description: description,
+            owner: owner,
+            involved: involved,
+            capacity: capacity,
+            shelter: shelter
+        }
+        updateTentItem(changedTentItem)
+        navigate("/campsite")
     }
 
 
@@ -88,7 +105,7 @@ export default function TentDetailsPage({appUsers, currentUser}: TentDetailsPage
                                     onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"}
                                            onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => navigate("/campsite")}>Fertig</Button>}
+                            <Button type={"submit"} onClick={() => onSave()}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>

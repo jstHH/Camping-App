@@ -20,15 +20,15 @@ public class TentItemService {
         this.tentItemRepository = tentItemRepository;
     }
 
-    public List<TentItem> getTentItems () {
+    public List<TentItem> getTentItems() {
         return tentItemRepository.findAll();
     }
 
-    public TentItem getTentItemByID (String id) {
+    public TentItem getTentItemByID(String id) {
         return tentItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Item not found"));
     }
 
-    public TentItem addTentItem (TentItemDTO newTentItem) {
+    public TentItem addTentItem(TentItemDTO newTentItem) {
         return tentItemRepository.insert(TentItem.builder()
                 .title(newTentItem.getTitle())
                 .description(newTentItem.getDescription())
@@ -37,6 +37,19 @@ public class TentItemService {
                 .spending(newTentItem.getSpending())
                 .capacity(newTentItem.getCapacity())
                 .shelter(newTentItem.isShelter())
+                .build());
+    }
+
+    public TentItem updateTentItem(String id, TentItemDTO changedTentItem) {
+        return tentItemRepository.save(TentItem.builder()
+                .id(id)
+                .title(changedTentItem.getTitle())
+                .description(changedTentItem.getDescription())
+                .owner(changedTentItem.getOwner())
+                .involved(changedTentItem.getInvolved())
+                .spending(changedTentItem.getSpending())
+                .capacity(changedTentItem.getCapacity())
+                .shelter(changedTentItem.isShelter())
                 .build());
     }
 

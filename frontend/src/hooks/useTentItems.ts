@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {TentItem} from "../model/TentItem";
 import {AuthContext} from "../context/AuthProvider";
-import {getAllTentItems, postTentItem} from "../service/TentItemApiService";
+import {getAllTentItems, postTentItem, putTentItem} from "../service/TentItemApiService";
 import {Omit} from "react-bootstrap/helpers";
 
 
@@ -21,5 +21,11 @@ export default function useTentItems() {
             .catch(console.error)
     }
 
-    return {tentItems, addTentItem}
+    const updateTentItem = (changedTentItem: TentItem) => {
+        putTentItem(changedTentItem)
+            .then(response => setTentItems(tentItems.map(tent => tent.id === response.id? response : tent)))
+            .catch(console.error)
+    }
+
+    return {tentItems, addTentItem, updateTentItem}
 }

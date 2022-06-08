@@ -187,4 +187,56 @@ class TentControllerTest {
         TentItem expected = testTent;
         assertEquals(expected, actual);
     }
+
+    @Test
+    void updateTentItem() {
+        //given
+        TentItem testTent = TentItem.builder()
+                .id("1")
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItemDTO testTentDTO = TentItemDTO.builder()
+                .title("Zelt")
+                .description("groß")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        tentItemRepository.insert(testTent);
+
+        //when
+        TentItem actualItem = webTestClient.put()
+                .uri("http://localhost:" + port + "/project/tents/" + testTent.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(testTentDTO)
+                .exchange()
+                .expectBody(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<TentItem> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/tents")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectBodyList(TentItem.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        TentItem expectedItem = testTent;
+        List<TentItem> expectedList = List.of(testTent);
+
+        assertEquals(expectedItem, actualItem);
+        assertEquals(expectedList, actualList);
+    }
 }

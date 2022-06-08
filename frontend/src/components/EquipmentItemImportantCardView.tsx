@@ -18,9 +18,9 @@ export type EquipmentItemImportantCardViewProps = {
 
         return <div className={"important_container"}>
             <Button variant="outline-danger">Wichtig</Button>
-            <div className={"card_container"}>{equipmentItems.filter(item => item.important).length > 0 &&
+            <div className={"card_container"}>{equipmentItems.filter(item => item.important).length > 0 ?
                 equipmentItems.filter(item => item.important)
-                    .map(item => <EquipmentItemCard key={item.id} equipmentItem={item}  ownerName={getOwnerName(item)}/>)}
+                    .map(item => <EquipmentItemCard key={item.id} equipmentItem={item}  ownerName={getOwnerName(item)}/>): <p>Keine wichtigen Items</p>}
             </div>
         </div>
 

@@ -18,17 +18,22 @@ public class TentController {
     }
 
     @GetMapping
-    public List<TentItem> getTentItems () {
+    public List<TentItem> getTentItems() {
         return tentItemService.getTentItems();
     }
 
     @GetMapping("{id}")
-    public TentItem getTentItemByID (@PathVariable String id) {
+    public TentItem getTentItemByID(@PathVariable String id) {
         return tentItemService.getTentItemByID(id);
     }
 
     @PostMapping
-    public TentItem addTentItem (@RequestBody TentItemDTO newTentItem) {
+    public TentItem addTentItem(@RequestBody TentItemDTO newTentItem) {
         return tentItemService.addTentItem(newTentItem);
+    }
+
+    @PutMapping("{id}")
+    public TentItem updateTentItem(@PathVariable String id, @RequestBody TentItemDTO changedTentItem) {
+        return tentItemService.updateTentItem(id, changedTentItem);
     }
 }
