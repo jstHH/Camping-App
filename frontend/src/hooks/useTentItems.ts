@@ -23,7 +23,7 @@ export default function useTentItems() {
 
     const updateTentItem = (changedTentItem: TentItem) => {
         putTentItem(changedTentItem)
-            .then(response => setTentItems(tentItems.map(tent => tent.id === response.id? response : tent)))
+            .then(response => setTentItems(tentItems.map(tent => tent.id === response.id? response: tent)))
             .catch(console.error)
     }
 
