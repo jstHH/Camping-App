@@ -18,6 +18,7 @@ import java.util.List;
 public class Spending {
     @Id
     private String id;
+    private String title;
     private String itemID;
     private String owner;
     private List<String> involved;

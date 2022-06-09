@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+
 import com.example.backend.model.Spending;
 import com.example.backend.repository.SpendingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +21,5 @@ public class SpendingService {
     public List<Spending> getSpendings() {
         return spendingRepository.findAll();
     }
+
 }

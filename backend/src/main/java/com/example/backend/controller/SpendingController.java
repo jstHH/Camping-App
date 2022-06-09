@@ -21,4 +21,5 @@ public class SpendingController {
     public List<Spending> getSpendings() {
         return spendingService.getSpendings();
     }
+
 }
