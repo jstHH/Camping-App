@@ -13,7 +13,7 @@ export default function useTentItems() {
         getAllTentItems(token)
             .then(response => setTentItems(response))
             .catch(console.error)
-    })
+    }, [token])
 
     const addTentItem = (newTentItem: Omit<TentItem, "id">) => {
         postTentItem(newTentItem, token)
@@ -22,7 +22,7 @@ export default function useTentItems() {
     }
 
     const updateTentItem = (changedTentItem: TentItem) => {
-        putTentItem(changedTentItem)
+        putTentItem(changedTentItem, token)
             .then(response => setTentItems(tentItems.map(tent => tent.id === response.id? response: tent)))
             .catch(console.error)
     }

@@ -21,7 +21,7 @@ export const getSingleTentItem: (tentID: string, token?: string) => Promise<Tent
 }
 
 export const putTentItem: (changedTentItem: TentItem, token?: string) => Promise<TentItem> = (changedTentItem, token ) => {
-    return axios.put("/project/tents/" + changedTentItem.id, token
+    return axios.put("/project/tents/" + changedTentItem.id, changedTentItem,token
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }

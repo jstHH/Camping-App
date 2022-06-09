@@ -12,8 +12,13 @@ type CarTopViewProps = {
 
 
 export default function CarTopView({carItems, appUsers}: CarTopViewProps) {
+    const [filteredCars, setFilteredCars] = useState<CarItem[]>([])
     const [userWithoutCar, setUserWithoutCar] = useState<AppUser[]>([])
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setFilteredCars(carItems.filter(car => !car.trailer))
+    }, [carItems])
 
     useEffect(() => {
         appUsers?.forEach(user => carItems.filter(car => car.owner === user.id).length === 0
@@ -21,7 +26,7 @@ export default function CarTopView({carItems, appUsers}: CarTopViewProps) {
             && !userWithoutCar.includes(user)
             && setUserWithoutCar([...userWithoutCar, user]))
         // eslint-disable-next-line
-    }, [carItems])
+    }, [filteredCars])
 
     return <div>
         <Card>
