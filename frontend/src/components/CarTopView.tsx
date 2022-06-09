@@ -1,10 +1,32 @@
 import {Button, Card, Nav, Stack} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {CarItem} from "../model/CarItem";
+import {AppUser} from "../model/AppUser";
+import {useEffect, useState} from "react";
+import "./CarTopView.css"
+
+type CarTopViewProps = {
+    carItems: CarItem[]
+    appUsers: AppUser[]
+}
 
 
-export default function CarTopView() {
-
+export default function CarTopView({carItems, appUsers}: CarTopViewProps) {
+    const [filteredCars, setFilteredCars] = useState<CarItem[]>([])
+    const [userWithoutCar, setUserWithoutCar] = useState<AppUser[]>([])
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setFilteredCars(carItems.filter(car => !car.trailer))
+    }, [carItems])
+
+    useEffect(() => {
+        appUsers?.forEach(user => carItems.filter(car => car.owner === user.id).length === 0
+            && carItems.filter(car => car.involved.includes(user.id)).length === 0
+            && !userWithoutCar.includes(user)
+            && setUserWithoutCar([...userWithoutCar, user]))
+        // eslint-disable-next-line
+    }, [filteredCars])
 
     return <div>
         <Card>
@@ -18,10 +40,10 @@ export default function CarTopView() {
             </Card.Header>
             <Card.Body>
                 <Stack direction="horizontal" gap={3}>
-                    <Card.Title>Special title treatment</Card.Title>
+                    <Card.Title>User ohne Mitfahrgelegenheit:</Card.Title>
                 </Stack>
-                <Card.Text>
-                    With supporting text below as a natural lead-in to additional content.
+                <Card.Text className={"cardtext"}>
+                    {userWithoutCar.map(user => <Button variant={"outline-danger"}>{user.name}</Button>)}
                 </Card.Text>
             </Card.Body>
         </Card>
