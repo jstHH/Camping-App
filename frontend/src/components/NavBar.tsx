@@ -8,7 +8,8 @@ export default function NavBar() {
     const navigate = useNavigate()
 
     return <div>
-        <Button variant="light" className="mr-1" onClick={() => navigate("/")}>Ausrüstung</Button>
-        <Button variant="light" className="mr-2" onClick={() => navigate("/campsite")}>Zeltplatz</Button>
+        <Button variant="light" onClick={() => navigate("/")}>Ausrüstung</Button>
+        <Button variant="light" onClick={() => navigate("/campsite")}>Zeltplatz</Button>
+        <Button variant="light" onClick={() => navigate("/spendings")}>Ausgaben</Button>
     </div>
 }
