@@ -1,0 +1,4 @@
+.booking_entry {
+    display: flex;
+    justify-content: space-between;
+}
