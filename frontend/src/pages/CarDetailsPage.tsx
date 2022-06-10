@@ -8,6 +8,9 @@ import DetailsPageInvolvedField from "../components/DetailsPageInvolvedField";
 import {Button, Stack} from "react-bootstrap";
 import "./CarDetailsPage.css"
 import {CarItem} from "../model/CarItem";
+import {SpendingItemDTO} from "../model/SpendinItemDTO";
+import {Spending} from "../model/Spending";
+import DetailsPageSpendingField from "../components/DetailsPageSpendingField";
 
 
 type CarDetailsPageProps = {
@@ -15,9 +18,10 @@ type CarDetailsPageProps = {
     currentUser: AppUser
     updateCarItem: (changedCarItem: CarItem) => void
     removeCarItem: (carID: string) => void
+    addSpending: (spendingItemDTO: SpendingItemDTO) => Promise<Spending | void>
 }
 
-export default function CarDetailsPage({appUsers, currentUser, updateCarItem, removeCarItem}: CarDetailsPageProps) {
+export default function CarDetailsPage({appUsers, currentUser, updateCarItem, removeCarItem, addSpending}: CarDetailsPageProps) {
     const {carItem, getSingleCarItemByID} = useSingleCarItem()
     const {id} = useParams()
     const [carID, setCarID] = useState<string>("")
@@ -28,6 +32,7 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
     const [capacity, setCapacity] = useState<number>(0)
     const [trailer, setTrailer] = useState<boolean>(false)
     const [startLocation, setStartLocation] = useState<string>("")
+    const [spending, setSpending] = useState<string>("")
 
     const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -50,6 +55,7 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
             setCapacity(carItem.capacity)
             setTrailer(carItem.trailer)
             setStartLocation(carItem.startLocation)
+            setSpending(carItem.spending)
         }
         // eslint-disable-next-line
     }, [carItem])
@@ -73,7 +79,8 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
             involved: involved,
             capacity: capacity,
             trailer: trailer,
-            startLocation: startLocation
+            startLocation: startLocation,
+            spending: spending
         }
         updateCarItem(changedCarItem)
         navigate("/campsite")
@@ -106,7 +113,15 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
                                                    forCar={true}/>}
             <div className={"controll_buttons"}>
                 <Stack>
-                    <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
+                    <DetailsPageSpendingField title={title}
+                                              itemID={carID}
+                                              itemClass={"cars"}
+                                              owner={owner}
+                                              involved={involved}
+                                              editMode={editMode}
+                                              spending={spending}
+                                              setSpending={setSpending}
+                                              addSpending={addSpending} />
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}

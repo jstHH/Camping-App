@@ -25,7 +25,8 @@ export default function AddEquipmentItemPage({addEquipmentItem, currentUser}: Ad
             owner: owner,
             involved: [],
             done: false,
-            important: false
+            important: false,
+            spending: ""
         }
 
         addEquipmentItem(newEquipmentItem)

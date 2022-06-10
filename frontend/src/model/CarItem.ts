@@ -3,8 +3,8 @@ export type CarItem = {
     title: string
     description: string
     owner: string
-    involved : string[]
-    spending ?: string
+    involved: string[]
+    spending: string
     capacity: number
     trailer: boolean
     startLocation: string

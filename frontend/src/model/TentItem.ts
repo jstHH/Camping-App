@@ -4,7 +4,7 @@ export type TentItem = {
     description: string
     owner: string
     involved : string[]
-    spending ?: string
+    spending: string
     capacity: number
     shelter: boolean
 }

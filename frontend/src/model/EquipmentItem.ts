@@ -4,7 +4,7 @@ export type EquipmentItem = {
     description: string
     owner: string
     involved : string[]
-    spending ?: string
+    spending : string
     important: boolean
     done:boolean
 }
