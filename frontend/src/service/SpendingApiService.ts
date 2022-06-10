@@ -1,4 +1,3 @@
-import {Booking} from "../model/Bookings";
 import axios from "axios";
 import {Spending} from "../model/Spending";
 
