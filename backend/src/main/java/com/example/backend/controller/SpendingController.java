@@ -1,10 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.model.Spending;
 import com.example.backend.service.SpendingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +19,11 @@ public class SpendingController {
     @GetMapping
     public List<Spending> getSpendings() {
         return spendingService.getSpendings();
+    }
+
+    @PostMapping
+    public Spending addSpending(@RequestBody SpendingItemDTO spendingItemDTO) {
+        return spendingService.addSpending(spendingItemDTO);
     }
 
 }

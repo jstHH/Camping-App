@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.model.Booking;
 import com.example.backend.model.Spending;
 import com.example.backend.repository.CarItemRepository;
@@ -108,5 +109,57 @@ class SpendingControllerTest {
         //then
         List<Spending> expected = List.of(testSpending1, testSpending2);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void addSpending() {
+        //given
+        SpendingItemDTO testSpendingDTO = SpendingItemDTO.builder()
+                .title("Testspending")
+                .itemID("123abc")
+                .itemClass("car")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .amount(new BigDecimal("30"))
+                .build();
+
+        //when
+        Spending actualSpending = webTestClient.post()
+                .uri("http://localhost:" + port + "/project/spendings")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .bodyValue(testSpendingDTO)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Spending.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<Spending> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/spendings")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(Spending.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        Spending expectedSpending = Spending.builder()
+                .id(actualSpending.getId())
+                .title(testSpendingDTO.getTitle())
+                .itemID(testSpendingDTO.getItemID())
+                .itemClass(testSpendingDTO.getItemClass())
+                .owner(testSpendingDTO.getOwner())
+                .involved(testSpendingDTO.getInvolved())
+                .amount(testSpendingDTO.getAmount())
+                .bookings(List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal(20)),
+                        new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal(-10)),
+                        new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal(-10))))
+                .build();
+
+        List<Spending> expectedList = List.of(expectedSpending);
+
+        assertEquals(expectedSpending, actualSpending);
+        assertEquals(expectedList, actualList);
     }
 }
