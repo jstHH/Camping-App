@@ -1,12 +1,9 @@
-import {Booking} from "./Bookings";
 
-export type Spending = {
-    id: string
+export type SpendingItemDTO = {
     title: string
     itemID: string
     itemClass: string
     owner: string
     involved: string[]
     amount: number
-    bookings: Booking[]
 }
