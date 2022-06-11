@@ -5,15 +5,19 @@ import {Button, Form, FormCheck, Stack} from "react-bootstrap";
 import {AppUser} from "../model/AppUser";
 import "./EquipmentDetailsPage.css"
 import {EquipmentItem} from "../model/EquipmentItem";
+import {SpendingItemDTO} from "../model/SpendinItemDTO";
+import {Spending} from "../model/Spending";
+import DetailsPageSpendingField from "../components/DetailsPageSpendingField";
 
 export type EquipmentDetailsPageProps = {
     appUsers: AppUser[]
     currentUser: AppUser
     updateEquipmentItem: (changedEquipmentItem: EquipmentItem) => void
     removeEquipmentItem: (equipmentItemID: string) => void
+    addSpending: (spendingItemDTO: SpendingItemDTO) => Promise<Spending | void>
 }
 
-export default function EquipmentDetailsPage({appUsers, currentUser, updateEquipmentItem, removeEquipmentItem} : EquipmentDetailsPageProps) {
+export default function EquipmentDetailsPage({appUsers, currentUser, updateEquipmentItem, removeEquipmentItem, addSpending} : EquipmentDetailsPageProps) {
     const {equipmentItem, getSingleEquipmentItemByID} = useSingleEquipmentItem()
     const {id} = useParams()
     const [itemID, setItemID] = useState<string>("")
@@ -23,6 +27,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
     const [involved, setInvolved] = useState<string[]>([])
     const [isImportant, setIsImportant] = useState<boolean>(false)
     const [isDone, setIsDone] = useState<boolean>(false)
+    const [spending, setSpending] = useState<string>("")
 
 
     const [editMode, setEditMode] = useState<boolean>(false)
@@ -47,6 +52,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             if ((equipmentItem.involved != null)) {
                 setInvolved(equipmentItem.involved)
             }
+            setSpending(equipmentItem.spending)
         }},[equipmentItem])
 
 
@@ -68,7 +74,8 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             owner: ownerID,
             involved: involved,
             important: isImportant,
-            done: isDone
+            done: isDone,
+            spending: spending
         }
         updateEquipmentItem(changedItem)
         navigate("/")
@@ -146,7 +153,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             </div>
             <div className={"controll_buttons"}>
                 <Stack>
-                    <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
+                    <DetailsPageSpendingField title={title} itemID={itemID} itemClass={"equipment"} owner={ownerID} involved={involved} editMode={editMode} spending={spending} setSpending={setSpending} addSpending={addSpending}/>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}

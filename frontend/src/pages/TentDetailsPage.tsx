@@ -8,6 +8,9 @@ import DetailsPageInvolvedField from "../components/DetailsPageInvolvedField";
 import {Button, Stack} from "react-bootstrap";
 import "./TentDetailsPage.css"
 import {TentItem} from "../model/TentItem";
+import DetailsPageSpendingField from "../components/DetailsPageSpendingField";
+import {SpendingItemDTO} from "../model/SpendinItemDTO";
+import {Spending} from "../model/Spending";
 
 
 type TentDetailsPageProps = {
@@ -15,9 +18,10 @@ type TentDetailsPageProps = {
     currentUser: AppUser
     updateTentItem: (changedTentItem: TentItem) => void
     removeTentItem: (id: string) => void
+    addSpending: (spendingItemDTO: SpendingItemDTO) => Promise<Spending | void>
 }
 
-export default function TentDetailsPage({appUsers, currentUser, updateTentItem, removeTentItem}: TentDetailsPageProps) {
+export default function TentDetailsPage({appUsers, currentUser, updateTentItem, removeTentItem, addSpending}: TentDetailsPageProps) {
     const {tentItem, getSingleTentItemByID} = useSingleTentItem()
     const {id} = useParams()
     const [tentID, setTentID] = useState<string>("")
@@ -27,6 +31,7 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
     const [involved, setInvolved] = useState<string[]>([])
     const [capacity, setCapacity] = useState<number>(0)
     const [shelter, setShelter] = useState<boolean>(false)
+    const [spending, setSpending] = useState<string>("")
 
     const [editMode, setEditMode] = useState<boolean>(false)
     const navigate = useNavigate()
@@ -47,6 +52,7 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
             setInvolved(tentItem.involved)
             setCapacity(tentItem.capacity)
             setShelter(tentItem.shelter)
+            setSpending(tentItem.spending)
         }
         // eslint-disable-next-line
     }, [tentItem])
@@ -69,7 +75,8 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
             owner: owner,
             involved: involved,
             capacity: capacity,
-            shelter: shelter
+            shelter: shelter,
+            spending: spending
         }
         updateTentItem(changedTentItem)
         navigate("/campsite")
@@ -102,7 +109,15 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
                                                    forCar={false}/>}
             <div className={"controll_buttons"}>
                 <Stack>
-                    <Button type={"button"} disabled={editMode}>Ausgabe Hinzufügen</Button>
+                    <DetailsPageSpendingField title={title}
+                                              itemID={tentID}
+                                              itemClass={"tents"}
+                                              owner={owner}
+                                              involved={involved}
+                                              editMode={editMode}
+                                              spending={spending}
+                                              setSpending={setSpending}
+                                              addSpending={addSpending} />
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}

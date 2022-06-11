@@ -42,7 +42,7 @@ export default function SpendingCard({spending, appUsers}: SpendingCardProps) {
                         <ListGroup>
                             {spending.bookings.map(booking => <ListGroup.Item className={"booking_entry"}>
                                 {getUserName(booking.user)}
-                                <Button variant={booking.amount >= 0 ? "outline-success" : "outline-danger"}>{booking.amount}</Button>
+                                <Button variant={booking.amount >= 0 ? "outline-success" : "outline-danger"}>{booking.amount} €</Button>
                             </ListGroup.Item>)}
                         </ListGroup>
                     </Card.Text>

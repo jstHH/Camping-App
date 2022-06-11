@@ -26,7 +26,7 @@ function App() {
     const appUsers = useAllAppUsers()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems()
     const {tentItems, addTentItem, updateTentItem, removeTentItem} = useTentItems()
-    const {spendings} = useSpendings()
+    const {spendings,addSpending} = useSpendings()
 
     return (
     <div className="App">
@@ -35,12 +35,12 @@ function App() {
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
                 <Route path={"/equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
-                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser} removeEquipmentItem={removeEquipmentItem} updateEquipmentItem={updateEquipmentItem}/>}/>
+                <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser} removeEquipmentItem={removeEquipmentItem} updateEquipmentItem={updateEquipmentItem} addSpending={addSpending}/>}/>
                 <Route path={"/campsite"} element={<CampsitePage   appUsers={appUsers} carItems={carItems} tentItems={tentItems}/>}/>
                 <Route path={"/campsite/addcar"} element={<AddCarItemPage addCarItem={addCarItem} currentUser={currentUser}/>}/>
                 <Route path={"/campsite/addtent"} element={<AddTentItemPage  addTentItem={addTentItem} currentUser={currentUser}/>}/>
-                <Route path={`/campsite/car/:id`} element={<CarDetailsPage appUsers={appUsers} currentUser={currentUser} updateCarItem={updateCarItem} removeCarItem={removeCarItem}/>}/>
-                <Route path={`/campsite/tent/:id`} element={<TentDetailsPage appUsers={appUsers} currentUser={currentUser} updateTentItem={updateTentItem} removeTentItem={removeTentItem}/>} />
+                <Route path={`/campsite/car/:id`} element={<CarDetailsPage appUsers={appUsers} currentUser={currentUser} updateCarItem={updateCarItem} removeCarItem={removeCarItem} addSpending={addSpending}/>}/>
+                <Route path={`/campsite/tent/:id`} element={<TentDetailsPage appUsers={appUsers} currentUser={currentUser} updateTentItem={updateTentItem} removeTentItem={removeTentItem} addSpending={addSpending}/>} />
                 <Route path={"/spendings"} element={<SpendingPage appUser={appUsers} spendings={spendings}/>}/>
             </Route>
             <Route path={'/login'} element={<LoginPage />}/>

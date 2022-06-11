@@ -1,7 +1,8 @@
 import {useContext, useEffect, useState} from "react";
 import {Spending} from "../model/Spending";
 import {AuthContext} from "../context/AuthProvider";
-import {getAllSpendings} from "../service/SpendingApiService";
+import {getAllSpendings, postSpending} from "../service/SpendingApiService";
+import {SpendingItemDTO} from "../model/SpendinItemDTO";
 
 
 export default function useSpendings() {
@@ -14,6 +15,14 @@ export default function useSpendings() {
             .catch(console.error)
     })
 
+    const addSpending = (newSpending: SpendingItemDTO) => {
+        return postSpending(newSpending, token)
+            .then(response => {
+                setSpendings([...spendings, response])
+                return response
+            })
+            .catch(console.error)
+    }
 
-    return {spendings}
+    return {spendings, addSpending}
 }
