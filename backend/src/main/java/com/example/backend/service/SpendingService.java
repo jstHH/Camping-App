@@ -15,10 +15,12 @@ import java.util.List;
 @Service
 public class SpendingService {
     private final SpendingRepository spendingRepository;
+    private final AppUserDataService appUserDataService;
 
     @Autowired
-    public SpendingService(SpendingRepository spendingRepository) {
+    public SpendingService(SpendingRepository spendingRepository, AppUserDataService appUserDataService) {
         this.spendingRepository = spendingRepository;
+        this.appUserDataService = appUserDataService;
     }
 
     public List<Spending> getSpendings() {
@@ -26,7 +28,7 @@ public class SpendingService {
     }
 
     public Spending addSpending(SpendingItemDTO spendingItemDTO) {
-        return spendingRepository.insert(Spending.builder()
+        Spending newSpending = spendingRepository.insert(Spending.builder()
                 .title(spendingItemDTO.getTitle())
                 .itemID(spendingItemDTO.getItemID())
                 .itemClass(spendingItemDTO.getItemClass())
@@ -35,6 +37,9 @@ public class SpendingService {
                 .amount(spendingItemDTO.getAmount())
                 .bookings(createBookings(spendingItemDTO))
                 .build());
+        appUserDataService.calculateUserBalance(getAllBookings());
+        return newSpending;
+
     }
 
     public List<Booking> createBookings(SpendingItemDTO spendingItemDTO) {
@@ -45,6 +50,15 @@ public class SpendingService {
             newBookings.add(new Booking(userID, new BigDecimal(0).subtract(share)));
         }
         return newBookings;
+    }
+
+    public List<Booking> getAllBookings() {
+        List<Spending> allSpendings = spendingRepository.findAll();
+        List<Booking> allBookings = new ArrayList<>();
+        for (Spending spending: allSpendings) {
+            allBookings.addAll(spending.getBookings());
+        }
+        return allBookings;
     }
 
 }
