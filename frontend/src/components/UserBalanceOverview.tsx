@@ -20,7 +20,7 @@ export default function UserBalanceOverview({appUsers}: UserBalanceOverviewProps
                 <ListGroup>
                     {appUsers.map(user => <ListGroup.Item className={"booking_entry"}>
                         {user.name}
-                        <Button variant={user.balance >= 0 ? "outline-success" : "outline-danger"}>{user.balance}</Button>
+                        <Button variant={user.balance >= 0 ? "outline-success" : "outline-danger"}>{user.balance} €</Button>
                     </ListGroup.Item>)}
                 </ListGroup>
             </Card.Body>

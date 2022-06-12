@@ -23,10 +23,10 @@ import useSpendings from "./hooks/useSpendings";
 function App() {
     const {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem} = useEquipmentItems();
     const currentUser = useAppUser()
-    const appUsers = useAllAppUsers()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems()
     const {tentItems, addTentItem, updateTentItem, removeTentItem} = useTentItems()
     const {spendings,addSpending} = useSpendings()
+    const appUsers = useAllAppUsers(spendings)
 
     return (
     <div className="App">
