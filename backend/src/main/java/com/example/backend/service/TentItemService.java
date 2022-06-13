@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.dto.TentItemDTO;
 import com.example.backend.model.TentItem;
 import com.example.backend.repository.TentItemRepository;
@@ -14,10 +15,12 @@ import java.util.NoSuchElementException;
 public class TentItemService {
 
     private final TentItemRepository tentItemRepository;
+    private final SpendingService spendingService;
 
     @Autowired
-    public TentItemService(TentItemRepository tentItemRepository) {
+    public TentItemService(TentItemRepository tentItemRepository, SpendingService spendingService) {
         this.tentItemRepository = tentItemRepository;
+        this.spendingService = spendingService;
     }
 
     public List<TentItem> getTentItems() {
@@ -41,13 +44,21 @@ public class TentItemService {
     }
 
     public TentItem updateTentItem(String id, TentItemDTO changedTentItem) {
+        SpendingItemDTO changedSpending = SpendingItemDTO.builder()
+                .title(changedTentItem.getTitle())
+                .owner(changedTentItem.getOwner())
+                .involved(changedTentItem.getInvolved())
+                .build();
+
         return tentItemRepository.save(TentItem.builder()
                 .id(id)
                 .title(changedTentItem.getTitle())
                 .description(changedTentItem.getDescription())
                 .owner(changedTentItem.getOwner())
                 .involved(changedTentItem.getInvolved())
-                .spending(changedTentItem.getSpending())
+                .spending(!changedTentItem.getSpending().equals("")
+                        ? spendingService.updateSpending(changedTentItem.getSpending(), changedSpending)
+                        : changedTentItem.getSpending())
                 .capacity(changedTentItem.getCapacity())
                 .shelter(changedTentItem.isShelter())
                 .build());

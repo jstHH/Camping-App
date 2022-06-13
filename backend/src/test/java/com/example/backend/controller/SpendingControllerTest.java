@@ -9,6 +9,7 @@ import com.example.backend.security.model.AppUser;
 import com.example.backend.security.model.AppUserLoginDTO;
 import com.example.backend.security.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -111,6 +112,7 @@ class SpendingControllerTest {
         assertEquals(expected, actual);
     }
 
+
     @Test
     void addSpending() {
         //given
@@ -120,7 +122,7 @@ class SpendingControllerTest {
                 .itemClass("car")
                 .owner("owner1")
                 .involved(List.of("involved1", "involved 2"))
-                .amount(new BigDecimal("30"))
+                .amount(new BigDecimal("30.03"))
                 .build();
 
         //when
@@ -152,9 +154,9 @@ class SpendingControllerTest {
                 .owner(testSpendingDTO.getOwner())
                 .involved(testSpendingDTO.getInvolved())
                 .amount(testSpendingDTO.getAmount())
-                .bookings(List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal(20)),
-                        new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal(-10)),
-                        new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal(-10))))
+                .bookings(List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal("20.02")),
+                        new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal("-10.01")),
+                        new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal("-10.01"))))
                 .build();
 
         List<Spending> expectedList = List.of(expectedSpending);
@@ -162,4 +164,5 @@ class SpendingControllerTest {
         assertEquals(expectedSpending, actualSpending);
         assertEquals(expectedList, actualList);
     }
+
 }

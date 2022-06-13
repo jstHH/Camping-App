@@ -4,8 +4,6 @@ import com.example.backend.dto.EquipmentItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.verification.VerificationMode;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +15,8 @@ import static org.mockito.Mockito.*;
 
 class EquipmentItemServiceTest {
     private final EquipmentItemRepository equipmentItemRepository = mock(EquipmentItemRepository.class);
-
-    private final EquipmentItemService equipmentItemService = new EquipmentItemService(equipmentItemRepository);
+    private final SpendingService spendingService = mock(SpendingService.class);
+    private final EquipmentItemService equipmentItemService = new EquipmentItemService(equipmentItemRepository, spendingService);
 
     @Test
     void getEquipmentItems() {
@@ -70,6 +68,7 @@ class EquipmentItemServiceTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
+                .spending("")
                 .done(false)
                 .important(false)
                 .build();
@@ -78,6 +77,7 @@ class EquipmentItemServiceTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
+                .spending("")
                 .build())).thenReturn(testItem);
 
         //when
@@ -89,6 +89,7 @@ class EquipmentItemServiceTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
+                .spending("")
                 .build());
         assertEquals(expected, actual);
     }

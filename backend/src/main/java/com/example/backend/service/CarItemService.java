@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.CarItemDTO;
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.model.CarItem;
 import com.example.backend.repository.CarItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import java.util.NoSuchElementException;
 @Service
 public class CarItemService {
     private final CarItemRepository carItemRepository;
+    private final SpendingService spendingService;
 
     @Autowired
-    public CarItemService(CarItemRepository carItemRepository) {
+    public CarItemService(CarItemRepository carItemRepository, SpendingService spendingService) {
         this.carItemRepository = carItemRepository;
+        this.spendingService = spendingService;
     }
 
     public List<CarItem> getCarItems () {
@@ -42,13 +45,21 @@ public class CarItemService {
     }
 
     public CarItem updateCarItem (String id, CarItemDTO carItemDTO) {
+        SpendingItemDTO changedSpending = SpendingItemDTO.builder()
+                .title(carItemDTO.getTitle())
+                .owner(carItemDTO.getOwner())
+                .involved(carItemDTO.getInvolved())
+                .build();
+
         return carItemRepository.save(CarItem.builder()
                 .id(id)
                 .title(carItemDTO.getTitle())
                 .description(carItemDTO.getDescription())
                 .owner(carItemDTO.getOwner())
                 .involved(carItemDTO.getInvolved())
-                .spending(carItemDTO.getSpending())
+                .spending(!carItemDTO.getSpending().equals("")
+                        ? spendingService.updateSpending(carItemDTO.getSpending(), changedSpending)
+                        : carItemDTO.getSpending())
                 .capacity(carItemDTO.getCapacity())
                 .trailer(carItemDTO.isTrailer())
                 .startLocation(carItemDTO.getStartLocation())

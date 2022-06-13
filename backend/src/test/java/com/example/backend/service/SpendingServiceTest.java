@@ -69,9 +69,9 @@ class SpendingServiceTest {
         List<Booking> actual = spendingService.createBookings(testSpendingDTO);
 
         //then
-        List<Booking> expected = List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal(20)),
-                new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal(-10)),
-                new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal(-10)));
+        List<Booking> expected = List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal("20.00")),
+                new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal("-10.00")),
+                new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal("-10.00")));
 
         assertEquals(expected, actual);
     }

@@ -15,7 +15,8 @@ import static org.mockito.Mockito.*;
 
 class CarItemServiceTest {
     private final CarItemRepository carItemRepository = mock(CarItemRepository.class);
-    private final CarItemService carItemService = new CarItemService(carItemRepository);
+    private final SpendingService spendingService = mock(SpendingService.class);
+    private final CarItemService carItemService = new CarItemService(carItemRepository, spendingService);
 
     @Test
     void getCarItems() {

@@ -26,4 +26,9 @@ public class SpendingController {
         return spendingService.addSpending(spendingItemDTO);
     }
 
+    @GetMapping("{id}")
+    public Spending updateSpending(@PathVariable String id) {
+        return spendingService.getSpendingByID(id);
+    }
+
 }

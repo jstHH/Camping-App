@@ -5,7 +5,7 @@ import {deleteCarItem, getAllCarItems, postCarItem, putCarItem} from "../service
 import {Omit} from "react-bootstrap/helpers";
 
 
-export default function useCarItems() {
+export default function useCarItems(getUpdatedSpending: (id: string) => void) {
     const [carItems, setCarItems] = useState<CarItem[]>([])
     const {token} = useContext(AuthContext)
 
@@ -23,7 +23,9 @@ export default function useCarItems() {
 
     const updateCarItem = (changedCarItem: CarItem) => {
         putCarItem(changedCarItem, token)
-            .then(response => setCarItems(carItems.map(car => car.id === response.id ? response:car)))
+            .then(response => {
+                setCarItems(carItems.map(car => car.id === response.id ? response:car))
+                getUpdatedSpending(response.id)})
             .catch(console.error)
     }
 
