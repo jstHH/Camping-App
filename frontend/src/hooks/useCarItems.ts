@@ -25,7 +25,7 @@ export default function useCarItems(getUpdatedSpending: (id: string) => void) {
         putCarItem(changedCarItem, token)
             .then(response => {
                 setCarItems(carItems.map(car => car.id === response.id ? response:car))
-                getUpdatedSpending(response.id)})
+                getUpdatedSpending(response.spending)})
             .catch(console.error)
     }
 

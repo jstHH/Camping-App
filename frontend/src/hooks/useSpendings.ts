@@ -13,7 +13,7 @@ export default function useSpendings() {
         getAllSpendings(token)
             .then(response => setSpendings(response))
             .catch(console.error)
-    })
+    }, [token])
 
     const addSpending = (newSpending: SpendingItemDTO) => {
         return postSpending(newSpending, token)
@@ -25,7 +25,7 @@ export default function useSpendings() {
     }
 
     const getUpdatedSpending = (id: string) => {
-        getSpendingByID(id)
+        getSpendingByID(id, token)
             .then(response => setSpendings(spendings.map(spending => spending.id === response.id ? response : spending)))
             .catch(console.error)
     }
