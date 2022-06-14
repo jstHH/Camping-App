@@ -117,6 +117,7 @@ class EquipmentControllerTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
+                .spending("")
                 .build();
 
         //when
@@ -136,6 +137,7 @@ class EquipmentControllerTest {
                 .title("testtitle")
                 .description("testdescription")
                 .owner("testownerID")
+                .spending("")
                 .done(false)
                 .important(false)
                 .build();

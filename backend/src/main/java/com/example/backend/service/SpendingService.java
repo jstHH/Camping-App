@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SpendingService {
@@ -25,6 +27,10 @@ public class SpendingService {
 
     public List<Spending> getSpendings() {
         return spendingRepository.findAll();
+    }
+
+    public Spending getSpendingByID(String id) {
+        return spendingRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Spending with ID " + id + " not found!"));
     }
 
     public Spending addSpending(SpendingItemDTO spendingItemDTO) {
@@ -42,9 +48,24 @@ public class SpendingService {
 
     }
 
+    public String updateSpending(String id, SpendingItemDTO spendingItemDTO) {
+        if (spendingRepository.findById(id).isPresent()) {
+            Spending changedSpending = spendingRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Spending with id " + id + " not found!"));
+            spendingItemDTO.setAmount(changedSpending.getAmount());
+            changedSpending.setTitle(spendingItemDTO.getTitle());
+            changedSpending.setOwner(spendingItemDTO.getOwner());
+            changedSpending.setInvolved(spendingItemDTO.getInvolved());
+            changedSpending.setBookings(createBookings(spendingItemDTO));
+            spendingRepository.save(changedSpending);
+            appUserDataService.calculateUserBalance(getAllBookings());
+            return id;
+        }
+        return "";
+    }
+
     public List<Booking> createBookings(SpendingItemDTO spendingItemDTO) {
         List<Booking> newBookings = new ArrayList<>();
-        BigDecimal share = spendingItemDTO.getAmount().divide(new BigDecimal(spendingItemDTO.getInvolved().size() + 1));
+        BigDecimal share = spendingItemDTO.getAmount().divide(new BigDecimal(spendingItemDTO.getInvolved().size() + 1), 2,RoundingMode.HALF_UP);
         newBookings.add(new Booking(spendingItemDTO.getOwner(), spendingItemDTO.getAmount().subtract(share)));
         for (String userID : spendingItemDTO.getInvolved()) {
             newBookings.add(new Booking(userID, new BigDecimal(0).subtract(share)));

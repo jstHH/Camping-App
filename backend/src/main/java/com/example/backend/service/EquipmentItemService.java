@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.EquipmentItemDTO;
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import java.util.NoSuchElementException;
 @Service
 public class EquipmentItemService {
     private final EquipmentItemRepository equipmentItemRepository;
+    private final SpendingService spendingService;
 
     @Autowired
-    public EquipmentItemService(EquipmentItemRepository equipmentItemRepository) {
+    public EquipmentItemService(EquipmentItemRepository equipmentItemRepository, SpendingService spendingService) {
         this.equipmentItemRepository = equipmentItemRepository;
+        this.spendingService = spendingService;
     }
 
     public List<EquipmentItem> getEquipmentItems() {
@@ -31,17 +34,24 @@ public class EquipmentItemService {
                 .title(equipmentItemDTO.getTitle())
                 .description(equipmentItemDTO.getDescription())
                 .owner(equipmentItemDTO.getOwner())
+                .spending("")
                 .build());
 
     }
 
     public EquipmentItem updateEquipmentItem(EquipmentItemDTO equipmentItemDTO, String id) {
+        SpendingItemDTO changedSpending = SpendingItemDTO.builder()
+                .title(equipmentItemDTO.getTitle())
+                .owner(equipmentItemDTO.getOwner())
+                .involved(equipmentItemDTO.getInvolved())
+                .build();
+
         return equipmentItemRepository.save(EquipmentItem.builder()
                 .title(equipmentItemDTO.getTitle())
                 .description(equipmentItemDTO.getDescription())
                 .owner(equipmentItemDTO.getOwner())
                 .involved(equipmentItemDTO.getInvolved())
-                .spending(equipmentItemDTO.getSpending())
+                .spending(spendingService.updateSpending(equipmentItemDTO.getSpending(), changedSpending))
                 .id(id)
                 .important(equipmentItemDTO.isImportant())
                 .done(equipmentItemDTO.isDone())

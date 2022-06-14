@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {Spending} from "../model/Spending";
 import {AuthContext} from "../context/AuthProvider";
-import {getAllSpendings, postSpending} from "../service/SpendingApiService";
+import {getAllSpendings, getSpendingByID, postSpending} from "../service/SpendingApiService";
 import {SpendingItemDTO} from "../model/SpendinItemDTO";
 
 
@@ -13,7 +13,7 @@ export default function useSpendings() {
         getAllSpendings(token)
             .then(response => setSpendings(response))
             .catch(console.error)
-    })
+    }, [token])
 
     const addSpending = (newSpending: SpendingItemDTO) => {
         return postSpending(newSpending, token)
@@ -24,5 +24,11 @@ export default function useSpendings() {
             .catch(console.error)
     }
 
-    return {spendings, addSpending}
+    const getUpdatedSpending = (id: string) => {
+        getSpendingByID(id, token)
+            .then(response => setSpendings(spendings.map(spending => spending.id === response.id ? response : spending)))
+            .catch(console.error)
+    }
+
+    return {spendings, addSpending, getUpdatedSpending}
 }

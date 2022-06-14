@@ -14,3 +14,9 @@ export const postSpending: (newSpending: SpendingItemDTO, token?: string) => Pro
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }
+
+export const getSpendingByID: (id: string, token?: string) => Promise<Spending> = (id, token) =>{
+    return axios.get("/project/spendings/" + id, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}

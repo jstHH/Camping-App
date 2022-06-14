@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.dto.TentItemDTO;
 import com.example.backend.model.TentItem;
 import com.example.backend.repository.TentItemRepository;
@@ -12,7 +13,8 @@ import static org.mockito.Mockito.*;
 
 class TentItemServiceTest {
     private final TentItemRepository tentItemRepository = mock(TentItemRepository.class);
-    private final TentItemService tentItemService = new TentItemService(tentItemRepository);
+    private final SpendingService spendingService = mock(SpendingService.class);
+    private final TentItemService tentItemService = new TentItemService(tentItemRepository, spendingService);
 
     @Test
     void getTentItems() {
@@ -112,7 +114,7 @@ class TentItemServiceTest {
         when(tentItemRepository.findById(testTent1.getId())).thenReturn(Optional.of(testTent1));
 
         //when
-        TentItem actual =  tentItemService.getTentItemByID(testTent1.getId());
+        TentItem actual = tentItemService.getTentItemByID(testTent1.getId());
 
         //then
         TentItem expected = testTent1;
@@ -120,7 +122,7 @@ class TentItemServiceTest {
     }
 
     @Test
-    void updateTentItem() {
+    void updateTentItem_withoutSpending() {
         //given
         TentItem testTent1 = TentItem.builder()
                 .id("1")
@@ -128,7 +130,6 @@ class TentItemServiceTest {
                 .description("klein")
                 .owner("owner1")
                 .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
-                .spending("")
                 .capacity(3)
                 .shelter(false)
                 .build();
@@ -139,7 +140,6 @@ class TentItemServiceTest {
                 .description("klein")
                 .owner("owner1")
                 .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
-                .spending("")
                 .capacity(3)
                 .shelter(false)
                 .build();
@@ -151,6 +151,50 @@ class TentItemServiceTest {
 
         //then
         TentItem expected = testTent1;
+        verify(tentItemRepository).save(testTent1);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateTentItem_withSpending() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .capacity(3)
+                .spending("123")
+                .shelter(false)
+                .build();
+
+
+        TentItemDTO testTentDTO1 = TentItemDTO.builder()
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .capacity(3)
+                .spending("123")
+                .shelter(false)
+                .build();
+
+        SpendingItemDTO testTentSpending = SpendingItemDTO.builder()
+                .title(testTentDTO1.getTitle())
+                .owner(testTentDTO1.getOwner())
+                .involved(testTentDTO1.getInvolved())
+                .build();
+
+        when(spendingService.updateSpending(testTentDTO1.getSpending(), testTentSpending)).thenReturn(testTentDTO1.getSpending());
+        when(tentItemRepository.save(testTent1)).thenReturn(testTent1);
+
+        //when
+        TentItem actual = tentItemService.updateTentItem("1", testTentDTO1);
+
+        //then
+        TentItem expected = testTent1;
+        verify(spendingService).updateSpending(testTentDTO1.getSpending(), testTentSpending);
         verify(tentItemRepository).save(testTent1);
         assertEquals(expected, actual);
     }

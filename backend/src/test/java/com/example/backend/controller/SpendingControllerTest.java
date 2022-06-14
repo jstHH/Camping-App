@@ -9,6 +9,7 @@ import com.example.backend.security.model.AppUser;
 import com.example.backend.security.model.AppUserLoginDTO;
 import com.example.backend.security.repository.AppUserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -111,6 +112,7 @@ class SpendingControllerTest {
         assertEquals(expected, actual);
     }
 
+
     @Test
     void addSpending() {
         //given
@@ -120,7 +122,7 @@ class SpendingControllerTest {
                 .itemClass("car")
                 .owner("owner1")
                 .involved(List.of("involved1", "involved 2"))
-                .amount(new BigDecimal("30"))
+                .amount(new BigDecimal("30.03"))
                 .build();
 
         //when
@@ -152,14 +154,47 @@ class SpendingControllerTest {
                 .owner(testSpendingDTO.getOwner())
                 .involved(testSpendingDTO.getInvolved())
                 .amount(testSpendingDTO.getAmount())
-                .bookings(List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal(20)),
-                        new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal(-10)),
-                        new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal(-10))))
+                .bookings(List.of(new Booking(testSpendingDTO.getOwner(), new BigDecimal("20.02")),
+                        new Booking(testSpendingDTO.getInvolved().get(0), new BigDecimal("-10.01")),
+                        new Booking(testSpendingDTO.getInvolved().get(1), new BigDecimal("-10.01"))))
                 .build();
 
         List<Spending> expectedList = List.of(expectedSpending);
 
         assertEquals(expectedSpending, actualSpending);
         assertEquals(expectedList, actualList);
+    }
+
+    @Test
+    void getSpendingByID() {
+        //given
+        Spending testSpending1 = Spending.builder()
+                .id("1")
+                .itemID("123abc")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .amount(new BigDecimal("30"))
+                .bookings(List.of(new Booking("owner1", new BigDecimal("20")),
+                        new Booking("involved1", new BigDecimal("-10")),
+                        new Booking("involved2", new BigDecimal("-10"))))
+                .build();
+
+
+        spendingRepository.insert(testSpending1);
+
+
+        //when
+        Spending actual = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/spendings/" + testSpending1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Spending.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        Spending expected = testSpending1;
+        assertEquals(expected, actual);
     }
 }
