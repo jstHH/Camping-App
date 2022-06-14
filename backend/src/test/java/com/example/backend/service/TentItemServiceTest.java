@@ -113,7 +113,7 @@ class TentItemServiceTest {
         when(tentItemRepository.findById(testTent1.getId())).thenReturn(Optional.of(testTent1));
 
         //when
-        TentItem actual =  tentItemService.getTentItemByID(testTent1.getId());
+        TentItem actual = tentItemService.getTentItemByID(testTent1.getId());
 
         //then
         TentItem expected = testTent1;
@@ -129,7 +129,6 @@ class TentItemServiceTest {
                 .description("klein")
                 .owner("owner1")
                 .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
-                .spending("")
                 .capacity(3)
                 .shelter(false)
                 .build();
@@ -140,7 +139,6 @@ class TentItemServiceTest {
                 .description("klein")
                 .owner("owner1")
                 .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
-                .spending("")
                 .capacity(3)
                 .shelter(false)
                 .build();
