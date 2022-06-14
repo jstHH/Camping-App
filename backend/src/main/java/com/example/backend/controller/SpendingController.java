@@ -31,4 +31,9 @@ public class SpendingController {
         return spendingService.getSpendingByID(id);
     }
 
+    @DeleteMapping("{id}")
+    public String deleteSpendingByID(@PathVariable String id) {
+        return spendingService.deleteSpendingByID(id);
+    }
+
 }

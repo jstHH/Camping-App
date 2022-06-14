@@ -197,4 +197,49 @@ class SpendingControllerTest {
         Spending expected = testSpending1;
         assertEquals(expected, actual);
     }
+
+    @Test
+    void deleteSpendingByID() {
+        //given
+        Spending testSpending1 = Spending.builder()
+                .id("1")
+                .itemID("123abc")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .amount(new BigDecimal("30"))
+                .bookings(List.of(new Booking("owner1", new BigDecimal("20")),
+                        new Booking("involved1", new BigDecimal("-10")),
+                        new Booking("involved2", new BigDecimal("-10"))))
+                .build();
+
+
+        spendingRepository.insert(testSpending1);
+
+        //when
+        String actualString = webTestClient.delete()
+                .uri("http://localhost:" + port + "/project/spendings/" + testSpending1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(String.class)
+                .returnResult()
+                .getResponseBody();
+
+        List<Spending> actualList = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/spendings")
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBodyList(Spending.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        String expectedString = testSpending1.getId();
+        List<Spending> expectedList = List.of();
+
+        assertEquals(expectedString, actualString);
+        assertEquals(expectedList, actualList);
+
+    }
 }

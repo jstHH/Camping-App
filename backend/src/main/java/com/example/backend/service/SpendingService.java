@@ -63,6 +63,14 @@ public class SpendingService {
         return "";
     }
 
+    public String deleteSpendingByID (String id) {
+        spendingRepository.deleteById(id);
+        if (!spendingRepository.existsById(id)) {
+            return id;
+        }
+        return "Deletion failed";
+    }
+
     public List<Booking> createBookings(SpendingItemDTO spendingItemDTO) {
         List<Booking> newBookings = new ArrayList<>();
         BigDecimal share = spendingItemDTO.getAmount().divide(new BigDecimal(spendingItemDTO.getInvolved().size() + 1), 2,RoundingMode.HALF_UP);
