@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {Spending} from "../model/Spending";
 import {AuthContext} from "../context/AuthProvider";
-import {getAllSpendings, getSpendingByID, postSpending} from "../service/SpendingApiService";
+import {deleleteSpendingByID, getAllSpendings, getSpendingByID, postSpending} from "../service/SpendingApiService";
 import {SpendingItemDTO} from "../model/SpendinItemDTO";
 
 
@@ -30,5 +30,13 @@ export default function useSpendings() {
             .catch(console.error)
     }
 
-    return {spendings, addSpending, getUpdatedSpending}
+    const removeSpending = (id: string) => {
+        return deleleteSpendingByID(id, token)
+            .then(response => {
+                setSpendings(spendings.filter(spending => spending.id !== response))
+                return response
+            })
+    }
+
+    return {spendings, addSpending, getUpdatedSpending, removeSpending}
 }

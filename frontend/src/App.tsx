@@ -21,7 +21,7 @@ import SpendingPage from "./pages/SpendingPage";
 import useSpendings from "./hooks/useSpendings";
 
 function App() {
-    const {spendings,addSpending, getUpdatedSpending} = useSpendings()
+    const {spendings,addSpending, getUpdatedSpending, removeSpending} = useSpendings()
     const {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem} = useEquipmentItems(getUpdatedSpending);
     const currentUser = useAppUser()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems(getUpdatedSpending)
