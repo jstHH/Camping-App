@@ -3,6 +3,7 @@ import {Button, Form} from "react-bootstrap";
 import {SpendingItemDTO} from "../model/SpendinItemDTO";
 import {Spending} from "../model/Spending";
 import {AppUser} from "../model/AppUser";
+import {useNavigate} from "react-router-dom";
 
 
 type DetailsPageSpendingFieldProps = {
@@ -23,6 +24,7 @@ type DetailsPageSpendingFieldProps = {
 export default function DetailsPageSpendingField({title, itemID, itemClass, involved, owner, editMode,spending, setSpending, addSpending, removeSpending, saveItem, currentUser}: DetailsPageSpendingFieldProps) {
     const [addSpendingMode, setAddSpendingMode] = useState<boolean>(false)
     const [amount, setAmount] = useState<number>(0)
+    const navigate = useNavigate()
 
     const onSubmit = (event : FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -49,7 +51,7 @@ export default function DetailsPageSpendingField({title, itemID, itemClass, invo
         {spending && editMode ? <Button variant={"danger"}
                                         disabled={currentUser.id !== owner}
                                         onClick={onDelete}>Ausgabe Löschen</Button>
-            : spending? <Button variant={"primary"}>&#10004; Ausgabe</Button>
+            : spending? <Button variant={"primary"} onClick={() => navigate("/spendings")}>&#10004; Ausgabe</Button>
                 : !spending && addSpendingMode
                     ? <Form onSubmit={onSubmit}>
                     <Form.Control type={"number"} value={amount} placeholder={"Betrag (bsp. 1,23)"} onChange={(event) => setAmount(Number(event.target.value))}/>
