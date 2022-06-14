@@ -88,6 +88,9 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
     }
 
     const onDelete = () => {
+        if (spending) {
+            removeSpending(spending)
+        }
         removeTentItem(tentID)
         navigate("/campsite")
     }

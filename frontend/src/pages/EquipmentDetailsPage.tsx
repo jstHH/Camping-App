@@ -88,6 +88,9 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
     }
 
     const onDelete = () => {
+        if (spending) {
+            removeSpending(spending)
+        }
         removeEquipmentItem(itemID)
         navigate("/")
     }

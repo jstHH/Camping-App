@@ -92,6 +92,9 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
     }
 
     const onDelete = () => {
+        if (spending) {
+            removeSpending(spending)
+        }
         removeCarItem(carID)
         navigate("/campsite")
     }
