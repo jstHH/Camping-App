@@ -175,7 +175,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
                                            onClick={onDelete}>Löschen</Button> :
                             <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => onSubmitNavigate()}>Fertig</Button>}
+                            <Button type={"submit"} onClick={onSubmitNavigate}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>
