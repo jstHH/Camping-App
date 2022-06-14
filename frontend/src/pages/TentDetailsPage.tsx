@@ -138,7 +138,7 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
                                     onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"}
                                            onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => onSaveNavigate()}>Fertig</Button>}
+                            <Button type={"submit"} onClick={onSaveNavigate}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>
