@@ -132,7 +132,8 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
                                               setSpending={setSpending}
                                               addSpending={addSpending}
                                               removeSpending={removeSpending}
-                                              saveItem={onSave}/>
+                                              saveItem={onSave}
+                                              currentUser={currentUser}/>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}
