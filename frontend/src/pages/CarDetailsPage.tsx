@@ -19,9 +19,10 @@ type CarDetailsPageProps = {
     updateCarItem: (changedCarItem: CarItem) => void
     removeCarItem: (carID: string) => void
     addSpending: (spendingItemDTO: SpendingItemDTO) => Promise<Spending | void>
+    removeSpending: (id: string) => Promise<string>
 }
 
-export default function CarDetailsPage({appUsers, currentUser, updateCarItem, removeCarItem, addSpending}: CarDetailsPageProps) {
+export default function CarDetailsPage({appUsers, currentUser, updateCarItem, removeCarItem, addSpending, removeSpending}: CarDetailsPageProps) {
     const {carItem, getSingleCarItemByID} = useSingleCarItem()
     const {id} = useParams()
     const [carID, setCarID] = useState<string>("")
@@ -83,13 +84,21 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
             spending: spending
         }
         updateCarItem(changedCarItem)
+    }
+
+    const onSaveNavigate = () => {
+        onSave()
         navigate("/campsite")
     }
 
     const onDelete = () => {
+        if (spending) {
+            removeSpending(spending)
+        }
         removeCarItem(carID)
         navigate("/campsite")
     }
+
 
     return <div className={"car_details_container"}>
         <DetailsPageTextForm title={title}
@@ -121,7 +130,9 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
                                               editMode={editMode}
                                               spending={spending}
                                               setSpending={setSpending}
-                                              addSpending={addSpending} />
+                                              addSpending={addSpending}
+                                              removeSpending={removeSpending}
+                                              saveItem={onSave}/>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}
@@ -131,7 +142,7 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
                         {editMode? <Button type={"button"}
                                            onClick={() => setEditMode(!editMode)}>Speichern</Button> :
                             <Button type={"submit"}
-                                    onClick={() => onSave()}>Fertig</Button>}
+                                    onClick={() => onSaveNavigate()}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>

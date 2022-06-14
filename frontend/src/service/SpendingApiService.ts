@@ -15,8 +15,14 @@ export const postSpending: (newSpending: SpendingItemDTO, token?: string) => Pro
         .then(response => response.data)
 }
 
-export const getSpendingByID: (id: string, token?: string) => Promise<Spending> = (id, token) =>{
+export const getSpendingByID: (id: string, token?: string) => Promise<Spending> = (id, token) => {
     return axios.get("/project/spendings/" + id, token
+        ? {headers: {"Authorization": token}}: {})
+        .then(response => response.data)
+}
+
+export const deleleteSpendingByID: (id: string, token?: string) => Promise<string> = (id, token) => {
+    return axios.delete("/project/spendings/" + id, token
         ? {headers: {"Authorization": token}}: {})
         .then(response => response.data)
 }

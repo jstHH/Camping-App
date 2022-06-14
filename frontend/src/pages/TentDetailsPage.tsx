@@ -19,9 +19,10 @@ type TentDetailsPageProps = {
     updateTentItem: (changedTentItem: TentItem) => void
     removeTentItem: (id: string) => void
     addSpending: (spendingItemDTO: SpendingItemDTO) => Promise<Spending | void>
+    removeSpending: (id: string) => Promise<string>
 }
 
-export default function TentDetailsPage({appUsers, currentUser, updateTentItem, removeTentItem, addSpending}: TentDetailsPageProps) {
+export default function TentDetailsPage({appUsers, currentUser, updateTentItem, removeTentItem, addSpending, removeSpending}: TentDetailsPageProps) {
     const {tentItem, getSingleTentItemByID} = useSingleTentItem()
     const {id} = useParams()
     const [tentID, setTentID] = useState<string>("")
@@ -79,13 +80,21 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
             spending: spending
         }
         updateTentItem(changedTentItem)
+    }
+
+    const onSaveNavigate = () => {
+        onSave()
         navigate("/campsite")
     }
 
     const onDelete = () => {
+        if (spending) {
+            removeSpending(spending)
+        }
         removeTentItem(tentID)
         navigate("/campsite")
     }
+
 
 
     return <div className={"tent_details_container"}>
@@ -117,7 +126,9 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
                                               editMode={editMode}
                                               spending={spending}
                                               setSpending={setSpending}
-                                              addSpending={addSpending} />
+                                              addSpending={addSpending}
+                                              removeSpending={removeSpending}
+                                              saveItem={onSave}/>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}
@@ -127,7 +138,7 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
                                     onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"}
                                            onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => onSave()}>Fertig</Button>}
+                            <Button type={"submit"} onClick={onSaveNavigate}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>

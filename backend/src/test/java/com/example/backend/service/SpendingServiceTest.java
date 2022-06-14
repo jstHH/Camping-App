@@ -234,7 +234,6 @@ class SpendingServiceTest {
                 .build();
 
 
-
         when(spendingRepository.findById(testSpending.getId())).thenReturn(Optional.empty());
 
 
@@ -245,6 +244,38 @@ class SpendingServiceTest {
         String expected = "";
         verify(spendingRepository).findById(testSpending.getId());
 
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteSpendingByID_whenIDValid_returnID() {
+        //given
+        String id = "123";
+
+        when(spendingRepository.existsById(id)).thenReturn(false);
+
+        //when
+        String actual = spendingService.deleteSpendingByID(id);
+
+        //then
+        String expected = id;
+        verify(spendingRepository).existsById(id);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteSpendingByID_whenIDInvalid_returnMessage() {
+        //given
+        String id = "123";
+
+        when(spendingRepository.existsById(id)).thenReturn(true);
+
+        //when
+        String actual = spendingService.deleteSpendingByID(id);
+
+        //then
+        String expected = "Deletion failed";
+        verify(spendingRepository).existsById(id);
         assertEquals(expected, actual);
     }
 }
