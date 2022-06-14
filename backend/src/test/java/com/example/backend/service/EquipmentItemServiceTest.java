@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.EquipmentItemDTO;
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.model.EquipmentItem;
 import com.example.backend.repository.EquipmentItemRepository;
 import org.junit.jupiter.api.Test;
@@ -118,7 +119,7 @@ class EquipmentItemServiceTest {
     }
 
     @Test
-    void updateEquipmentItem() {
+    void updateEquipmentItem_withoutSpending() {
         //given
         String testID = "123xyz";
         EquipmentItemDTO testItemDTO = EquipmentItemDTO.builder()
@@ -147,6 +148,50 @@ class EquipmentItemServiceTest {
 
         //then
         EquipmentItem expected = testItem;
+        verify(equipmentItemRepository).save(testItem);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateEquipmentItem_withSpending() {
+        //given
+        String testID = "123xyz";
+        EquipmentItemDTO testItemDTO = EquipmentItemDTO.builder()
+                .title("testtitle")
+                .description("testdescription")
+                .involved(new ArrayList<>(Arrays.asList("User1")))
+                .owner("testownerID")
+                .spending("123")
+                .done(false)
+                .important(false)
+                .build();
+
+        EquipmentItem testItem = EquipmentItem.builder()
+                .id(testID)
+                .title("testtitle")
+                .description("testdescription")
+                .involved(new ArrayList<>(Arrays.asList("User1")))
+                .owner("testownerID")
+                .spending("123")
+                .done(false)
+                .important(false)
+                .build();
+
+        SpendingItemDTO testSpending = SpendingItemDTO.builder()
+                .title(testItemDTO.getTitle())
+                .owner(testItemDTO.getOwner())
+                .involved(testItemDTO.getInvolved())
+                .build();
+
+        when(spendingService.updateSpending(testItemDTO.getSpending(), testSpending)).thenReturn(testItemDTO.getSpending());
+        when(equipmentItemRepository.save(testItem)).thenReturn(testItem);
+
+        //when
+        EquipmentItem actual = equipmentItemService.updateEquipmentItem(testItemDTO, testID);
+
+        //then
+        EquipmentItem expected = testItem;
+        verify(spendingService).updateSpending(testItemDTO.getSpending(), testSpending);
         verify(equipmentItemRepository).save(testItem);
         assertEquals(expected, actual);
     }

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.SpendingItemDTO;
 import com.example.backend.dto.TentItemDTO;
 import com.example.backend.model.TentItem;
 import com.example.backend.repository.TentItemRepository;
@@ -121,7 +122,7 @@ class TentItemServiceTest {
     }
 
     @Test
-    void updateTentItem() {
+    void updateTentItem_withoutSpending() {
         //given
         TentItem testTent1 = TentItem.builder()
                 .id("1")
@@ -150,6 +151,50 @@ class TentItemServiceTest {
 
         //then
         TentItem expected = testTent1;
+        verify(tentItemRepository).save(testTent1);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateTentItem_withSpending() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .capacity(3)
+                .spending("123")
+                .shelter(false)
+                .build();
+
+
+        TentItemDTO testTentDTO1 = TentItemDTO.builder()
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .capacity(3)
+                .spending("123")
+                .shelter(false)
+                .build();
+
+        SpendingItemDTO testTentSpending = SpendingItemDTO.builder()
+                .title(testTentDTO1.getTitle())
+                .owner(testTentDTO1.getOwner())
+                .involved(testTentDTO1.getInvolved())
+                .build();
+
+        when(spendingService.updateSpending(testTentDTO1.getSpending(), testTentSpending)).thenReturn(testTentDTO1.getSpending());
+        when(tentItemRepository.save(testTent1)).thenReturn(testTent1);
+
+        //when
+        TentItem actual = tentItemService.updateTentItem("1", testTentDTO1);
+
+        //then
+        TentItem expected = testTent1;
+        verify(spendingService).updateSpending(testTentDTO1.getSpending(), testTentSpending);
         verify(tentItemRepository).save(testTent1);
         assertEquals(expected, actual);
     }
