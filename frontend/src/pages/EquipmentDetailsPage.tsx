@@ -15,9 +15,10 @@ export type EquipmentDetailsPageProps = {
     updateEquipmentItem: (changedEquipmentItem: EquipmentItem) => void
     removeEquipmentItem: (equipmentItemID: string) => void
     addSpending: (spendingItemDTO: SpendingItemDTO) => Promise<Spending | void>
+    removeSpending: (id: string) => Promise<string>
 }
 
-export default function EquipmentDetailsPage({appUsers, currentUser, updateEquipmentItem, removeEquipmentItem, addSpending} : EquipmentDetailsPageProps) {
+export default function EquipmentDetailsPage({appUsers, currentUser, updateEquipmentItem, removeEquipmentItem, addSpending, removeSpending} : EquipmentDetailsPageProps) {
     const {equipmentItem, getSingleEquipmentItemByID} = useSingleEquipmentItem()
     const {id} = useParams()
     const [itemID, setItemID] = useState<string>("")
@@ -78,12 +79,23 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             spending: spending
         }
         updateEquipmentItem(changedItem)
+        
+    }
+    
+    const onSubmitNavigate = () => {
+        onSubmit()
         navigate("/")
     }
 
     const onDelete = () => {
         removeEquipmentItem(itemID)
         navigate("/")
+    }
+
+    const onOwnerSignOut = () => {
+        setOwnerID("")
+        removeSpending(spending)
+            .then(response => response === spending && setSpending(""))
     }
 
 
@@ -128,7 +140,7 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
                     {(ownerID ?
                         <Button variant={"outline-dark"}
                                 disabled={editMode}
-                                onClick={() => setOwnerID("")}>{findUserNameByID(ownerID)}</Button> :
+                                onClick={() => onOwnerSignOut()}>{findUserNameByID(ownerID)}</Button> :
                         !involved.includes(currentUser.id) &&
                         <Button variant={"primary"}
                                 disabled={editMode}
@@ -153,14 +165,14 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             </div>
             <div className={"controll_buttons"}>
                 <Stack>
-                    <DetailsPageSpendingField title={title} itemID={itemID} itemClass={"equipment"} owner={ownerID} involved={involved} editMode={editMode} spending={spending} setSpending={setSpending} addSpending={addSpending}/>
+                    <DetailsPageSpendingField title={title} itemID={itemID} itemClass={"equipment"} owner={ownerID} involved={involved} editMode={editMode} spending={spending} setSpending={setSpending} addSpending={addSpending} removeSpending={removeSpending} saveItem={onSubmit}/>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}
                                            onClick={onDelete}>Löschen</Button> :
                             <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
                         {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
-                            <Button type={"submit"} onClick={() => onSubmit()}>Fertig</Button>}
+                            <Button type={"submit"} onClick={() => onSubmitNavigate()}>Fertig</Button>}
                     </div>
                 </Stack>
             </div>
