@@ -25,7 +25,7 @@ function App() {
     const {equipmentItems, addEquipmentItem, updateEquipmentItem, removeEquipmentItem} = useEquipmentItems(getUpdatedSpending);
     const currentUser = useAppUser()
     const {carItems, addCarItem, updateCarItem, removeCarItem} = useCarItems(getUpdatedSpending)
-    const {tentItems, addTentItem, updateTentItem, removeTentItem} = useTentItems()
+    const {tentItems, addTentItem, updateTentItem, removeTentItem} = useTentItems(getUpdatedSpending)
     const appUsers = useAllAppUsers(spendings)
 
     return (
