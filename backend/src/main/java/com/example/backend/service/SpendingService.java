@@ -50,7 +50,7 @@ public class SpendingService {
 
     public String updateSpending(String id, SpendingItemDTO spendingItemDTO) {
         if (spendingRepository.findById(id).isPresent()) {
-            Spending changedSpending = spendingRepository.findById(id).get();
+            Spending changedSpending = spendingRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Spending with id " + id + " not found!"));
             spendingItemDTO.setAmount(changedSpending.getAmount());
             changedSpending.setTitle(spendingItemDTO.getTitle());
             changedSpending.setOwner(spendingItemDTO.getOwner());
