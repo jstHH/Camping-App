@@ -5,7 +5,7 @@ import {deleteTentItem, getAllTentItems, postTentItem, putTentItem} from "../ser
 import {Omit} from "react-bootstrap/helpers";
 
 
-export default function useTentItems() {
+export default function useTentItems(getUpdatedSpending: (id: string) => void) {
     const [tentItems, setTentItems] = useState<TentItem[]>([])
     const {token} = useContext(AuthContext)
 
@@ -23,7 +23,10 @@ export default function useTentItems() {
 
     const updateTentItem = (changedTentItem: TentItem) => {
         putTentItem(changedTentItem, token)
-            .then(response => setTentItems(tentItems.map(tent => tent.id === response.id? response: tent)))
+            .then(response => {
+                setTentItems(tentItems.map(tent => tent.id === response.id? response: tent))
+                getUpdatedSpending(response.spending)
+            })
             .catch(console.error)
     }
 

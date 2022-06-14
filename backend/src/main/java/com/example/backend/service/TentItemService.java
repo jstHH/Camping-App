@@ -56,9 +56,7 @@ public class TentItemService {
                 .description(changedTentItem.getDescription())
                 .owner(changedTentItem.getOwner())
                 .involved(changedTentItem.getInvolved())
-                .spending(!changedTentItem.getSpending().equals("")
-                        ? spendingService.updateSpending(changedTentItem.getSpending(), changedSpending)
-                        : changedTentItem.getSpending())
+                .spending(spendingService.updateSpending(changedTentItem.getSpending(), changedSpending))
                 .capacity(changedTentItem.getCapacity())
                 .shelter(changedTentItem.isShelter())
                 .build());

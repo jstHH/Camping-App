@@ -40,16 +40,18 @@ public class EquipmentItemService {
     }
 
     public EquipmentItem updateEquipmentItem(EquipmentItemDTO equipmentItemDTO, String id) {
+        SpendingItemDTO changedSpending = SpendingItemDTO.builder()
+                .title(equipmentItemDTO.getTitle())
+                .owner(equipmentItemDTO.getOwner())
+                .involved(equipmentItemDTO.getInvolved())
+                .build();
+
         return equipmentItemRepository.save(EquipmentItem.builder()
                 .title(equipmentItemDTO.getTitle())
                 .description(equipmentItemDTO.getDescription())
                 .owner(equipmentItemDTO.getOwner())
                 .involved(equipmentItemDTO.getInvolved())
-                .spending(spendingService.updateSpending(equipmentItemDTO.getSpending(), SpendingItemDTO.builder()
-                        .title(equipmentItemDTO.getTitle())
-                        .owner(equipmentItemDTO.getOwner())
-                        .involved(equipmentItemDTO.getInvolved())
-                        .build()))
+                .spending(spendingService.updateSpending(equipmentItemDTO.getSpending(), changedSpending))
                 .id(id)
                 .important(equipmentItemDTO.isImportant())
                 .done(equipmentItemDTO.isDone())

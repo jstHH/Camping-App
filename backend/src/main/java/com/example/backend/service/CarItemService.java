@@ -21,11 +21,11 @@ public class CarItemService {
         this.spendingService = spendingService;
     }
 
-    public List<CarItem> getCarItems () {
+    public List<CarItem> getCarItems() {
         return carItemRepository.findAll();
     }
 
-    public CarItem addCarItem (CarItemDTO carItemDTO) {
+    public CarItem addCarItem(CarItemDTO carItemDTO) {
         CarItem newCarItem = CarItem.builder()
                 .title(carItemDTO.getTitle())
                 .description(carItemDTO.getDescription())
@@ -40,11 +40,11 @@ public class CarItemService {
         return carItemRepository.insert(newCarItem);
     }
 
-    public CarItem getCarItemByID (String id) {
+    public CarItem getCarItemByID(String id) {
         return carItemRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Car with id " + id + " not found"));
     }
 
-    public CarItem updateCarItem (String id, CarItemDTO carItemDTO) {
+    public CarItem updateCarItem(String id, CarItemDTO carItemDTO) {
         SpendingItemDTO changedSpending = SpendingItemDTO.builder()
                 .title(carItemDTO.getTitle())
                 .owner(carItemDTO.getOwner())
