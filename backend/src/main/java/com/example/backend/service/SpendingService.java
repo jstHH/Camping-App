@@ -65,6 +65,7 @@ public class SpendingService {
 
     public String deleteSpendingByID (String id) {
         spendingRepository.deleteById(id);
+        appUserDataService.calculateUserBalance(getAllBookings());
         if (!spendingRepository.existsById(id)) {
             return id;
         }
