@@ -44,7 +44,7 @@ export default function DetailsPageSpendingField({title, itemID, itemClass, invo
     }
 
     return <div>
-        {spending && editMode ? <Button variant={"danger"} onClick={() => onDelete()}>Ausgabe Löschen</Button>
+        {spending && editMode ? <Button variant={"danger"} onClick={onDelete}>Ausgabe Löschen</Button>
             : spending? <Button variant={"primary"}>Ausgabe</Button>
                 : !spending && addSpendingMode ? <Form onSubmit={onSubmit}>
                     <Form.Control type={"number"} value={amount} placeholder={"Betrag (bsp. 1,23)"} onChange={(event) => setAmount(Number(event.target.value))}/>
