@@ -165,4 +165,36 @@ class SpendingControllerTest {
         assertEquals(expectedList, actualList);
     }
 
+    @Test
+    void getSpendingByID() {
+        //given
+        Spending testSpending1 = Spending.builder()
+                .id("1")
+                .itemID("123abc")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .amount(new BigDecimal("30"))
+                .bookings(List.of(new Booking("owner1", new BigDecimal("20")),
+                        new Booking("involved1", new BigDecimal("-10")),
+                        new Booking("involved2", new BigDecimal("-10"))))
+                .build();
+
+
+        spendingRepository.insert(testSpending1);
+
+
+        //when
+        Spending actual = webTestClient.get()
+                .uri("http://localhost:" + port + "/project/spendings/" + testSpending1.getId())
+                .headers(http -> http.setBearerAuth(jwtToken))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Spending.class)
+                .returnResult()
+                .getResponseBody();
+
+        //then
+        Spending expected = testSpending1;
+        assertEquals(expected, actual);
+    }
 }

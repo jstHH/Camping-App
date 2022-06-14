@@ -27,7 +27,7 @@ public class SpendingController {
     }
 
     @GetMapping("{id}")
-    public Spending updateSpending(@PathVariable String id) {
+    public Spending getSpendingByID(@PathVariable String id) {
         return spendingService.getSpendingByID(id);
     }
 

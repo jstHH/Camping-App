@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -157,6 +158,92 @@ class SpendingServiceTest {
                 new Booking("owner2", new BigDecimal("30")),
                 new Booking("involved3", new BigDecimal("-15")),
                 new Booking("involved4", new BigDecimal("-15")));
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateSpending_whenIDValid_returnID() {
+        //given
+        SpendingItemDTO testSpendingDTO = SpendingItemDTO.builder()
+                .title("Testspending")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .build();
+
+        SpendingItemDTO testSpendingDTOBookings = SpendingItemDTO.builder()
+                .title("Testspending")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .amount(new BigDecimal("20"))
+                .build();
+
+        Spending testSpending = Spending.builder()
+                .id("1")
+                .title("Testspending")
+                .itemID("123abc")
+                .owner("owner1")
+                .involved(List.of("involved1"))
+                .amount(new BigDecimal("20"))
+                .bookings(List.of(new Booking("owner1", new BigDecimal("10")),
+                        new Booking("involved1", new BigDecimal("-10"))))
+                .build();
+
+        Spending changedSpending = Spending.builder()
+                .id("1")
+                .title("Testspending")
+                .itemID("123abc")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .amount(new BigDecimal("20"))
+                .bookings(spendingService.createBookings(testSpendingDTOBookings))
+                .build();
+
+        when(spendingRepository.findById(testSpending.getId())).thenReturn(Optional.of(testSpending));
+        when(spendingRepository.save(changedSpending)).thenReturn(changedSpending);
+
+        //when
+        String actual = spendingService.updateSpending(testSpending.getId(), testSpendingDTO);
+
+        //then
+        String expected = testSpending.getId();
+        verify(spendingRepository, times(2)).findById(testSpending.getId());
+        verify(spendingRepository).save(changedSpending);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void updateSpending_whenIDInvalid_returnEmptyString() {
+        //given
+        SpendingItemDTO testSpendingDTO = SpendingItemDTO.builder()
+                .title("Testspending")
+                .owner("owner1")
+                .involved(List.of("involved1", "involved 2"))
+                .build();
+
+
+        Spending testSpending = Spending.builder()
+                .id("1")
+                .title("Testspending")
+                .itemID("123abc")
+                .owner("owner1")
+                .involved(List.of("involved1"))
+                .amount(new BigDecimal("20"))
+                .bookings(List.of(new Booking("owner1", new BigDecimal("10")),
+                        new Booking("involved1", new BigDecimal("-10"))))
+                .build();
+
+
+
+        when(spendingRepository.findById(testSpending.getId())).thenReturn(Optional.empty());
+
+
+        //when
+        String actual = spendingService.updateSpending(testSpending.getId(), testSpendingDTO);
+
+        //then
+        String expected = "";
+        verify(spendingRepository).findById(testSpending.getId());
 
         assertEquals(expected, actual);
     }
