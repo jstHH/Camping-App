@@ -168,7 +168,18 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             </div>
             <div className={"controll_buttons"}>
                 <Stack>
-                    <DetailsPageSpendingField title={title} itemID={itemID} itemClass={"equipment"} owner={ownerID} involved={involved} editMode={editMode} spending={spending} setSpending={setSpending} addSpending={addSpending} removeSpending={removeSpending} saveItem={onSubmit}/>
+                    <DetailsPageSpendingField title={title}
+                                              itemID={itemID}
+                                              itemClass={"equipment"}
+                                              owner={ownerID}
+                                              involved={involved}
+                                              editMode={editMode}
+                                              spending={spending}
+                                              setSpending={setSpending}
+                                              addSpending={addSpending}
+                                              removeSpending={removeSpending}
+                                              saveItem={onSubmit}
+                                              currentUser={currentUser}/>
                     <div>
                         {editMode? <Button variant="danger"
                                            type={"button"}

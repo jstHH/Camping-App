@@ -3,6 +3,7 @@ import {AppUser} from "../model/AppUser";
 import {Button, Card, ListGroup, Nav} from "react-bootstrap";
 import {useState} from "react";
 import "./SpendingCard.css"
+import {useNavigate} from "react-router-dom";
 
 export type SpendingCardProps = {
     spending: Spending
@@ -11,14 +12,25 @@ export type SpendingCardProps = {
 
 export default function SpendingCard({spending, appUsers}: SpendingCardProps) {
     const [selectOverview, setSelectOverview] = useState<boolean>(true)
+    const navigate = useNavigate()
 
     const getUserName: (userID: string) => string = (userID) => {
         const user = appUsers.find(user => user.id === userID)
         return (user !== undefined ? user.name : "Keiner")
     }
 
+    const onCardClick = () => {
+        if (spending.itemClass === "equipment") {
+            navigate("/equipment/" + spending.itemID)
+        } else if (spending.itemClass === "cars") {
+            navigate("/campsite/car/" + spending.itemID)
+        } else {
+            navigate("/campsite/tent/" + spending.itemID)
+        }
+    }
+
     return <div>
-        <Card>
+        <Card onDoubleClick={onCardClick}>
             <Card.Header>
                 <Nav onSelect={(eventKey) => eventKey === "overview"? setSelectOverview(true) : setSelectOverview(false)} variant="tabs" defaultActiveKey="#first">
                     <Nav.Item>
