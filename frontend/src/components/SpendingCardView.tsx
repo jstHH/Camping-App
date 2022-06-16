@@ -13,6 +13,7 @@ export default function SpendingCardView({spendings, appUsers}: SpendingCardView
 
 
     return <div className={"spending_card_container"}>
-        {spendings.length > 0 ? (spendings.map(spending => <SpendingCard spending={spending} appUsers={appUsers}/>)): <p>Nichts da</p>}
+        {spendings.length > 0 ? (spendings.map(spending => <SpendingCard spending={spending} appUsers={appUsers}/>)) :
+            <p>Nichts da</p>}
     </div>
 }

@@ -7,6 +7,7 @@ import {
     putEquipmentItem
 } from "../service/EquipmenItemApiService";
 import {AuthContext} from "../context/AuthProvider";
+import {toast} from "react-hot-toast";
 
 
 export default function useEquipmentItems(getUpdatedSpending: (id: string) => void) {
@@ -22,7 +23,8 @@ export default function useEquipmentItems(getUpdatedSpending: (id: string) => vo
     const addEquipmentItem = (newEquipmentItem: Omit<EquipmentItem, "id">) => {
         postEquipmentItem(newEquipmentItem, token)
             .then(response => setEquipmentItems([...equipmentItems, response]))
-            .catch(console.error)
+            .then(() => toast.success("Neue Ausrüstung hinzugefügt"))
+            .catch(() => toast.error("Das hat nicht geklappt!"))
     }
 
     const updateEquipmentItem = (changedEquipmentItem: EquipmentItem) => {
@@ -30,14 +32,16 @@ export default function useEquipmentItems(getUpdatedSpending: (id: string) => vo
             .then(response => {
                 setEquipmentItems(equipmentItems.map(item => item.id === response.id ? response:item))
                 getUpdatedSpending(response.spending)
+                toast.success("Ausrüstung gespeichert")
             })
-            .catch(console.error)
+            .catch(() => toast.error("Das hat nicht geklappt!"))
     }
 
     const removeEquipmentItem = (equipmentItemID: string) => {
         deleteEquipmentItem(equipmentItemID, token)
             .then(response => response === equipmentItemID && setEquipmentItems(equipmentItems.filter(item => item.id !== response)))
-            .catch(console.error)
+            .then(() => toast.success("Ausrüstung gelöscht"))
+            .catch(() => toast.error("Das hat nicht geklappt!"))
     }
 
 

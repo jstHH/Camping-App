@@ -5,6 +5,7 @@ import {FormEvent, useState} from "react";
 import {Button, ButtonGroup, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {TentItem} from "../model/TentItem";
+import "./AddCarTentForm.css"
 
 
 export type AddCarTentFormProps = {
@@ -63,7 +64,7 @@ export default function AddCarTentForm({addCarItem, addTentItem, currentUser, fo
     }
 
 
-    return <div>
+    return <div className={"addformcontainer"}>
         <Form onSubmit={forCar? onAddCar: onAddTent}>
             <Form.Group>
                 <Form.Label>Bezeichnung</Form.Label>
@@ -81,7 +82,7 @@ export default function AddCarTentForm({addCarItem, addTentItem, currentUser, fo
                             id={"check_category"}
                 />
             </Form.Group>
-            <Form.Group>
+            <Form.Group className={"capacity"}>
                 <Form.Label>{forCar? "Wieviele können mitfahren?": "Wieviele Plätze sind noch frei?"}</Form.Label>
                 <ButtonGroup>
                     <Button variant={capacity === 1? "dark" : "outline-dark"} disabled={forCar? trailer : pavillion} onClick={() => setCapacity(1)}>1</Button>
