@@ -97,7 +97,9 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
 
 
 
-    return <div className={"tent_details_container"}>
+    return <div>
+        <h1>Details</h1>
+        <div className={"tent_details_container"}>
         <DetailsPageTextForm title={title}
                              setTitle={setTitle}
                              description={description}
@@ -144,5 +146,6 @@ export default function TentDetailsPage({appUsers, currentUser, updateTentItem, 
                 </Stack>
             </div>
         </Stack>
+    </div>
     </div>
 }

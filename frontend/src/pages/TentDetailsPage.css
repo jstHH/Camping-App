@@ -1,4 +1,8 @@
 .tent_details_container {
     display: grid;
     grid-template-columns: 50% 50%;
+    padding-left: 25%;
+    padding-right: 25%;
+    gap: 5%;
 }
+

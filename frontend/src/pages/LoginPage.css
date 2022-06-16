@@ -1,0 +1,11 @@
+.logincontainer {
+    display: flex;
+    flex-direction: column;
+    padding-left: 40%;
+    padding-right: 40%;
+}
+
+.header {
+    gap: 20%;
+    font-family: Impact;
+}

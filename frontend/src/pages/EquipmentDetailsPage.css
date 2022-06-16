@@ -1,11 +1,47 @@
-.edit_container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
+.equipment_page_container {
+    padding-left: 20%;
+    padding-right: 20%;
 }
 
-.owner { grid-area: 1 / 2 / 2 / 3; }
-.involved { grid-area: 2 / 2 / 3 / 3; }
-.controll_buttons { align-content: end }
+.edit_container {
+    grid-area: 1 / 2 / 5 / 4;
+}
+
+.fieldcontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
+
+}
+
+.owner {
+    display: flex;
+    gap: 5%;
+    align-items: center;
+}
+
+.involved {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 3%;
+}
+
+.controll_buttons {
+    gap: 2%;
+}
+
+.checkboxen {
+    display: flex;
+    flex-direction: column;
+}
+.important {
+    display: flex;
+    justify-content: flex-start;
+    gap: 2%;
+}
+.done {
+    display: flex;
+    justify-content: flex-start;
+    gap: 2%;
+}

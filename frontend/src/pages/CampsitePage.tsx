@@ -4,6 +4,7 @@ import {AppUser} from "../model/AppUser";
 import CarOverview from "../components/CarOverview";
 import {TentItem} from "../model/TentItem";
 import TentOverview from "../components/TentOverview";
+import "./CampsitePage.css"
 
 export type CampsitePageProps = {
     carItems: CarItem[]
@@ -11,10 +12,12 @@ export type CampsitePageProps = {
     appUsers: AppUser[]
 }
 
-export default function CampsitePage({carItems, tentItems, appUsers} : CampsitePageProps) {
-    return <div>
+export default function CampsitePage({carItems, tentItems, appUsers}: CampsitePageProps) {
+    return <div className={"page_container"}>
         <AppHeader/>
-        <CarOverview carItems={carItems} appUsers={appUsers} />
-        <TentOverview tentItems={tentItems} appUsers={appUsers} />
+        <div className={"campsite"}>
+            <CarOverview carItems={carItems} appUsers={appUsers}/>
+            <TentOverview tentItems={tentItems} appUsers={appUsers}/>
+        </div>
     </div>
 }

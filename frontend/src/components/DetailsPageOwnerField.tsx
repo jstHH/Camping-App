@@ -10,7 +10,7 @@ export default function DetailsPageOwnerField({ownerName, forCar}: DetailsPageOw
     return <div>
         <Stack direction={"horizontal"} gap={5}>
             <Form.Label>{forCar? "Fahrer:" : "Besitzer:"}</Form.Label>
-            <Button variant={"outline-primary"}>{ownerName}</Button>
+            <Button variant={"info"}>{ownerName}</Button>
         </Stack>
     </div>
 }

@@ -17,6 +17,7 @@ export default function EquipmentItemCard({equipmentItem, ownerName}: EquipmentI
             <Card.Body>
                 <Card.Title>{equipmentItem.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{ownerName} kümmert sich</Card.Subtitle>
+                {equipmentItem.done && <Card.Text>erledigt</Card.Text>}
             </Card.Body>
         </Card>
     </div>
