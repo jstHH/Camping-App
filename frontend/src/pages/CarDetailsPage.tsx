@@ -100,7 +100,9 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
     }
 
 
-    return <div className={"car_details_container"}>
+    return<div>
+        <h1>Details</h1>
+        <div className={"car_details_container"}>
         <DetailsPageTextForm title={title}
                              setTitle={setTitle}
                              description={description}
@@ -148,5 +150,6 @@ export default function CarDetailsPage({appUsers, currentUser, updateCarItem, re
                 </Stack>
             </div>
         </Stack>
+    </div>
     </div>
 }

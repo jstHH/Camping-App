@@ -38,7 +38,7 @@ export default function CarTopView({carItems, appUsers}: CarTopViewProps) {
                     <Button variant="primary" onClick={() => navigate("/campsite/addcar")}>Neues Auto</Button>
                 </Nav>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className={"body_container"}>
                 <Stack direction="horizontal" gap={3}>
                     <Card.Title>User ohne Mitfahrgelegenheit:</Card.Title>
                 </Stack>

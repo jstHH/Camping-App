@@ -25,10 +25,10 @@ export default function DetailsPageInvolvedField({owner, capacity, involved, set
                 <Form.Label>{capacity - involved.length} Plätze frei</Form.Label>
                 <Form.Label>{textLabel}</Form.Label>
             </Stack>
-            {involved.map(user => <Button variant={"outline-dark"}>{findUserNameByID(user)}</Button>)}
+            {involved.map(user => <Button variant={"info"}>{findUserNameByID(user)}</Button>)}
             {owner !== currentUser.id && !involved.includes(currentUser.id)? <Button variant={"primary"}
                                                                                      type={"button"}
-                                                                                     disabled={editMode}
+                                                                                     disabled={editMode  || (involved.length >= capacity && true)}
                                                                                      onClick={() => setInvolved([...involved, currentUser.id])}>{textIn}</Button>:
             involved.includes(currentUser.id) && <Button variant={"secondary"}
                                                          type={"button"}

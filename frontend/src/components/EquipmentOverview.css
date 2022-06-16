@@ -1,0 +1,7 @@
+.equipment_overview {
+    background-color: #FFFCF2;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+}

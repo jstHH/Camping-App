@@ -3,3 +3,7 @@
     justify-content: flex-start;
     gap: 5px;
 }
+
+.body_container {
+    background-color: #f8f9fa;
+}

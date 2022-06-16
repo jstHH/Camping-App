@@ -38,7 +38,7 @@ export default function TentTopView({tentItems, appUsers}: TentTopViewProps) {
                     <Button variant="primary" onClick={() => navigate("/campsite/addtent")}>Neues Zelt</Button>
                 </Nav>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className={"body_container"} >
                 <Stack direction="horizontal" gap={3}>
                     <Card.Title>User ohne Schlafplatz:</Card.Title>
                 </Stack>

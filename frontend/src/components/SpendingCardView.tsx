@@ -12,7 +12,7 @@ export type SpendingCardViewProps = {
 export default function SpendingCardView({spendings, appUsers}: SpendingCardViewProps) {
 
 
-    return <div className={"card_container"}>
+    return <div className={"spending_card_container"}>
         {spendings.length > 0 ? (spendings.map(spending => <SpendingCard spending={spending} appUsers={appUsers}/>)): <p>Nichts da</p>}
     </div>
 }

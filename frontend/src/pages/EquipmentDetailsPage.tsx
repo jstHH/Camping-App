@@ -1,7 +1,7 @@
 import useSingleEquipmentItem from "../hooks/useSingleEquipmentItem";
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Button, Form, FormCheck, Stack} from "react-bootstrap";
+import {Button, Form, FormCheck} from "react-bootstrap";
 import {AppUser} from "../model/AppUser";
 import "./EquipmentDetailsPage.css"
 import {EquipmentItem} from "../model/EquipmentItem";
@@ -18,7 +18,14 @@ export type EquipmentDetailsPageProps = {
     removeSpending: (id: string) => Promise<string>
 }
 
-export default function EquipmentDetailsPage({appUsers, currentUser, updateEquipmentItem, removeEquipmentItem, addSpending, removeSpending} : EquipmentDetailsPageProps) {
+export default function EquipmentDetailsPage({
+                                                 appUsers,
+                                                 currentUser,
+                                                 updateEquipmentItem,
+                                                 removeEquipmentItem,
+                                                 addSpending,
+                                                 removeSpending
+                                             }: EquipmentDetailsPageProps) {
     const {equipmentItem, getSingleEquipmentItemByID} = useSingleEquipmentItem()
     const {id} = useParams()
     const [itemID, setItemID] = useState<string>("")
@@ -36,11 +43,11 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
     const navigate = useNavigate()
 
     useEffect(() => {
-            if (id) {
-                getSingleEquipmentItemByID(id)
-            }
+        if (id) {
+            getSingleEquipmentItemByID(id)
+        }
         // eslint-disable-next-line
-        }, [id])
+    }, [id])
 
     useEffect(() => {
         if (equipmentItem) {
@@ -54,7 +61,8 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
                 setInvolved(equipmentItem.involved)
             }
             setSpending(equipmentItem.spending)
-        }},[equipmentItem])
+        }
+    }, [equipmentItem])
 
 
     const findUserNameByID = (id: string) => {
@@ -79,9 +87,9 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
             spending: spending
         }
         updateEquipmentItem(changedItem)
-        
+
     }
-    
+
     const onSubmitNavigate = () => {
         onSubmit()
         navigate("/")
@@ -102,8 +110,10 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
     }
 
 
-    return<div className={"edit_container"}>
-                <Form onSubmit={onSubmit}>
+    return <div className={"equipment_page_container"}>
+        <h1>Details</h1>
+        <div className={"edit_container"}>
+            <Form className={"form_container"} onSubmit={onSubmit}>
                 <Form.Group className={"titel"}>
                     <Form.Label>Titel</Form.Label>
                     <Form.Control
@@ -124,37 +134,37 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
                     />
                 </Form.Group>
                 <Form.Group className={"checkboxen"}>
-                    <FormCheck type={"checkbox"}
-                               label={"Wichtig?"}
-                               checked={isImportant}
-                               disabled={!editMode}
-                               onClick={() =>setIsImportant(!isImportant)}/>
-                    <FormCheck type={"checkbox"}
-                               label={"Erledigt?"}
-                               checked={isDone}
-                               disabled={!editMode}
-                               onClick={() =>setIsDone(!isDone)} />
+                        <FormCheck type={"checkbox"}
+                                   className={"important"}
+                                   label={"Wichtig?"}
+                                   checked={isImportant}
+                                   disabled={!editMode}
+                                   onClick={() => setIsImportant(!isImportant)}/>
+                        <FormCheck type={"checkbox"}
+                                   className={"done"}
+                                   label={"Erledigt?"}
+                                   checked={isDone}
+                                   disabled={!editMode}
+                                   onClick={() => setIsDone(!isDone)}/>
                 </Form.Group>
             </Form>
-        <div>
-            <div className={"owner"}>
-                <Stack direction="horizontal" gap={5}>
+            <div className={"fieldcontainer"}>
+                <div className={"owner"}>
                     <Form.Label>Wer kümmert sich?</Form.Label>
                     {(ownerID ?
-                        <Button variant={"outline-dark"}
+                        <Button variant={"info"}
                                 disabled={editMode}
                                 onClick={() => onOwnerSignOut()}>{findUserNameByID(ownerID)}</Button> :
                         !involved.includes(currentUser.id) &&
                         <Button variant={"primary"}
                                 disabled={editMode}
                                 onClick={() => setOwnerID(currentUser.id)}>Übernehmen</Button>)}
-                </Stack>
-            </div>
-            <div className={"involved"}>
-                <Stack>
+                </div>
+                <div className={"involved"}>
                     <Form.Label>Wer ist dabei?</Form.Label>
                     {appUsers.filter(user => involved.includes(user.id))
-                        .map(involvedUser => <Button variant={"outline-dark"}>{findUserNameByID(involvedUser.id)}</Button>)}
+                        .map(involvedUser => <Button
+                            variant={"info"}>{findUserNameByID(involvedUser.id)}</Button>)}
                     {(currentUser && (!involved.includes(currentUser.id) && ownerID !== currentUser.id) ?
                         <Button variant="primary"
                                 type={"button"}
@@ -164,10 +174,8 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
                                                type={"button"}
                                                disabled={editMode}
                                                onClick={() => setInvolved(involved.filter(user => user !== currentUser.id))}> Austragen</Button>)}
-                </Stack>
-            </div>
-            <div className={"controll_buttons"}>
-                <Stack>
+                </div>
+                <div className={"controll_buttons"}>
                     <DetailsPageSpendingField title={title}
                                               itemID={itemID}
                                               itemClass={"equipment"}
@@ -181,14 +189,15 @@ export default function EquipmentDetailsPage({appUsers, currentUser, updateEquip
                                               saveItem={onSubmit}
                                               currentUser={currentUser}/>
                     <div>
-                        {editMode? <Button variant="danger"
-                                           type={"button"}
-                                           onClick={onDelete}>Löschen</Button> :
+                        {editMode ? <Button variant="danger"
+                                            type={"button"}
+                                            onClick={onDelete}>Löschen</Button> :
                             <Button type={"button"} onClick={() => setEditMode(!editMode)}>Bearbeiten</Button>}
-                        {editMode? <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
+                        {editMode ?
+                            <Button type={"button"} onClick={() => setEditMode(!editMode)}>Speichern</Button> :
                             <Button type={"submit"} onClick={onSubmitNavigate}>Fertig</Button>}
                     </div>
-                </Stack>
+                </div>
             </div>
         </div>
     </div>

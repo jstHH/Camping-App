@@ -1,6 +1,7 @@
 import {FormEvent, useContext, useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import {AuthContext} from "../context/AuthProvider";
+import "./LoginPage.css"
 
 
 export default function LoginPage() {
@@ -16,10 +17,11 @@ export default function LoginPage() {
 
 
 
-    return <div>
+    return <div className={"logincontainer"}>
+        <h1 className={"header"}>Camp4All</h1>
         <Form onSubmit={onSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Login E-Mail Adresse</Form.Label>
+                <Form.Label>Login E-Mail</Form.Label>
                 <Form.Control type="email"
                               value={loginName}
                               placeholder="E-Mail eingeben"
