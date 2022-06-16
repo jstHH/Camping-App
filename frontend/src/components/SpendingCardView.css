@@ -1,4 +1,4 @@
-.card_container {
+.spending_card_container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-column-gap: 5px;
