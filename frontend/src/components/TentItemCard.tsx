@@ -17,9 +17,9 @@ export default function TentItemCard({tentItem, ownerName}: TentItemCardProps) {
             <Card.Body>
                 <Card.Title>{tentItem.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">von {ownerName}</Card.Subtitle>
-                <Card.Text>
+                {!tentItem.shelter && <Card.Text>
                     {tentItem.capacity - tentItem.involved.length} Plätze frei.
-                </Card.Text>
+                </Card.Text>}
             </Card.Body>
         </Card>
     </div>
