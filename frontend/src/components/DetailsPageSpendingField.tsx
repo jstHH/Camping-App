@@ -44,7 +44,7 @@ export default function DetailsPageSpendingField({title, itemID, itemClass, invo
     const onDelete = () => {
         removeSpending(spending)
             .then(response => spending === response && setSpending(""))
-        saveItem()
+            .then(() => saveItem())
     }
 
     return <div>

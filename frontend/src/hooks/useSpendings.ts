@@ -3,6 +3,7 @@ import {Spending} from "../model/Spending";
 import {AuthContext} from "../context/AuthProvider";
 import {deleleteSpendingByID, getAllSpendings, getSpendingByID, postSpending} from "../service/SpendingApiService";
 import {SpendingItemDTO} from "../model/SpendinItemDTO";
+import {toast} from "react-hot-toast";
 
 
 export default function useSpendings() {
@@ -19,6 +20,7 @@ export default function useSpendings() {
         return postSpending(newSpending, token)
             .then(response => {
                 setSpendings([...spendings, response])
+                toast.success("Neue Ausgabe gespeichert")
                 return response
             })
             .catch(console.error)
@@ -26,7 +28,12 @@ export default function useSpendings() {
 
     const getUpdatedSpending = (id: string) => {
         getSpendingByID(id, token)
-            .then(response => setSpendings(spendings.map(spending => spending.id === response.id ? response : spending)))
+            .then(response => {
+                setSpendings(spendings.map(spending => spending.id === response.id ? response : spending))
+                if (response.title) {
+                    toast.success("Ausgabe " + response.title + " wurde angepasst")
+                }
+            })
             .catch(console.error)
     }
 
@@ -34,6 +41,9 @@ export default function useSpendings() {
         return deleleteSpendingByID(id, token)
             .then(response => {
                 setSpendings(spendings.filter(spending => spending.id !== response))
+                if (response) {
+                    toast.success("Ausgabe wurde gelöscht")
+                }
                 return response
             })
     }

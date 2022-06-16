@@ -4,7 +4,6 @@ import {Route, Routes} from "react-router-dom";
 import EquipmentPage from "./pages/EquipmentPage";
 import useEquipmentItems from "./hooks/useEquipmentItems";
 import RequireAuth from "./routing/RequireAuth";
-import {ToastContainer} from "react-toastify";
 import LoginPage from "./pages/LoginPage";
 import useAppUser from "./hooks/useAppUser";
 import AddEquipmentItemPage from "./pages/AddEquipmentItemPage";
@@ -19,6 +18,7 @@ import AddTentItemPage from "./pages/AddTentItemPage";
 import TentDetailsPage from "./pages/TentDetailsPage";
 import SpendingPage from "./pages/SpendingPage";
 import useSpendings from "./hooks/useSpendings";
+import {Toaster} from "react-hot-toast";
 
 function App() {
     const {spendings,addSpending, getUpdatedSpending, removeSpending} = useSpendings()
@@ -30,7 +30,10 @@ function App() {
 
     return (
     <div className="App">
-        <ToastContainer/>
+        <Toaster
+            position="top-center"
+            reverseOrder={false}
+        />
         <Routes>
             <Route element={<RequireAuth />}>
                 <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
