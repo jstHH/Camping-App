@@ -1,0 +1,15 @@
+.addformcontainer {
+    display: flex;
+    flex-direction: column;
+    column-gap: 30px;
+    padding-right: 30%;
+    padding-left: 30%;
+}
+
+.capacity {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
