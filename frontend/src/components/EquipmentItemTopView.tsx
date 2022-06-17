@@ -18,10 +18,10 @@ export default function EquipmentItemTopView() {
             </Card.Header>
             <Card.Body className={"body_container"}>
                 <Stack direction="horizontal" gap={3}>
-                    <Card.Title>Testtitel</Card.Title>
+                    <Card.Title>Allgemeine Ausrüstung</Card.Title>
                 </Stack>
                 <Card.Text className={"cardtext"}>
-                    Testtext
+                    Hier ist Platz für alles was ihr mitbringen wollt.
                 </Card.Text>
             </Card.Body>
         </Card>

@@ -25,6 +25,8 @@
     flex-direction: column;
     justify-content: flex-start;
     gap: 3%;
+    padding-left: 40%;
+    padding-right: 40%;
 }
 
 .controll_buttons {
