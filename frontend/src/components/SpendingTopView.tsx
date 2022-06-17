@@ -1,4 +1,4 @@
-import {Card, Nav, Stack} from "react-bootstrap";
+import {Card, Nav} from "react-bootstrap";
 
 
 export default function SpendingTopView() {
@@ -12,11 +12,8 @@ export default function SpendingTopView() {
                 </Nav>
             </Card.Header>
             <Card.Body>
-                <Stack direction="horizontal" gap={3}>
-                    <Card.Title>Hier könnte ihre Werbung stehen</Card.Title>
-                </Stack>
                 <Card.Text className={"cardtext"}>
-                    Irgendwas tolles
+                    Gehe in die Detailansicht deiner Autos, Zelte und Ausrüstungen um Ausgaben zu erstellen oder zu löschen.
                 </Card.Text>
             </Card.Body>
         </Card>
