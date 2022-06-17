@@ -7,7 +7,6 @@ export default function EquipmentTopView() {
     const navigate = useNavigate()
 
 
-
     return <div className={"container"}>
         <h2>Ausrüstung</h2>
         <Button variant="primary" type="button" onClick={() => navigate("equipment/additem")}>Neue Ausrüstung</Button>
