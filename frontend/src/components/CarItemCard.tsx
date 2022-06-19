@@ -17,9 +17,9 @@ export default function CarItemCard({carItem, ownerName} : CarItemCardProps) {
                 <Card.Title>{carItem.title}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">{ownerName} fährt</Card.Subtitle>
                 <Card.Text>
-                    {carItem.capacity - carItem.involved.length === 0 ? "Voll"
-                        : carItem.capacity - carItem.involved.length === 1 ? "1 Platz frei"
-                            : (carItem.capacity - carItem.involved.length) + " Plätze frei. "}
+                    {!carItem.trailer && (carItem.capacity - carItem.involved.length === 0 ? "Voll"
+                        : carItem.capacity - carItem.involved.length === 1 ? "1 Platz frei. "
+                            : (carItem.capacity - carItem.involved.length) + " Plätze frei. ")}
                     Start: {carItem.startLocation}
                 </Card.Text>
             </Card.Body>
