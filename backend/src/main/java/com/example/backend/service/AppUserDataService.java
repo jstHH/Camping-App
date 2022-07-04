@@ -59,4 +59,18 @@ public class AppUserDataService {
             appUserRepository.save(user);
         }
     }
+
+    public void setUserTentStatus (List<String> userWithTentIDs) {
+        List<AppUser> allUsers = appUserRepository.findAll();
+        List<AppUser> usersWithTent = allUsers.stream().filter(user -> userWithTentIDs.contains(user.getId())).toList();
+        List<AppUser> usersWithoutTent = allUsers.stream().filter(user -> !userWithTentIDs.contains(user.getId())).toList();
+        for (AppUser user : usersWithoutTent) {
+            user.setTent(false);
+            appUserRepository.save(user);
+        }
+        for (AppUser user : usersWithTent) {
+            user.setTent(true);
+            appUserRepository.save(user);
+        }
+    }
 }

@@ -14,7 +14,8 @@ import static org.mockito.Mockito.*;
 class TentItemServiceTest {
     private final TentItemRepository tentItemRepository = mock(TentItemRepository.class);
     private final SpendingService spendingService = mock(SpendingService.class);
-    private final TentItemService tentItemService = new TentItemService(tentItemRepository, spendingService);
+    private final AppUserDataService appUserDataService = mock(AppUserDataService.class);
+    private final TentItemService tentItemService = new TentItemService(tentItemRepository, spendingService, appUserDataService);
 
     @Test
     void getTentItems() {
