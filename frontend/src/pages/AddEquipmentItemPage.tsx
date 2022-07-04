@@ -63,6 +63,7 @@ export default function AddEquipmentItemPage({addEquipmentItem, currentUser}: Ad
                     name="group_owner"
                     type="radio"
                     id={"check_noOne"}
+                    onChange={() => setOwner("")}
                 />
             </Form.Group>
             <Form.Group>
