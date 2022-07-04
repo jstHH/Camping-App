@@ -16,4 +16,6 @@ public class AppUserDataDTO {
     private String login;
     private String name;
     private BigDecimal balance;
+    private boolean tent;
+    private boolean car;
 }

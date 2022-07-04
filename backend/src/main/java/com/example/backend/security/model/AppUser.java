@@ -20,4 +20,6 @@ public class AppUser {
     private String password;
     private String name;
     private BigDecimal balance;
+    private boolean tent;
+    private boolean car;
 }
