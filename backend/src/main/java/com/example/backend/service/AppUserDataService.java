@@ -42,6 +42,8 @@ public class AppUserDataService {
                     .login(element.getLogin())
                     .name(element.getName())
                     .balance(element.getBalance())
+                    .car(element.isCar())
+                    .tent(element.isTent())
                     .build());
         }
         return appUsersData;
@@ -56,6 +58,40 @@ public class AppUserDataService {
                newBalance = newBalance.add(booking.getAmount());
             }
             user.setBalance(newBalance);
+            appUserRepository.save(user);
+        }
+    }
+
+    public void setUserCarTentStatus (List<String> userWithItemIDs, String key) {
+        List<AppUser> allUsers = appUserRepository.findAll();
+        List<AppUser> usersWithItem = allUsers.stream().filter(user -> userWithItemIDs.contains(user.getId())).toList();
+        List<AppUser> usersWithoutItem = allUsers.stream().filter(user -> !userWithItemIDs.contains(user.getId())).toList();
+        if (key.equals("car")) {
+            setUserCarStatus(usersWithItem, usersWithoutItem);
+        }
+        if (key.equals("tent")) {
+            setUserTentStatus(usersWithItem, usersWithoutItem);
+        }
+    }
+
+    public void setUserTentStatus (List<AppUser> userWithTent, List<AppUser> userWithoutTent) {
+        for (AppUser user : userWithoutTent) {
+            user.setTent(false);
+            appUserRepository.save(user);
+        }
+        for (AppUser user : userWithTent) {
+            user.setTent(true);
+            appUserRepository.save(user);
+        }
+    }
+
+    public void setUserCarStatus (List<AppUser> userWithCar, List<AppUser> userWithoutCar) {
+        for (AppUser user : userWithoutCar) {
+            user.setCar(false);
+            appUserRepository.save(user);
+        }
+        for (AppUser user : userWithCar) {
+            user.setCar(true);
             appUserRepository.save(user);
         }
     }

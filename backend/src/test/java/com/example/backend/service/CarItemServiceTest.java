@@ -16,7 +16,8 @@ import static org.mockito.Mockito.*;
 class CarItemServiceTest {
     private final CarItemRepository carItemRepository = mock(CarItemRepository.class);
     private final SpendingService spendingService = mock(SpendingService.class);
-    private final CarItemService carItemService = new CarItemService(carItemRepository, spendingService);
+    private final AppUserDataService appUserDataService = mock(AppUserDataService.class);
+    private final CarItemService carItemService = new CarItemService(carItemRepository, spendingService, appUserDataService);
 
     @Test
     void getCarItems() {
@@ -181,6 +182,44 @@ class CarItemServiceTest {
         //then
         String expected = "Item with Id " + testCar1.getId() + " not found";
         verify(carItemRepository).existsById(testCar1.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getUserWithCarIDs() {
+        //given
+        CarItem testCar1 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        CarItem testCar2 = CarItem.builder()
+                .id("1")
+                .title("Testla")
+                .description("schnell")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList("involved2", "involved3")))
+                .spending("")
+                .capacity(3)
+                .trailer(false)
+                .startLocation("Garage")
+                .build();
+
+        when(carItemRepository.findAll()).thenReturn(List.of(testCar1, testCar2));
+
+        //when
+        List<String> actual = carItemService.getUserWithCarIDs();
+
+        //then
+        List<String> expected = List.of("owner1", "involved1", "involved2", "owner2", "involved3");
+        verify(carItemRepository).findAll();
         assertEquals(expected, actual);
     }
 }
