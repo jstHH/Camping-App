@@ -60,16 +60,36 @@ public class AppUserDataService {
         }
     }
 
-    public void setUserTentStatus (List<String> userWithTentIDs) {
+    public void setUserCarTentStatus (List<String> userWithItemIDs, String key) {
         List<AppUser> allUsers = appUserRepository.findAll();
-        List<AppUser> usersWithTent = allUsers.stream().filter(user -> userWithTentIDs.contains(user.getId())).toList();
-        List<AppUser> usersWithoutTent = allUsers.stream().filter(user -> !userWithTentIDs.contains(user.getId())).toList();
-        for (AppUser user : usersWithoutTent) {
+        List<AppUser> usersWithItem = allUsers.stream().filter(user -> userWithItemIDs.contains(user.getId())).toList();
+        List<AppUser> usersWithoutItem = allUsers.stream().filter(user -> !userWithItemIDs.contains(user.getId())).toList();
+        if (key.equals("car")) {
+            setUserCarStatus(usersWithItem, usersWithoutItem);
+        }
+        if (key.equals("tent")) {
+            setUserTentStatus(usersWithItem, usersWithoutItem);
+        }
+    }
+
+    public void setUserTentStatus (List<AppUser> userWithTent, List<AppUser> userWithoutTent) {
+        for (AppUser user : userWithoutTent) {
             user.setTent(false);
             appUserRepository.save(user);
         }
-        for (AppUser user : usersWithTent) {
+        for (AppUser user : userWithTent) {
             user.setTent(true);
+            appUserRepository.save(user);
+        }
+    }
+
+    public void setUserCarStatus (List<AppUser> userWithCar, List<AppUser> userWithoutCar) {
+        for (AppUser user : userWithoutCar) {
+            user.setCar(false);
+            appUserRepository.save(user);
+        }
+        for (AppUser user : userWithCar) {
+            user.setCar(true);
             appUserRepository.save(user);
         }
     }

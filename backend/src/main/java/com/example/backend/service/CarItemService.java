@@ -7,6 +7,7 @@ import com.example.backend.repository.CarItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,11 +15,13 @@ import java.util.NoSuchElementException;
 public class CarItemService {
     private final CarItemRepository carItemRepository;
     private final SpendingService spendingService;
+    private final AppUserDataService appUserDataService;
 
     @Autowired
-    public CarItemService(CarItemRepository carItemRepository, SpendingService spendingService) {
+    public CarItemService(CarItemRepository carItemRepository, SpendingService spendingService, AppUserDataService appUserDataService) {
         this.carItemRepository = carItemRepository;
         this.spendingService = spendingService;
+        this.appUserDataService = appUserDataService;
     }
 
     public List<CarItem> getCarItems() {
@@ -36,7 +39,7 @@ public class CarItemService {
                 .trailer(carItemDTO.isTrailer())
                 .startLocation(carItemDTO.getStartLocation())
                 .build();
-
+        setUserCarStatus();
         return carItemRepository.insert(newCarItem);
     }
 
@@ -51,7 +54,7 @@ public class CarItemService {
                 .involved(carItemDTO.getInvolved())
                 .build();
 
-        return carItemRepository.save(CarItem.builder()
+        CarItem changedCarItem = carItemRepository.save(CarItem.builder()
                 .id(id)
                 .title(carItemDTO.getTitle())
                 .description(carItemDTO.getDescription())
@@ -62,18 +65,36 @@ public class CarItemService {
                 .trailer(carItemDTO.isTrailer())
                 .startLocation(carItemDTO.getStartLocation())
                 .build());
+
+        setUserCarStatus();
+        return changedCarItem;
     }
 
     public String deleteCarItem(String id) {
         if (carItemRepository.existsById(id)) {
             carItemRepository.deleteById(id);
             if (!carItemRepository.existsById(id)) {
+                setUserCarStatus();
                 return id;
             } else {
                 return "Deletion failed";
             }
         }
         return "Item with Id " + id + " not found";
+    }
+
+    public List<String> getUserWithCarIDs() {
+        List<CarItem> allCarItems = carItemRepository.findAll();
+        List<String> userWithCarIDs = new ArrayList<>();
+        for (CarItem car : allCarItems) {
+            userWithCarIDs.add(car.getOwner());
+            userWithCarIDs.addAll(car.getInvolved());
+        }
+        return userWithCarIDs.stream().distinct().toList();
+    }
+
+    public void setUserCarStatus () {
+        appUserDataService.setUserCarTentStatus(getUserWithCarIDs(), "car");
     }
 
 }

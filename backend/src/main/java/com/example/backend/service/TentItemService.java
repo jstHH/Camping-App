@@ -94,7 +94,7 @@ public class TentItemService {
     }
 
     public void setUserTentStatus () {
-        appUserDataService.setUserTentStatus(getUserWithTentIDs());
+        appUserDataService.setUserCarTentStatus(getUserWithTentIDs(), "tent");
     }
 
 }
