@@ -274,4 +274,40 @@ class TentItemServiceTest {
         verify(tentItemRepository, times(2)).existsById(testTent1.getId());
         assertEquals(expected, actual);
     }
+
+    @Test
+    void getUserWithTentIDs() {
+        //given
+        TentItem testTent1 = TentItem.builder()
+                .id("1")
+                .title("Iglu")
+                .description("klein")
+                .owner("owner1")
+                .involved(new ArrayList<>(Arrays.asList("involved1", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        TentItem testTent2 = TentItem.builder()
+                .id("2")
+                .title("Kuppel")
+                .description("groß")
+                .owner("owner2")
+                .involved(new ArrayList<>(Arrays.asList("involved3", "involved2")))
+                .spending("")
+                .capacity(3)
+                .shelter(false)
+                .build();
+
+        when(tentItemRepository.findAll()).thenReturn(List.of(testTent1, testTent2));
+
+        //when
+        List<String> actual = tentItemService.getUserWithTentIDs();
+
+        //then
+        List<String> expected = List.of("owner1", "involved1", "involved2", "owner2", "involved3");
+        verify(tentItemRepository).findAll();
+        assertEquals(expected, actual);
+    }
 }
