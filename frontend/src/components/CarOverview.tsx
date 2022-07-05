@@ -11,7 +11,7 @@ export type CarOverviewProps = {
 
 export default function CarOverview({carItems, appUsers} : CarOverviewProps) {
     return <div>
-        <CarTopView appUsers={appUsers} carItems={carItems}/>
+        <CarTopView appUsers={appUsers} />
         <CarItemCardView appUsers={appUsers} carItems={carItems}/>
     </div>
 

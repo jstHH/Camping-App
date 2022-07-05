@@ -3,4 +3,6 @@ export type AppUser = {
     login: string
     name: string
     balance: number
+    car: boolean
+    tent: boolean
 }

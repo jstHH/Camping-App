@@ -42,6 +42,8 @@ public class AppUserDataService {
                     .login(element.getLogin())
                     .name(element.getName())
                     .balance(element.getBalance())
+                    .car(element.isCar())
+                    .tent(element.isTent())
                     .build());
         }
         return appUsersData;

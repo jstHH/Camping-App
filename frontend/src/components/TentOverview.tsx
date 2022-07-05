@@ -11,7 +11,7 @@ export type TentOverviewProps = {
 
 export default function TentOverview({tentItems, appUsers}: TentOverviewProps) {
     return <div>
-        <TentTopView appUsers={appUsers} tentItems={tentItems}/>
+        <TentTopView appUsers={appUsers} />
         <TentItemCardView tentItems={tentItems} appUsers={appUsers}/>
     </div>
 }
