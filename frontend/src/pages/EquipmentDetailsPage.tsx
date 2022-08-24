@@ -92,7 +92,7 @@ export default function EquipmentDetailsPage({
 
     const onSubmitNavigate = () => {
         onSubmit()
-        navigate("/")
+        navigate("/equipment")
     }
 
     const onDelete = () => {
@@ -100,7 +100,7 @@ export default function EquipmentDetailsPage({
             removeSpending(spending)
         }
         removeEquipmentItem(itemID)
-        navigate("/")
+        navigate("/equipment")
     }
 
     const onOwnerSignOut = () => {
