@@ -19,6 +19,7 @@ import TentDetailsPage from "./pages/TentDetailsPage";
 import SpendingPage from "./pages/SpendingPage";
 import useSpendings from "./hooks/useSpendings";
 import {Toaster} from "react-hot-toast";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
     const {spendings,addSpending, getUpdatedSpending, removeSpending} = useSpendings()
@@ -36,7 +37,8 @@ function App() {
         />
         <Routes>
             <Route element={<RequireAuth />}>
-                <Route path="/" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
+                <Route path={"/"} element={<DashboardPage/>}/>
+                <Route path="/equipment" element={<EquipmentPage equipmentItems={equipmentItems} appUsers={appUsers}/>}/>
                 <Route path={"/equipment/additem"} element={<AddEquipmentItemPage addEquipmentItem={addEquipmentItem} currentUser={currentUser}/>}/>
                 <Route path={`/equipment/:id`} element={<EquipmentDetailsPage appUsers={appUsers} currentUser={currentUser} removeEquipmentItem={removeEquipmentItem} updateEquipmentItem={updateEquipmentItem} addSpending={addSpending} removeSpending={removeSpending}/>}/>
                 <Route path={"/campsite"} element={<CampsitePage   appUsers={appUsers} carItems={carItems} tentItems={tentItems}/>}/>
